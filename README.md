@@ -10,11 +10,23 @@ This repository contains only the native clients, shared mail core, optional pus
 
 [Download the latest release](https://github.com/logdns/imyemail-cloud/releases/latest), or choose a development package directly:
 
+### Homebrew (macOS Apple Silicon)
+
+Trust the public tap once, then install with the short package name:
+
+```bash
+brew tap logdns/imyemail-cloud
+brew trust --tap logdns/imyemail-cloud
+brew install imyemail-cloud
+```
+
+`brew trust` is required by Homebrew 7 for third-party taps. Once the tap is trusted, future installs use `brew install imyemail-cloud`; update with `brew upgrade imyemail-cloud`. The tap source is public at [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud).
+
 | Platform | Download |
 | --- | --- |
 | iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-ios-arm64-20261002-unsigned.ipa) (requires your own valid Apple certificate and provisioning profile) |
 | Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-android-20261002-unsigned.apk) (for development or self-signing; not a signed store package) |
-| macOS Apple Silicon | [unsigned ZIP](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
+| macOS Apple Silicon | [Homebrew tap](https://github.com/logdns/homebrew-imyemail-cloud) or [ad-hoc signed ZIP](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
 | Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-x86_64-20261002.deb) |
 | Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-arm64-20261002.deb) |
 | Windows x64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-windows-x64-20261002-setup.exe) |

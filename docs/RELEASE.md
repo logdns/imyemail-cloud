@@ -26,6 +26,14 @@
 
 工作流将这些附件作为 GitHub Latest Release 提供下载，但标题和说明必须明确标记为未签名开发包。平台签名、公证、真机安装/升级/卸载和对应商店审核仍是独立的生产发布门禁，不能用 CI 开发包替代。
 
+## Homebrew tap
+
+公开 Homebrew 源为 [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud)，cask token 为 `imyemail-cloud`。Homebrew 7 首次使用第三方 tap 时必须依次执行 `brew tap logdns/imyemail-cloud`、`brew trust --tap logdns/imyemail-cloud`，之后 `brew install imyemail-cloud` 和 `brew upgrade imyemail-cloud` 使用短名称即可。
+
+tap 的 cask 必须固定 GitHub Release 版本 URL 和 macOS ZIP 的 SHA-256，只支持当前发布包实际具备的 Apple Silicon 与 macOS 14+。tap CI 需要实际执行短命令安装，核对 Bundle ID、版本、arm64、ad-hoc 签名和 CLI 链接，再卸载且不删除用户邮件数据或 Keychain 凭据。
+
+tap 每日读取 GitHub Latest Release，要求恰好存在一个符合命名规则的 macOS ZIP 及其独立 `.sha256`，下载并复算成功后才创建 cask 更新 PR。发布新版本时仍需人工确认该 PR 的 CI、版本、URL、哈希与签名边界；自动检测不能替代公证或真机启动验收。
+
 ## 回滚
 
-不要覆盖既有 tag 或 Release。发现问题时撤下受影响附件、标记说明并发布递增补丁版本；保留源码提交和哈希以便审计。
+不要覆盖既有 tag 或 Release。发现问题时撤下受影响附件、标记说明并发布递增补丁版本；保留源码提交和哈希以便审计。Homebrew 回滚通过恢复上一条已验证 cask 提交或发布递增修复版本完成，不得把同一版本静默改指向不同二进制。

@@ -5,6 +5,7 @@
 - [RELEASE.md](RELEASE.md)：版本、构建、GitHub Release 和签名边界
 - [SECURITY.md](SECURITY.md)：客户端安全模型和检查清单
 - [开源重构验证记录](../artifacts/20261002-open-source-refactor/verification.md)：本地门禁、聚焦安全检查和未验收边界
+- [Homebrew tap 发布验证](../artifacts/20261002-homebrew-tap/verification.md)：cask、安装、供应链校验和发布边界
 
 当前公开版本：`0.2.1`。项目主页：[https://imy.email](https://imy.email)，源码：[github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)。
 

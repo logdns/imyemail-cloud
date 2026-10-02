@@ -2,6 +2,16 @@
 
 SwiftUI 原生客户端，支持 macOS、iOS 和 iPadOS；邮件协议通过同仓库 `core/` 的进程内接口执行。Bundle ID 为 `email.imy.cloud`，产品链接为 [https://imy.email](https://imy.email)。
 
+## Homebrew 安装（Apple Silicon）
+
+```bash
+brew tap logdns/imyemail-cloud
+brew trust --tap logdns/imyemail-cloud
+brew install imyemail-cloud
+```
+
+Homebrew 7 对第三方 tap 要求一次显式信任。之后可以使用 `brew upgrade imyemail-cloud` 更新。公开 cask 源码在 [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud)；当前包采用 ad-hoc 签名且未经过 Apple 公证，首次启动仍受 macOS Gatekeeper 检查。
+
 ## 本地验证
 
 ```bash

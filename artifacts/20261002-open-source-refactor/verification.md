@@ -2,7 +2,7 @@
 
 ## 范围与环境
 
-- 日期：2026-10-02，Asia/Shanghai；最后本地复核时间 11:54 CST（+0800）。
+- 日期：2026-10-02，Asia/Shanghai；最后本地复核时间 12:24 CST（+0800）。
 - 主机：macOS 27.0.1（Build 26A434），Apple Silicon arm64。
 - 工具链：Rust/Cargo 1.95.0、Swift 6.4、Xcode 27.0、.NET SDK 9.0.318。
 - 源码状态：从旧仓库提交 `38367504a777b2cfcc6bee600e790954505f943a` 的工作树重构；本记录随新的 `imyemail-cloud` 初始提交发布，不继承旧 Git 历史。
@@ -63,16 +63,22 @@
 ## 未在本机验收的边界
 
 - 三项需要访问宿主 macOS Keychain 的测试：`keychain_backend_roundtrip`、`apple_os_secrets_skip_sidecar`、`apple_open_stores_password_in_keychain_not_sidecar`。隔离策略禁止写宿主 Keychain，因此明确跳过，交由 GitHub macOS CI 验证。
-- Apple Swift build/test：`xcrun`/XCBuild 强制写 `/var/folders` 系统缓存，被隔离策略阻止；未证明源码失败，也不能写成本地通过。
-- Android：本机只有 JDK 25.0.2，而 AGP 工程要求 JDK 17；Gradle 在配置阶段以 `25.0.2` 失败。资源/JNI 只完成源码复核，完整单测、lint、APK 和 JNI 装载交由使用 Temurin 17 的 GitHub CI。
-- Windows WinUI/XAML、x64/ARM64 self-contained publish 和 Inno Setup 安装器需要 Windows runner；Linux GTK/WebKitGTK、DEB 安装/启动/卸载需要 Linux runner。
+- Apple Swift build/test：`xcrun`/XCBuild 强制写 `/var/folders` 系统缓存，被隔离策略阻止；未证明源码失败，也不能写成本地通过。Swift 测试、macOS 包和 iOS Simulator app 已由 GitHub macOS runner 验证通过。
+- Android：本机只有 JDK 25.0.2，而 AGP 工程要求 JDK 17；Gradle 在配置阶段以 `25.0.2` 失败。Temurin 17 GitHub runner 上的 JNI、单测、lint、Debug APK 和 unsigned Release APK 已验证通过。
+- Windows WinUI/XAML、x64/ARM64 self-contained publish 和 Inno Setup 安装器需要 Windows runner；Linux GTK/WebKitGTK、DEB 安装/启动/卸载需要 Linux runner。这些项目均已在对应 GitHub runner 验证通过。
 - iOS/Android 真机、真实邮箱收发、Apple 公证、Android/Windows 正式签名、商店审核及生产推送部署均未在本机验收。
 
 ## 发布闭环
 
 - `.github/workflows/ci.yml` 是多平台合并门禁。
 - `.github/workflows/release-build.yml` 从通过验证的源码构建多平台未签名开发附件、生成 `SHA256SUMS` 并创建 `v0.2.0` GitHub prerelease。
-- GitHub 仓库、CI run、Release URL 和线上结论应以 GitHub 实际执行结果为准；失败必须修复后重跑，不以本地跨平台构建替代。
+- 公开仓库：<https://github.com/logdns/imyemail-cloud>；默认分支 `main`；主页 <https://imy.email>。
+- 初始开源提交：`8e7d3596b5b78e868b12303520dbdb8a6eba8214`；Linux 完整特性修复及实际发布源提交：`9e74649501657c60b070f36b2dd34bce5a01dff1`。
+- 多平台 CI：<https://github.com/logdns/imyemail-cloud/actions/runs/36962934681>，10/10 jobs 成功。
+- Release workflow：<https://github.com/logdns/imyemail-cloud/actions/runs/36963674864>，7/7 jobs 成功。
+- GitHub prerelease：<https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0>；非 draft、`isPrerelease=true`，目标提交为 `9e74649501657c60b070f36b2dd34bce5a01dff1`。
+- 发布附件包括 Android APK、Linux x86_64/ARM64 DEB、macOS arm64 ZIP、Windows x64/ARM64 EXE，以及六份独立 `.sha256` 和总 `SHA256SUMS`，共 13 个文件。下载全部 322 MB 附件后，`SHA256SUMS` 的 12 项以及六份独立校验均复算通过。
+- 所有附件均为未签名开发包；Apple 公证、Android/Windows 正式签名、真机和商店验收仍属于明确的生产发布边界。
 
 ## 清理
 

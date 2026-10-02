@@ -342,7 +342,6 @@ pub fn present(app: &adw::Application, mailto: Option<Mailto>) {
     let settings = gio::SimpleAction::new("settings", None);
     {
         let window = window.clone();
-        let bridge = Arc::clone(&state.borrow().bridge);
         let state = state.clone();
         let widgets = widgets.clone();
         settings.connect_activate(move |_, _| {

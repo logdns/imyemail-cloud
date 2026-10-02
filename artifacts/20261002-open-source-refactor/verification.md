@@ -23,6 +23,7 @@
 - 保留第三方许可证，以及邮件服务商要求的“应用密码/授权码”说明；后者是 IMAP/SMTP 凭据，不是软件许可证。
 - 内部 `chck-*` crate、`Chck.Mail.*` 命名空间、Swift/Kotlin 类型和 C ABI 名称作为工程/ABI 兼容标识保留，不作为用户可见品牌。
 - 修复品牌迁移发现的 Android 断点：通知图标文件改为 `ic_stat_imyemail_cloud.xml`；Rust JNI 符号和 SecretStore 类路径同步到 `email.imy.cloud.chckcore`；CI 增加静态边界检查。
+- 首轮 GitHub Linux 完整特性 Clippy 发现设置动作遗留一个未使用的 `bridge` 克隆；已删除并重跑 CI。
 - 六种语言、643 条词典、9 份离线资源一致；版本统一为 `0.2.0`。
 
 ## 本地门禁结果

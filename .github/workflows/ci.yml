@@ -68,6 +68,14 @@ jobs:
           grep -Fq 'Java_email_imy_cloud_chckcore_NativeBridge_nativeCall' core/crates/chck-ffi-c/src/android.rs
           grep -Fq 'Java_email_imy_cloud_chckcore_NativeBridge_nativeClose' core/crates/chck-ffi-c/src/android.rs
           test -e android/app/src/main/res/drawable/ic_stat_imyemail_cloud.xml
+      - name: Reject local developer paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git grep -n -E '/Users/[^/]+' -- apple ':!apple/*.md'; then
+            echo "Local developer path is embedded in Apple source" >&2
+            exit 1
+          fi
       - name: Reject removed commercial and website sources
         shell: bash
         run: |
@@ -121,8 +129,9 @@ jobs:
         run: |
           set -euo pipefail
           rustup component add rustfmt clippy
+          rustup target add aarch64-apple-ios
           if [[ "$(uname -m)" == "arm64" ]]; then
-            rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+            rustup target add aarch64-apple-ios-sim
           else
             rustup target add x86_64-apple-ios
           fi
@@ -145,11 +154,16 @@ jobs:
         run: |
           brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
           ./scripts/package-ios-simulator.sh
+      - name: Build unsigned iOS device IPA
+        working-directory: apple
+        shell: bash
+        run: ./scripts/package-ios-device.sh
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: apple-unsigned-development
           path: |
             apple/dist/*.zip
+            apple/dist/*.ipa
             apple/dist/*.sha256
             apple/dist/imyemail-cloud Simulator.app
           if-no-files-found: error

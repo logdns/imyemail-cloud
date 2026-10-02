@@ -9,7 +9,7 @@
   #error Architecture is required (x64 or ARM64)
 #endif
 #ifndef AppVersion
-  #define AppVersion "0.2.0"
+  #define AppVersion "0.2.1"
 #endif
 #ifndef OutputName
   #define OutputName "imyemail-cloud-windows-" + LowerCase(Architecture) + "-setup"

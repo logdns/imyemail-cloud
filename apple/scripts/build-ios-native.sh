@@ -3,6 +3,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CORE="${IMYEMAIL_CLOUD_CORE_ROOT:-$ROOT/../core}"
 export PATH="$HOME/.cargo/bin:/opt/homebrew/bin:$PATH"
+CARGO_CACHE="${CARGO_HOME:-$HOME/.cargo}"
+export RUSTFLAGS="${RUSTFLAGS:+$RUSTFLAGS }--remap-path-prefix=$CORE=/src/core --remap-path-prefix=$CARGO_CACHE=/cargo"
 PLATFORM="${PLATFORM_NAME:-iphonesimulator}"
 case "$PLATFORM" in
   iphonesimulator) DEFAULT_ARCH="$(uname -m)" ;;

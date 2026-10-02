@@ -928,7 +928,7 @@ public sealed class MailKitEngine : IMailEngine, IDisposable
             {
                 try
                 {
-                    client.Identify(new ImapImplementation { Name = "imyemail-cloud", Version = "0.2.0", Vendor = "imy.email" }, ct);
+                    client.Identify(new ImapImplementation { Name = "imyemail-cloud", Version = "0.2.1", Vendor = "imy.email" }, ct);
                 }
                 catch (Exception) when (!forceId && !ct.IsCancellationRequested) { }
             }

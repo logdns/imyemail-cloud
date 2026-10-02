@@ -1,6 +1,6 @@
 # imyemail-cloud
 
-imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开仓库为 [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)，产品链接统一为 [https://imy.email](https://imy.email)。当前版本为 `0.2.0`。
+imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开仓库为 [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)，产品链接统一为 [https://imy.email](https://imy.email)。当前版本为 `0.2.1`。
 
 本仓库只包含客户端、共享邮件核心、可选推送桥、测试工具、构建脚本和开源文档。它不包含官网/Web 应用、支付、订阅、软件激活、设备名额或商业授权门禁；同步和发送等客户端功能不需要购买软件许可证。
 
@@ -10,6 +10,7 @@ imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开
 
 | 平台 | 下载 |
 | --- | --- |
+| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-ios-arm64-20261002-unsigned.ipa)（需使用有效 Apple 证书和 provisioning profile 自行签名） |
 | Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-android-20261002-unsigned.apk)（供开发或自行签名，不能直接作为正式商店安装包） |
 | macOS Apple Silicon | [unsigned ZIP](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
 | Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-x86_64-20261002.deb) |

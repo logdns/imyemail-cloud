@@ -5,6 +5,8 @@ CORE="$ROOT/core"
 APPLE="$ROOT/apple"
 OUT="$APPLE/dist/native"
 mkdir -p "$OUT"
+CARGO_CACHE="${CARGO_HOME:-$HOME/.cargo}"
+export RUSTFLAGS="${RUSTFLAGS:+$RUSTFLAGS }--remap-path-prefix=$CORE=/src/core --remap-path-prefix=$CARGO_CACHE=/cargo"
 
 cargo build -p chck-ffi-c --release --manifest-path "$CORE/Cargo.toml"
 mkdir -p "$APPLE/Native/macos" "$APPLE/Sources/ChckAppCore/Resources"

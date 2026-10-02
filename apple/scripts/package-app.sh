@@ -4,6 +4,8 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 # Build and stage the same core version before compiling/bundling the UI.
 CORE_ROOT="${IMYEMAIL_CLOUD_CORE_ROOT:-$ROOT/../core}"
+CARGO_CACHE="${CARGO_HOME:-$HOME/.cargo}"
+export RUSTFLAGS="${RUSTFLAGS:+$RUSTFLAGS }--remap-path-prefix=$CORE_ROOT=/src/core --remap-path-prefix=$CARGO_CACHE=/cargo"
 cargo build --manifest-path "$CORE_ROOT/Cargo.toml" --release -p chck-cli -p chck-ffi-c
 mkdir -p "$ROOT/Native/macos" "$ROOT/Sources/ChckAppCore/Resources"
 cp "$CORE_ROOT/target/release/libchck_mail.dylib" "$ROOT/Native/macos/"

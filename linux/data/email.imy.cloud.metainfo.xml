@@ -39,6 +39,11 @@
     <color type="primary" scheme_preference="dark">#6B8AFF</color>
   </branding>
   <releases>
+    <release version="0.2.1" date="2026-10-02">
+      <description>
+        <p>Add an unsigned iOS/iPadOS arm64 IPA to the downloadable release artifacts.</p>
+      </description>
+    </release>
     <release version="0.2.0" date="2026-10-02">
       <description>
         <p>First public MIT-licensed imyemail-cloud release.</p>

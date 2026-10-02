@@ -51,10 +51,15 @@ public struct BrandMark: View {
         if let url = Bundle.main.url(forResource: "BrandMark", withExtension: "png") {
             candidates.append(url)
         }
+        let workingDirectory = URL(
+            fileURLWithPath: FileManager.default.currentDirectoryPath,
+            isDirectory: true
+        )
         candidates.append(contentsOf: [
             Bundle.main.bundleURL.appendingPathComponent("Contents/Resources/\(name)"),
             Bundle.main.bundleURL.appendingPathComponent(name),
-            URL(fileURLWithPath: "/Users/ideadev/codedev/apple/Sources/ChckDesign/Resources/Media.xcassets/BrandMark.imageset/\(name)"),
+            workingDirectory.appendingPathComponent("Sources/ChckDesign/Resources/Media.xcassets/BrandMark.imageset/\(name)"),
+            workingDirectory.appendingPathComponent("apple/Sources/ChckDesign/Resources/Media.xcassets/BrandMark.imageset/\(name)"),
         ])
         return candidates.first { FileManager.default.fileExists(atPath: $0.path) }
     }

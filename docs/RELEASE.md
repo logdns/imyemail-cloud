@@ -2,7 +2,7 @@
 
 ## 版本
 
-项目使用语义化版本。一次发布需同步更新 Rust、Apple、Android、Linux 和 Windows 的版本元数据；`0.2.0` 是首次 `imyemail-cloud` 开源版本。
+项目使用语义化版本。一次发布需同步更新 Rust、Apple、Android、Linux 和 Windows 的版本元数据；`0.2.0` 是首次 `imyemail-cloud` 开源版本，`0.2.1` 补充 iOS/iPadOS arm64 unsigned IPA。
 
 ## 发布前检查
 
@@ -19,6 +19,7 @@
 当前自动发布的是未签名开发产物：
 
 - macOS：ad-hoc 签名 ZIP，未公证；
+- iOS/iPadOS：arm64 unsigned IPA，包含设备版 Rust 核心，需自行签名和配置 provisioning profile；
 - Android：unsigned Release APK；
 - Linux：未进行发行仓库签名的 DEB；
 - Windows：未做 Authenticode 的 Inno Setup 安装器。

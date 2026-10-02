@@ -1,6 +1,6 @@
 # imyemail-cloud for Windows
 
-Windows 10 1809+ / Windows 11 原生 WinUI 3 客户端，使用 MailKit、SQLite 和 WebView2。应用版本为 `0.2.0`，发布程序名为 `imyemail-cloud.exe`。
+Windows 10 1809+ / Windows 11 原生 WinUI 3 客户端，使用 MailKit、SQLite 和 WebView2。应用版本为 `0.2.1`，发布程序名为 `imyemail-cloud.exe`。
 
 源码项目仍保留 `Chck.Mail.*` 目录和命名空间作为兼容标识；用户可见的产品、安装器、图标和包身份均为 `imyemail-cloud`。
 

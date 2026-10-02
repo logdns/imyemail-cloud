@@ -24,4 +24,14 @@ brew install xcodegen
 
 模拟器 `.app` 不是 IPA；真机、后台通知、provisioning、Archive 和 TestFlight 需要独立验收。只有显式设置 `IMYEMAIL_CLOUD_PREVIEW=1` 才使用样例数据。
 
+iOS/iPadOS arm64 未签名 IPA：
+
+```bash
+rustup target add aarch64-apple-ios
+brew install xcodegen
+./scripts/package-ios-device.sh
+```
+
+该脚本输出标准 `Payload/imyemail-cloud.app` 结构的 IPA，并验证设备架构、iOS 平台标记、Bundle ID、内置 Rust C ABI 和无签名状态。产物仅供自行签名或后续 Apple 发布流水线使用；没有有效 Apple 证书和 provisioning profile 时不能承诺直接安装、TestFlight 或 App Store 分发。
+
 凭据保存到系统 Keychain。邮件 HTML 在隔离 WebKit 视图中显示，禁用脚本、表单、自动外跳和默认远程资源加载。

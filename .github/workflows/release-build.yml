@@ -6,7 +6,7 @@ on:
       release_tag:
         description: Release tag in vMAJOR.MINOR.PATCH format
         required: true
-        default: v0.2.0
+        default: v0.2.1
         type: string
       release_date:
         description: Release label in YYYYMMDD format
@@ -46,15 +46,22 @@ jobs:
           grep -Fq "version = \"$version\"" linux/Cargo.toml
           grep -Fq "versionName = \"$version\"" android/app/build.gradle.kts
           grep -Fq "<string>$version</string>" apple/packaging/Info.plist
+          grep -Fq "<string>$version</string>" apple/ios/Info.plist
           grep -Fq "<Version>$version</Version>" windows/Chck.Mail/Chck.Mail.csproj
 
   apple:
-    name: macOS signing input
+    name: macOS and iOS signing inputs
     needs: validate
     runs-on: macos-15
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Configure iOS build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup target add aarch64-apple-ios
+          brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
       - name: Build and test macOS package
         working-directory: apple
         shell: bash
@@ -66,13 +73,22 @@ jobs:
             ./scripts/package-app.sh
           file dist/imyemail-cloud.app/Contents/MacOS/ChckMail | grep -q 'arm64'
           codesign --verify --deep --strict dist/imyemail-cloud.app
+      - name: Build unsigned iOS IPA
+        working-directory: apple
+        shell: bash
+        run: |
+          set -euo pipefail
+          IMYEMAIL_CLOUD_IOS_IPA_NAME=imyemail-cloud-ios-arm64-${{ inputs.release_date }}-unsigned.ipa \
+            ./scripts/package-ios-device.sh
       - name: Record provenance
         shell: bash
         run: |
           mkdir -p release-output
           cp apple/dist/imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip release-output/
           cp apple/dist/imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip.sha256 release-output/
-          printf 'source_sha=%s\nrelease_date=%s\nplatform=macos-arm64\nsigning=unsigned-input\n' \
+          cp apple/dist/imyemail-cloud-ios-arm64-${{ inputs.release_date }}-unsigned.ipa release-output/
+          cp apple/dist/imyemail-cloud-ios-arm64-${{ inputs.release_date }}-unsigned.ipa.sha256 release-output/
+          printf 'source_sha=%s\nrelease_date=%s\nplatform=macos-arm64,ios-arm64\nsigning=unsigned-input\n' \
             "$GITHUB_SHA" '${{ inputs.release_date }}' > release-output/provenance.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:

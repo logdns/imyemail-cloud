@@ -27,9 +27,15 @@ public struct CliEngine: MailEngineClient, Sendable {
         if let hit = bundled.first(where: { FileManager.default.isExecutableFile(atPath: $0) }) {
             return hit
         }
+        let workingDirectory = URL(
+            fileURLWithPath: FileManager.default.currentDirectoryPath,
+            isDirectory: true
+        )
         let candidates = [
-            "/Users/ideadev/codedev/core/target/debug/imyemail-cloud",
-            "/Users/ideadev/codedev/core/target/release/imyemail-cloud",
+            workingDirectory.appendingPathComponent("core/target/debug/imyemail-cloud").path,
+            workingDirectory.appendingPathComponent("core/target/release/imyemail-cloud").path,
+            workingDirectory.appendingPathComponent("../core/target/debug/imyemail-cloud").standardized.path,
+            workingDirectory.appendingPathComponent("../core/target/release/imyemail-cloud").standardized.path,
             "/usr/local/bin/imyemail-cloud",
             "/opt/homebrew/bin/imyemail-cloud",
         ]

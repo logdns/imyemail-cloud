@@ -50,18 +50,19 @@ public final class NativeEngine: MailEngineClient, @unchecked Sendable {
             }
         }
         #if os(macOS)
+        let workingDirectory = URL(
+            fileURLWithPath: FileManager.default.currentDirectoryPath,
+            isDirectory: true
+        )
         candidates.append(contentsOf: [
-            "/Users/ideadev/codedev/core/target/debug/libchck_mail.dylib",
-            "/Users/ideadev/codedev/core/target/release/libchck_mail.dylib",
-            "/Users/ideadev/codedev/apple/Native/macos/libchck_mail.dylib",
-            "/Users/ideadev/codedev/apple/Sources/ChckAppCore/Resources/libchck_mail.dylib",
+            workingDirectory.appendingPathComponent("core/target/debug/libchck_mail.dylib").path,
+            workingDirectory.appendingPathComponent("core/target/release/libchck_mail.dylib").path,
+            workingDirectory.appendingPathComponent("../core/target/debug/libchck_mail.dylib").standardized.path,
+            workingDirectory.appendingPathComponent("../core/target/release/libchck_mail.dylib").standardized.path,
+            workingDirectory.appendingPathComponent("apple/Native/macos/libchck_mail.dylib").path,
+            workingDirectory.appendingPathComponent("Native/macos/libchck_mail.dylib").path,
             "/usr/local/lib/libchck_mail.dylib",
             "/opt/homebrew/lib/libchck_mail.dylib",
-        ])
-        #else
-        candidates.append(contentsOf: [
-            "/Users/ideadev/codedev/core/target/aarch64-apple-ios-sim/release/libchck_mail.dylib",
-            "/Users/ideadev/codedev/apple/Native/ios-sim/libchck_mail.dylib",
         ])
         #endif
         return candidates.first { FileManager.default.fileExists(atPath: $0) }

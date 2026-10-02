@@ -14,7 +14,7 @@
 - 版本由 `0.2.0` 同步提升到 `0.2.1`；不移动或覆盖已发布的 `v0.2.0` 标签。
 - 移除 Apple 源码中旧开发机的硬编码绝对路径，改用 bundle、当前工作目录和标准安装目录候选；CI 新增本地用户路径门禁。
 - Rust Apple 构建使用 `--remap-path-prefix`，避免将项目工作区和 Cargo 主目录写入发布二进制。
-- 默认 `README.md` 顶部增加可点击的“简体中文 README”、中文文档导航和 Latest Release 下载导航。
+- 默认英文 `README.md` 顶部增加语言导航，可点击进入独立完整的 `README.zh-CN.md`；中文页可返回英文页、文档导航和 Latest Release。
 
 ## 本地构建与复验
 

@@ -1,44 +1,44 @@
 # imyemail-cloud
 
-[简体中文 README](README.md) · [中文文档导航](docs/README.md) · [最新版本下载](https://github.com/logdns/imyemail-cloud/releases/latest)
+[English](README.md) · [简体中文](README.zh-CN.md) · [Documentation](docs/README.md) · [Latest downloads](https://github.com/logdns/imyemail-cloud/releases/latest)
 
-imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开仓库为 [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)，产品链接统一为 [https://imy.email](https://imy.email)。当前版本为 `0.2.1`。
+imyemail-cloud is an MIT-licensed, multi-platform native email client. The public source repository is [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud), and all product links point to [https://imy.email](https://imy.email). The current version is `0.2.1`.
 
-本仓库只包含客户端、共享邮件核心、可选推送桥、测试工具、构建脚本和开源文档。它不包含官网/Web 应用、支付、订阅、软件激活、设备名额或商业授权门禁；同步和发送等客户端功能不需要购买软件许可证。
+This repository contains only the native clients, shared mail core, optional push bridge, test tooling, build scripts, and open-source documentation. It contains no website/Web application, payments, subscriptions, software activation, device-seat limits, or commercial license gates. Client synchronization and sending do not require a purchased software license.
 
-## 下载
+## Downloads
 
-[下载最新版本](https://github.com/logdns/imyemail-cloud/releases/latest)；也可直接选择平台开发包：
+[Download the latest release](https://github.com/logdns/imyemail-cloud/releases/latest), or choose a development package directly:
 
-| 平台 | 下载 |
+| Platform | Download |
 | --- | --- |
-| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-ios-arm64-20261002-unsigned.ipa)（需使用有效 Apple 证书和 provisioning profile 自行签名） |
-| Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-android-20261002-unsigned.apk)（供开发或自行签名，不能直接作为正式商店安装包） |
+| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-ios-arm64-20261002-unsigned.ipa) (requires your own valid Apple certificate and provisioning profile) |
+| Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-android-20261002-unsigned.apk) (for development or self-signing; not a signed store package) |
 | macOS Apple Silicon | [unsigned ZIP](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
 | Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-x86_64-20261002.deb) |
 | Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-arm64-20261002.deb) |
 | Windows x64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-windows-x64-20261002-setup.exe) |
 | Windows ARM64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-windows-arm64-20261002-setup.exe) |
 
-完整性校验：[SHA256SUMS](https://github.com/logdns/imyemail-cloud/releases/latest/download/SHA256SUMS)。这些是未签名开发包，平台签名、公证、真机与商店验收边界见 [发布说明](docs/RELEASE.md)。
+Verify downloads with [SHA256SUMS](https://github.com/logdns/imyemail-cloud/releases/latest/download/SHA256SUMS). These are unsigned development packages. See the [release documentation](docs/RELEASE.md) for signing, notarization, real-device, and store-validation boundaries.
 
-## 目录
+## Repository layout
 
-| 目录 | 内容 |
+| Directory | Contents |
 | --- | --- |
-| `core/` | Rust IMAP、SMTP、MIME、同步、SQLite、HTML 净化和原生接口 |
-| `apple/` | macOS、iOS、iPadOS SwiftUI 客户端 |
-| `android/` | Android Jetpack Compose 客户端 |
-| `linux/` | Linux GTK4/libadwaita 客户端 |
-| `windows/` | Windows WinUI 3 客户端 |
-| `push-bridge/` | 可选的签名 Webhook 推送桥 |
-| `email-testkit/` | 隔离的 IMAP/SMTP 测试夹具 |
-| `brand/` | 客户端品牌源文件和生成脚本 |
-| `docs/` | 架构、开发、安全与发布文档 |
+| `core/` | Rust IMAP, SMTP, MIME, synchronization, SQLite, HTML sanitization, and native interfaces |
+| `apple/` | Native macOS, iOS, and iPadOS SwiftUI clients |
+| `android/` | Native Android Jetpack Compose client |
+| `linux/` | Native Linux GTK4/libadwaita client |
+| `windows/` | Native Windows WinUI 3 client |
+| `push-bridge/` | Optional signed webhook push bridge |
+| `email-testkit/` | Isolated IMAP/SMTP test fixtures |
+| `brand/` | Client brand sources and generation scripts |
+| `docs/` | Architecture, development, security, and release documentation |
 
-## 快速开始
+## Quick start
 
-共享核心：
+Shared core:
 
 ```bash
 cd core
@@ -48,15 +48,15 @@ cargo test --workspace --locked
 cargo build --locked --release -p chck-cli -p chck-ffi-c
 ```
 
-各客户端的依赖和命令见对应 README：[Apple](apple/README.md)、[Android](android/README.md)、[Linux](linux/README.md)、[Windows](windows/README.md)。开发流程见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)，架构见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)，发布说明见 [docs/RELEASE.md](docs/RELEASE.md)。
+Platform prerequisites and commands are documented in the [Apple](apple/README.md), [Android](android/README.md), [Linux](linux/README.md), and [Windows](windows/README.md) guides. See [development](docs/DEVELOPMENT.md), [architecture](docs/ARCHITECTURE.md), and [release](docs/RELEASE.md) documentation for the full workflow.
 
-## 发布边界
+## Release boundary
 
-CI 会测试共享核心和各平台工程，并生成开发产物。GitHub Releases 提供未签名开发包的公开下载，并在标题和说明中明确标记；它们不等于 Apple 公证包、签名 Android AAB、签名 Windows 安装包或应用商店版本。
+CI tests the shared core and each platform project, then creates development artifacts. GitHub Releases provides public downloads clearly marked as unsigned development packages. They are not Apple-notarized builds, signed Android AABs, Authenticode-signed Windows installers, or app-store releases.
 
-## 参与和安全
+## Contributing and security
 
-提交前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。安全问题请按 [SECURITY.md](SECURITY.md) 私下报告，不要在公开 Issue 中披露尚未修复的漏洞。
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) before contributing. Report security issues privately as described in [SECURITY.md](SECURITY.md); do not disclose unpatched vulnerabilities in a public issue.
 
 ## License
 

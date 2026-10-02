@@ -2,7 +2,7 @@
 
 ## 范围与环境
 
-- 日期：2026-10-02，Asia/Shanghai；最后本地复核时间 12:24 CST（+0800）。
+- 日期：2026-10-02，Asia/Shanghai；最后本地复核时间 12:47 CST（+0800）。
 - 主机：macOS 27.0.1（Build 26A434），Apple Silicon arm64。
 - 工具链：Rust/Cargo 1.95.0、Swift 6.4、Xcode 27.0、.NET SDK 9.0.318。
 - 源码状态：从旧仓库提交 `38367504a777b2cfcc6bee600e790954505f943a` 的工作树重构；本记录随新的 `imyemail-cloud` 初始提交发布，不继承旧 Git 历史。
@@ -39,7 +39,7 @@
 - Push Bridge：Clippy、2 项测试及 Release build 通过。
 - Linux 默认特性：Clippy、11 项测试及 Release build 通过。macOS 生成的该二进制只是跨平台逻辑构建证据，不是 Linux GTK/DEB 产物。
 - Windows 可移植核心：`dotnet test Chck.Mail.Tests/Chck.Mail.Tests.csproj -c Release`，133 项通过、0 失败；恢复仅使用临时 NuGet 缓存，外网审计源被隔离并产生预期 `NU1900` 警告。WinUI 和安装器未在 macOS 构建。
-- Workflow YAML 由 Ruby YAML parser 解析通过；Release workflow 校验多端版本并强制 GitHub prerelease，不覆盖已有 tag/release。
+- Workflow YAML 由 Ruby YAML parser 解析通过；Release workflow 校验多端版本、发布带明确未签名警告的 GitHub Latest Release，且不覆盖已有 tag/release。
 
 ## 临时开发产物
 
@@ -71,12 +71,12 @@
 ## 发布闭环
 
 - `.github/workflows/ci.yml` 是多平台合并门禁。
-- `.github/workflows/release-build.yml` 从通过验证的源码构建多平台未签名开发附件、生成 `SHA256SUMS` 并创建 `v0.2.0` GitHub prerelease。
+- `.github/workflows/release-build.yml` 从通过验证的源码构建多平台未签名开发附件、生成 `SHA256SUMS` 并创建 GitHub Release。
 - 公开仓库：<https://github.com/logdns/imyemail-cloud>；默认分支 `main`；主页 <https://imy.email>。
 - 初始开源提交：`8e7d3596b5b78e868b12303520dbdb8a6eba8214`；Linux 完整特性修复及实际发布源提交：`9e74649501657c60b070f36b2dd34bce5a01dff1`。
 - 多平台 CI：<https://github.com/logdns/imyemail-cloud/actions/runs/36962934681>，10/10 jobs 成功。
 - Release workflow：<https://github.com/logdns/imyemail-cloud/actions/runs/36963674864>，7/7 jobs 成功。
-- GitHub prerelease：<https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0>；非 draft、`isPrerelease=true`，目标提交为 `9e74649501657c60b070f36b2dd34bce5a01dff1`。
+- GitHub Release：<https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0>；最初按未签名边界创建为 prerelease，随后应用户要求提升为公开 Latest Release；非 draft、目标提交为 `9e74649501657c60b070f36b2dd34bce5a01dff1`。
 - 发布附件包括 Android APK、Linux x86_64/ARM64 DEB、macOS arm64 ZIP、Windows x64/ARM64 EXE，以及六份独立 `.sha256` 和总 `SHA256SUMS`，共 13 个文件。下载全部 322 MB 附件后，`SHA256SUMS` 的 12 项以及六份独立校验均复算通过。
 - 所有附件均为未签名开发包；Apple 公证、Android/Windows 正式签名、真机和商店验收仍属于明确的生产发布边界。
 

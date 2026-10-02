@@ -14,7 +14,7 @@
 
 ## GitHub Release
 
-`.github/workflows/release-build.yml` 支持手动输入 tag 和日期，重新测试并构建 macOS、Android、Linux、Windows 产物，最后创建 GitHub prerelease。tag 必须是 `vMAJOR.MINOR.PATCH`，并与源码版本一致。
+`.github/workflows/release-build.yml` 支持手动输入 tag 和日期，重新测试并构建 macOS、Android、Linux、Windows 产物，最后创建可从 GitHub Releases 和 `/releases/latest` 发现的公开下载。tag 必须是 `vMAJOR.MINOR.PATCH`，并与源码版本一致。
 
 当前自动发布的是未签名开发产物：
 
@@ -23,7 +23,7 @@
 - Linux：未进行发行仓库签名的 DEB；
 - Windows：未做 Authenticode 的 Inno Setup 安装器。
 
-因此工作流强制创建 prerelease。正式稳定发布还需要平台签名、公证、真机安装/升级/卸载和对应商店审核，不能用 CI 开发包替代。
+工作流将这些附件作为 GitHub Latest Release 提供下载，但标题和说明必须明确标记为未签名开发包。平台签名、公证、真机安装/升级/卸载和对应商店审核仍是独立的生产发布门禁，不能用 CI 开发包替代。
 
 ## 回滚
 

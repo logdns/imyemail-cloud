@@ -4,6 +4,21 @@ imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开
 
 本仓库只包含客户端、共享邮件核心、可选推送桥、测试工具、构建脚本和开源文档。它不包含官网/Web 应用、支付、订阅、软件激活、设备名额或商业授权门禁；同步和发送等客户端功能不需要购买软件许可证。
 
+## 下载
+
+[下载最新版本](https://github.com/logdns/imyemail-cloud/releases/latest)；也可直接选择平台开发包：
+
+| 平台 | 下载 |
+| --- | --- |
+| Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-android-20261002-unsigned.apk)（供开发或自行签名，不能直接作为正式商店安装包） |
+| macOS Apple Silicon | [unsigned ZIP](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
+| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-x86_64-20261002.deb) |
+| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-arm64-20261002.deb) |
+| Windows x64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-windows-x64-20261002-setup.exe) |
+| Windows ARM64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-windows-arm64-20261002-setup.exe) |
+
+完整性校验：[SHA256SUMS](https://github.com/logdns/imyemail-cloud/releases/latest/download/SHA256SUMS)。这些是未签名开发包，平台签名、公证、真机与商店验收边界见 [发布说明](docs/RELEASE.md)。
+
 ## 目录
 
 | 目录 | 内容 |
@@ -34,7 +49,7 @@ cargo build --locked --release -p chck-cli -p chck-ffi-c
 
 ## 发布边界
 
-CI 会测试共享核心和各平台工程，并生成开发产物。GitHub Release 工作流发布的是明确标记为 `prerelease` 的未签名开发包；它们不等于 Apple 公证包、签名 Android AAB、签名 Windows 安装包或应用商店版本。
+CI 会测试共享核心和各平台工程，并生成开发产物。GitHub Releases 提供未签名开发包的公开下载，并在标题和说明中明确标记；它们不等于 Apple 公证包、签名 Android AAB、签名 Windows 安装包或应用商店版本。
 
 ## 参与和安全
 

@@ -226,7 +226,7 @@ jobs:
           retention-days: 14
 
   publish:
-    name: Publish GitHub prerelease
+    name: Publish GitHub Release
     needs: [apple, android, linux, windows]
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -252,7 +252,7 @@ jobs:
             find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 |
               sort -z | xargs -0 sha256sum > SHA256SUMS
           )
-      - name: Create GitHub prerelease
+      - name: Create GitHub Release
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -267,6 +267,6 @@ jobs:
           gh release create "$RELEASE_TAG" release-assets/* \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
-            --title "imyemail-cloud $RELEASE_TAG" \
-            --prerelease \
-            --notes "Open-source development release built on $RELEASE_DATE. Assets are unsigned development packages; see docs/RELEASE.md for signing, notarization, device, and store-validation boundaries."
+            --title "imyemail-cloud $RELEASE_TAG (unsigned development packages)" \
+            --latest \
+            --notes "Open-source release built on $RELEASE_DATE. Downloadable assets are unsigned development packages, not signed store builds. See docs/RELEASE.md for signing, notarization, device, and store-validation boundaries."

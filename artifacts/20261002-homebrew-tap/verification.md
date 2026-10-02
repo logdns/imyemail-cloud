@@ -35,7 +35,8 @@
 - Latest Release 同步 workflow 手动复验：[run 36985813218](https://github.com/logdns/homebrew-imyemail-cloud/actions/runs/36985813218)，识别当前 `v0.2.1`、远端 macOS ZIP 和 `.sha256` 一致，无需创建更新 PR。
 - 独立远端安装复验：先 untap 本地工作副本，再从公开 GitHub 仓库重新执行 tap、trust、`brew install imyemail-cloud`；远端 cask `0.2.1` 安装成功，随后在禁用 Homebrew cleanup 的条件下卸载成功。
 - [v0.2.1 GitHub Release](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) 说明已增加 Homebrew 首次配置、短命令安装/更新、公开 tap 和未公证边界；Release 标签及 15 个附件未移动或替换。
-- 主仓库文档 CI 待推送后记录；不为纯文档和独立 tap 发布移动 `v0.2.1` 标签或重建客户端包。
+- 主仓库文档提交：`2f9f60c4b3ad3ec1165c70a81f8e06118ce37643`；[CI run 36986111796](https://github.com/logdns/imyemail-cloud/actions/runs/36986111796) 最终 10/10 jobs 成功。首次 Windows 客户端作业有 1/133 项 IMAP `UIDVALIDITY` 测试在 12 秒时超时并返回 `TaskCanceledException`；仅重跑该失败作业后 133/133、x64 和 ARM64 构建全部通过，其他九项作业首次即通过。
+- 不为纯文档和独立 tap 发布移动 `v0.2.1` 标签或重建客户端包。
 
 ## 未验收项
 

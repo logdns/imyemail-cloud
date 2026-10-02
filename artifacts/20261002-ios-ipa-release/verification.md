@@ -42,4 +42,13 @@
 
 ## 远端发布
 
-- 待记录最终源码提交、CI run、Release workflow、GitHub Latest Release URL、附件清单和远端 SHA-256 复算结果。
+- 发布源码与标签：`v0.2.1` 指向 `ea6a10b1e1bc1992684b9c31760f8c50769e4164`；已发布标签没有移动或重建。
+- 最终源码 CI：[run 36971683007](https://github.com/logdns/imyemail-cloud/actions/runs/36971683007)，10/10 jobs 成功；Apple job 同时构建 unsigned IPA。
+- Release workflow：[run 36972515566](https://github.com/logdns/imyemail-cloud/actions/runs/36972515566)，Android、Windows、macOS/iOS、Linux arm64、Linux x86_64 和发布 job 全部成功。
+- GitHub Release：[imyemail-cloud v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1)；2026-10-02T06:21:21Z 发布，非 draft、非 prerelease，并由 GitHub Latest Release API 返回为最新版本。
+- Release 共 15 个附件：7 个平台包、7 个独立 `.sha256` 和总 `SHA256SUMS`；其中包含 `imyemail-cloud-ios-arm64-20261002-unsigned.ipa` 及对应校验文件。
+- 在独立临时目录下载全部 15 个远端附件；`shasum -a 256 -c SHA256SUMS` 的 14 个条目全部通过，各平台独立 `.sha256` 的 7 个包也全部通过。
+- 远端 IPA SHA-256：`053e07465e588c89196e05ae3846544276cbec368ed313fec9b7367fc10d7cff`。
+- 远端 IPA 独立解包复验：标准 `Payload/imyemail-cloud.app`；主程序 `ChckMailIOS` 为 Mach-O arm64、平台 `IOS`、最低 iOS 17.0、SDK 18.5；Bundle ID `email.imy.cloud`、版本 `0.2.1`、build `3`；C ABI `_chck_mail_open`、`_chck_mail_call`、`_chck_mail_close` 存在。
+- 远端 IPA 不含 `_CodeSignature`、`embedded.mobileprovision`、意外 dylib、`__MACOSX`、`.DS_Store` 或 `.git` 条目；主程序字符串扫描未匹配本地 `/Users/...` 路径、私钥头或 GitHub token 标记。
+- 未完成边界保持不变：未进行签名、真机安装、真实邮箱收发、TestFlight 或 App Store 验收；下载者必须使用自己的有效 Apple 证书和 provisioning profile 签名。

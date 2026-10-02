@@ -1,0 +1,13 @@
+[package]
+name = "chck-mime"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MIME 解析与编码回退（S3 填充）"
+
+[dependencies]
+mailparse = "0.16"
+chck-types.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,9 @@
+From: Alice <alice@imyemail.test>
+To: Dev <dev@imyemail.test>
+Subject: Hello from testkit
+Message-ID: <simple-001@imyemail.test>
+Date: Tue, 15 Sep 2026 10:00:00 +0800
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+
+This is a seed message for core golden tests.

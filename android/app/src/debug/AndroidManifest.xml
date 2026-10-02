@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="email.imy.cloud.test.documents" android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/import_test_paths" />
+        </provider>
+        <activity android:name=".DesignPreviewActivity" android:exported="true" android:label="imyemail-cloud · 界面预览" android:theme="@style/Theme.ChckMail" android:windowSoftInputMode="adjustResize" />
+    </application>
+</manifest>

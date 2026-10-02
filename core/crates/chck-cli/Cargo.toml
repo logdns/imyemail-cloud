@@ -1,0 +1,24 @@
+[package]
+name = "chck-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "imyemail-cloud 第一客户端：命令行，验证 MailEngine 收发读"
+
+[[bin]]
+name = "imyemail-cloud"
+path = "src/main.rs"
+
+[dependencies]
+chck-engine.workspace = true
+chck-types.workspace = true
+chck-ffi.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+rustls.workspace = true
+rustls-pki-types.workspace = true
+rcgen = "0.14"
+
+[lints]
+workspace = true

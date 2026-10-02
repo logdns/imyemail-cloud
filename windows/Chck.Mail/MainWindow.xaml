@@ -1,0 +1,264 @@
+<Window
+    x:Class="Chck.Mail.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="using:Chck.Mail.Core"
+    Title="imyemail-cloud">
+    <Grid x:Name="RootGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="AppTitleBar" Padding="20,0,140,0" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Source="ms-appx:///Assets/Square44x44Logo.png" Width="24" Height="24" />
+            <TextBlock Grid.Column="1" Text="imyemail-cloud" FontWeight="SemiBold" VerticalAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="1" Padding="20,8,20,16" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="228" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Content="{x:Bind core:LocaleText.ComposeButtonText, Mode=OneTime}" Click="OnCompose" AccessKey="N" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Stretch" />
+            <AutoSuggestBox Grid.Column="1" QueryIcon="Find" PlaceholderText="{x:Bind core:LocaleText.T('搜索邮件'), Mode=OneTime}" QuerySubmitted="OnSearch"
+                            Text="{x:Bind ViewModel.SearchQuery, Mode=TwoWay}" />
+            <Button x:Name="RefreshButton" Grid.Column="2" Content="{x:Bind core:LocaleText.T('同步'), Mode=OneTime}" Click="OnRefresh" AutomationProperties.Name="{x:Bind core:LocaleText.T('同步邮件'), Mode=OneTime}" />
+            <Button Grid.Column="3" Content="{x:Bind core:LocaleText.T('添加账号'), Mode=OneTime}" Click="OnAddAccount" />
+        </Grid>
+        <Grid Grid.Row="2" Margin="12,0,12,0" ColumnSpacing="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="236" MinWidth="200" />
+                <ColumnDefinition Width="360" MinWidth="280" />
+                <ColumnDefinition Width="*" MinWidth="340" />
+            </Grid.ColumnDefinitions>
+            <Grid Padding="8,12" RowSpacing="14">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Spacing="6" Margin="8,0,0,8">
+                    <TextBlock Text="{x:Bind core:LocaleText.T('留一点时间'), Mode=OneTime}" Style="{StaticResource SubtitleTextBlockStyle}" />
+                    <TextBlock Text="{x:Bind core:LocaleText.T('给重要的事'), Mode=OneTime}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+                <Button Grid.Row="1" Click="OnUnifiedInbox" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind core:LocaleText.T('统一收件箱'), Mode=OneTime}" />
+                        <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.UnreadCount, Mode=OneWay}" Foreground="{StaticResource ChckBrandBrush}" />
+                    </Grid>
+                </Button>
+                <ListView x:Name="FolderList" Grid.Row="2" SelectionChanged="OnFolderChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="core:Folder">
+                            <Grid ColumnSpacing="12" Padding="0,6">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="{x:Bind Path}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Grid.Column="1" Text="{x:Bind Unread}" Foreground="{StaticResource ChckBrandBrush}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackPanel Grid.Row="3" Spacing="8">
+                    <ToggleSwitch OnContent="" OffContent="" x:Name="NotificationToggle" Header="{x:Bind core:LocaleText.T('新邮件通知'), Mode=OneTime}" IsOn="True" Toggled="OnNotificationsToggled" />
+                    <Button x:Name="SettingsButton" Content="{x:Bind core:LocaleText.T('设置与账户'), Mode=OneTime}" Click="OnSettings" HorizontalAlignment="Stretch" />
+                    <Button Content="{x:Bind core:LocaleText.T('清理失败队列'), Mode=OneTime}" Click="OnClearFailedQueue" HorizontalAlignment="Stretch" />
+                </StackPanel>
+            </Grid>
+            <Border Grid.Column="1" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="12">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+                    <InfoBar x:Name="NewMailBanner" IsOpen="False" Severity="Informational" Title="{x:Bind core:LocaleText.T('有新邮件'), Mode=OneTime}" Closed="OnNewMailDismissed">
+                        <InfoBar.ActionButton><Button Content="{x:Bind core:LocaleText.T('阅读最新邮件'), Mode=OneTime}" Click="OnOpenLatest" /></InfoBar.ActionButton>
+                    </InfoBar>
+                    <ListView x:Name="MessageList" Grid.Row="1" SelectionChanged="OnMessageChanged" SelectionMode="Single">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="core:MessageRow">
+                                <Grid Padding="4,12" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="4" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                    <Border Background="{StaticResource ChckBrandBrush}" CornerRadius="2" Visibility="{x:Bind Unread}" />
+                                    <StackPanel Grid.Column="1" Spacing="5">
+                                        <TextBlock Text="{x:Bind From}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{x:Bind Subject}" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{x:Bind Snippet}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Border>
+            <Border Grid.Column="2" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="12">
+                <Grid Padding="24" RowSpacing="14">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="EmptyHint" Text="{x:Bind core:LocaleText.T('选择一封来信，专注此刻。'), Mode=OneTime}" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Name="SubjectBlock" Grid.Row="1" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                    <TextBlock x:Name="FromBlock" Grid.Row="2" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="ReplyButton" Content="{x:Bind core:LocaleText.T('回复'), Mode=OneTime}" Click="OnReply" IsEnabled="False" AccessKey="R" />
+                        <Button x:Name="ReplyAllButton" Content="{x:Bind core:LocaleText.T('回复全部'), Mode=OneTime}" Click="OnReplyAll" IsEnabled="False" />
+                        <Button x:Name="ForwardButton" Content="{x:Bind core:LocaleText.T('转发'), Mode=OneTime}" Click="OnForward" IsEnabled="False" AccessKey="F" />
+                    </StackPanel>
+                    <ItemsControl x:Name="AttachmentList" Grid.Row="4" ItemsSource="{x:Bind ViewModel.Attachments, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate><DataTemplate x:DataType="core:AttachmentHandle"><TextBlock Text="{x:Bind Name}" Margin="0,0,12,4" /></DataTemplate></ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ProgressBar x:Name="ReadingProgress" Grid.Row="5" IsIndeterminate="True" Visibility="Collapsed" />
+                    <WebView2 x:Name="BodyWeb" Grid.Row="6" Visibility="Collapsed" />
+                </Grid>
+            </Border>
+        </Grid>
+        <TextBlock Grid.Row="3" Margin="24,10" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind ViewModel.Status, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+        <ContentDialog x:Name="AddDialog" Title="{x:Bind core:LocaleText.T('添加账号'), Mode=OneTime}" PrimaryButtonText="{x:Bind core:LocaleText.T('添加'), Mode=OneTime}" CloseButtonText="{x:Bind core:LocaleText.T('取消'), Mode=OneTime}"
+                       DefaultButton="Primary" PrimaryButtonClick="OnAddConfirm">
+            <StackPanel Spacing="8">
+                <TextBox x:Name="DraftEmailInput" Header="{x:Bind core:LocaleText.T('邮箱'), Mode=OneTime}" Text="{x:Bind ViewModel.DraftEmail, Mode=TwoWay}" />
+                <TextBox x:Name="DraftDisplayNameInput" Header="{x:Bind core:LocaleText.T('发件人名称（可选）'), Mode=OneTime}" Text="{x:Bind ViewModel.DraftDisplayName, Mode=TwoWay}" />
+                <PasswordBox x:Name="DraftPasswordInput" Header="{x:Bind core:LocaleText.T('密码 / 授权码'), Mode=OneTime}" Password="{x:Bind ViewModel.DraftPassword, Mode=TwoWay}" />
+                <TextBox x:Name="DraftImapInput" Header="{x:Bind core:LocaleText.T('IMAP 服务器（可选）'), Mode=OneTime}" Text="{x:Bind ViewModel.DraftHost, Mode=TwoWay}" />
+                <TextBox x:Name="DraftSmtpInput" Header="{x:Bind core:LocaleText.T('SMTP 服务器（自定义邮箱请填写）'), Mode=OneTime}" Text="{x:Bind ViewModel.DraftSmtpHost, Mode=TwoWay}" />
+                <TextBlock Text="{x:Bind core:LocaleText.T('常见邮箱自动匹配服务器；其他邮箱填写服务器后，可在账户设置中调整端口与 TLS。'), Mode=OneTime}" TextWrapping="Wrap" />
+                <TextBlock x:Name="AddAccountError" TextWrapping="Wrap" Foreground="{ThemeResource SystemFillColorCriticalBrush}" />
+            </StackPanel>
+        </ContentDialog>
+        <ContentDialog x:Name="SettingsDialog" Title="{x:Bind core:LocaleText.T('设置'), Mode=OneTime}" CloseButtonText="{x:Bind core:LocaleText.T('完成'), Mode=OneTime}" MaxWidth="720">
+            <ContentDialog.Resources><x:Double x:Key="ContentDialogMaxWidth">760</x:Double></ContentDialog.Resources>
+            <ScrollViewer MaxHeight="570" VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="16" MinWidth="480">
+                    <Pivot x:Name="SettingsTabs">
+                        <PivotItem Header="{x:Bind core:LocaleText.T('常规'), Mode=OneTime}">
+                            <StackPanel Spacing="16" Margin="0,12,0,0">
+                                <ComboBox x:Name="LanguageChoice" Header="{x:Bind core:LocaleText.T('语言'), Mode=OneTime}" SelectionChanged="OnLanguageChanged" HorizontalAlignment="Stretch" />
+                                <TextBlock Text="{x:Bind core:LocaleText.T('更改语言将在下次启动时生效。'), Mode=OneTime}" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                <ComboBox x:Name="ThemeChoice" Header="{x:Bind core:LocaleText.T('外观'), Mode=OneTime}" SelectionChanged="OnPreferenceChanged" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="{x:Bind core:LocaleText.T('跟随系统'), Mode=OneTime}" /><ComboBoxItem Content="{x:Bind core:LocaleText.T('浅色'), Mode=OneTime}" /><ComboBoxItem Content="{x:Bind core:LocaleText.T('深色'), Mode=OneTime}" />
+                                </ComboBox>
+                                <ComboBox x:Name="CloseChoice" Header="{x:Bind core:LocaleText.T('点击关闭按钮时'), Mode=OneTime}" SelectionChanged="OnPreferenceChanged" HorizontalAlignment="Stretch">
+                                    <ComboBoxItem Content="{x:Bind core:LocaleText.T('最小化到系统托盘，继续收信'), Mode=OneTime}" /><ComboBoxItem Content="{x:Bind core:LocaleText.T('最小化到任务栏，继续收信'), Mode=OneTime}" /><ComboBoxItem Content="{x:Bind core:LocaleText.T('退出程序'), Mode=OneTime}" />
+                                </ComboBox>
+                                <TextBlock Text="{x:Bind core:LocaleText.T('留在托盘或任务栏时继续检查新邮件；退出程序后停止接收提醒。'), Mode=OneTime}" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                <ToggleSwitch OnContent="" OffContent="" x:Name="ReplyFormatToggle" Header="{x:Bind core:LocaleText.T('默认使用 Markdown 排版发送'), Mode=OneTime}" Toggled="OnPreferenceToggled" />
+                                <StackPanel Orientation="Horizontal" Spacing="12">
+                                    <Button Content="{x:Bind core:LocaleText.T('最小化'), Mode=OneTime}" Click="OnMinimize" />
+                                    <Button x:Name="ExitButton" Content="{x:Bind core:LocaleText.T('退出程序'), Mode=OneTime}" Click="OnExit" />
+                                </StackPanel>
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="{x:Bind core:LocaleText.T('账户'), Mode=OneTime}">
+                            <StackPanel Spacing="12" Margin="0,12,0,0">
+                                <ComboBox x:Name="ManagedAccountChoice" Header="{x:Bind core:LocaleText.T('邮箱账户'), Mode=OneTime}" DisplayMemberPath="Email" SelectionChanged="OnManagedAccountChanged" HorizontalAlignment="Stretch" />
+                                <TextBlock x:Name="AccountEmptyHint" Text="{x:Bind core:LocaleText.T('尚未添加邮箱账户。'), Mode=OneTime}" TextWrapping="Wrap" />
+                                <StackPanel x:Name="AccountEditor" Spacing="10" Visibility="Collapsed">
+                                    <TextBox x:Name="AccountDisplayName" Header="{x:Bind core:LocaleText.T('发件人名称'), Mode=OneTime}" />
+                                    <TextBox x:Name="AccountUsername" Header="{x:Bind core:LocaleText.T('登录用户名'), Mode=OneTime}" IsReadOnly="True" />
+                                    <Grid ColumnSpacing="12">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="100" /></Grid.ColumnDefinitions>
+                                        <TextBox x:Name="AccountImapHost" Header="{x:Bind core:LocaleText.T('IMAP 服务器'), Mode=OneTime}" IsReadOnly="True" />
+                                        <NumberBox x:Name="AccountImapPort" Grid.Column="1" Header="{x:Bind core:LocaleText.T('端口'), Mode=OneTime}" Minimum="1" Maximum="65535" />
+                                    </Grid>
+                                    <TextBlock Text="{x:Bind core:LocaleText.T('更换 IMAP 服务器或登录身份时，请添加新账户，避免混用原邮箱缓存。'), Mode=OneTime}" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                    <CheckBox x:Name="AccountImapStartTls" Content="{x:Bind core:LocaleText.T('IMAP 使用 STARTTLS（否则使用直接 TLS）'), Mode=OneTime}" />
+                                    <Grid ColumnSpacing="12">
+                                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="100" /></Grid.ColumnDefinitions>
+                                        <TextBox x:Name="AccountSmtpHost" Header="{x:Bind core:LocaleText.T('SMTP 服务器'), Mode=OneTime}" />
+                                        <NumberBox x:Name="AccountSmtpPort" Grid.Column="1" Header="{x:Bind core:LocaleText.T('端口'), Mode=OneTime}" Minimum="1" Maximum="65535" />
+                                    </Grid>
+                                    <CheckBox x:Name="AccountSmtpStartTls" Content="{x:Bind core:LocaleText.T('SMTP 使用 STARTTLS（否则使用直接 TLS）'), Mode=OneTime}" />
+                                    <PasswordBox x:Name="AccountPassword" Header="{x:Bind core:LocaleText.T('新密码 / 授权码（留空保留原值）'), Mode=OneTime}" />
+                                    <Button x:Name="SaveAccountButton" Content="{x:Bind core:LocaleText.T('保存账户设置'), Mode=OneTime}" Click="OnSaveAccount" Style="{StaticResource AccentButtonStyle}" />
+                                    <Button x:Name="RemoveAccountButton" Content="{x:Bind core:LocaleText.T('从此设备移除账户…'), Mode=OneTime}" Click="OnRemoveAccount" />
+                                    <StackPanel x:Name="RemoveConfirmation" Spacing="8" Visibility="Collapsed">
+                                        <TextBlock Text="{x:Bind core:LocaleText.T('移除会清除此设备上的邮箱缓存、保存的凭据及该账户的发送队列。服务器上的邮件不会删除。'), Mode=OneTime}" TextWrapping="Wrap" />
+                                        <CheckBox x:Name="ConfirmRemoveAccount" Content="{x:Bind core:LocaleText.T('我已确认未发送内容无需保留'), Mode=OneTime}" />
+                                        <Button x:Name="ConfirmRemoveButton" Content="{x:Bind core:LocaleText.T('确认移除'), Mode=OneTime}" Click="OnConfirmRemoveAccount" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <Button Content="{x:Bind core:LocaleText.T('添加邮箱账户'), Mode=OneTime}" Click="OnSettingsAddAccount" />
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="{x:Bind core:LocaleText.T('通知'), Mode=OneTime}">
+                            <StackPanel Spacing="16" Margin="0,12,0,0">
+                                <ToggleSwitch OnContent="" OffContent="" x:Name="SettingsNotificationToggle" Header="{x:Bind core:LocaleText.T('新邮件弹窗通知'), Mode=OneTime}" Toggled="OnSettingsNotificationsToggled" />
+                                <TextBlock x:Name="NotificationStatus" TextWrapping="Wrap" />
+                                <Button x:Name="TestNotificationButton" Content="{x:Bind core:LocaleText.T('发送测试通知'), Mode=OneTime}" Click="OnTestNotification" />
+                                <Button Content="{x:Bind core:LocaleText.T('打开 Windows 通知设置'), Mode=OneTime}" Click="OnOpenNotificationSettings" />
+                                <TextBlock Text="{x:Bind core:LocaleText.T('系统通知需允许 imyemail-cloud 显示横幅；勿扰模式可能隐藏横幅。应用运行期间约每 30 秒检查一次新邮件。'), Mode=OneTime}" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </PivotItem>
+                        <PivotItem Header="{x:Bind core:LocaleText.T('关于'), Mode=OneTime}">
+                            <StackPanel Spacing="12" Margin="0,12,0,0">
+                                <HyperlinkButton Content="https://imy.email" NavigateUri="https://imy.email" />
+                                <TextBlock Text="imyemail-cloud" Style="{StaticResource TitleTextBlockStyle}" />
+                                <TextBlock Text="{x:Bind core:LocaleText.T('留一点时间，给重要的事。'), Mode=OneTime}" />
+                                <TextBlock Text="{x:Bind core:LocaleText.T('Windows · 开发测试版 20260916.4'), Mode=OneTime}" />
+                                <TextBlock Text="{x:Bind core:LocaleText.T('原生 Windows 客户端 · 本地保存邮件缓存与设置'), Mode=OneTime}" TextWrapping="Wrap" />
+                                <TextBlock Text="{x:Bind core:LocaleText.T('Markdown 排版 · Markdig · BSD 2-Clause'), Mode=OneTime}" />
+                                <HyperlinkButton Content="{x:Bind core:LocaleText.T('Markdig 开源项目'), Mode=OneTime}" NavigateUri="https://github.com/xoofx/markdig" />
+                                <TextBlock Text="{x:Bind core:LocaleText.T('文档导入 · Microsoft MarkItDown 0.1.7 · MIT'), Mode=OneTime}" />
+                                <HyperlinkButton Content="{x:Bind core:LocaleText.T('MarkItDown 开源项目'), Mode=OneTime}" NavigateUri="https://github.com/microsoft/markitdown" />
+                            </StackPanel>
+                        </PivotItem>
+                    </Pivot>
+                    <TextBlock x:Name="SettingsStatus" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </ScrollViewer>
+        </ContentDialog>
+        <ContentDialog x:Name="ComposeDialog" Title="{x:Bind core:LocaleText.T('写信'), Mode=OneTime}" PrimaryButtonText="{x:Bind core:LocaleText.T('发送'), Mode=OneTime}" CloseButtonText="{x:Bind core:LocaleText.T('取消'), Mode=OneTime}"
+                       DefaultButton="Primary" PrimaryButtonClick="OnSendConfirm" Closing="OnComposeClosing">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="620">
+            <StackPanel Spacing="12" MinWidth="420">
+                <ComboBox x:Name="ComposeAccount" Header="{x:Bind core:LocaleText.T('发件账号'), Mode=OneTime}" ItemsSource="{x:Bind ViewModel.Accounts, Mode=OneWay}" DisplayMemberPath="Email" SelectedValuePath="Id"
+                          SelectedValue="{x:Bind ViewModel.ComposeAccountId, Mode=TwoWay}" HorizontalAlignment="Stretch" />
+                <TextBox x:Name="ComposeToInput" Header="{x:Bind core:LocaleText.T('收件人'), Mode=OneTime}" Text="{x:Bind ViewModel.ComposeTo, Mode=TwoWay}" />
+                <TextBox x:Name="ComposeCcInput" Header="{x:Bind core:LocaleText.T('抄送'), Mode=OneTime}" Text="{x:Bind ViewModel.ComposeCc, Mode=TwoWay}" />
+                <TextBox x:Name="ComposeSubjectInput" Header="{x:Bind core:LocaleText.T('主题'), Mode=OneTime}" Text="{x:Bind ViewModel.ComposeSubject, Mode=TwoWay}" />
+                <ToggleSwitch OnContent="" OffContent="" x:Name="ComposeMarkdownToggle" Header="{x:Bind core:LocaleText.T('Markdown 排版'), Mode=OneTime}" IsOn="{x:Bind ViewModel.ComposeMarkdown, Mode=TwoWay}" Toggled="OnComposeMarkdownToggled" />
+                <StackPanel x:Name="ComposeFormatBar" Orientation="Horizontal" Spacing="4">
+                    <Button Content="B" AutomationProperties.Name="{x:Bind core:LocaleText.T('粗体，Ctrl+B'), Mode=OneTime}" FontWeight="Bold" Tag="bold" Click="OnInsertMarkdown" ToolTipService.ToolTip="{x:Bind core:LocaleText.T('粗体'), Mode=OneTime}" />
+                    <Button Content="I" AutomationProperties.Name="{x:Bind core:LocaleText.T('斜体，Ctrl+I'), Mode=OneTime}" FontStyle="Italic" Tag="italic" Click="OnInsertMarkdown" ToolTipService.ToolTip="{x:Bind core:LocaleText.T('斜体'), Mode=OneTime}" />
+                    <Button Content="{x:Bind core:LocaleText.T('标题'), Mode=OneTime}" Tag="heading" Click="OnInsertMarkdown" />
+                    <Button Content="{x:Bind core:LocaleText.T('列表'), Mode=OneTime}" Tag="list" Click="OnInsertMarkdown" />
+                    <Button Content="{x:Bind core:LocaleText.T('链接'), Mode=OneTime}" Tag="link" Click="OnInsertMarkdown" />
+                    <Button Content="{x:Bind core:LocaleText.T('引用'), Mode=OneTime}" Tag="quote" Click="OnInsertMarkdown" />
+                    <Button Content="{x:Bind core:LocaleText.T('代码'), Mode=OneTime}" Tag="code" Click="OnInsertMarkdown" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button x:Name="ComposePreviewButton" Content="{x:Bind core:LocaleText.T('预览排版'), Mode=OneTime}" Click="OnComposePreview" />
+                    <Button x:Name="ComposeImportButton" Content="{x:Bind core:LocaleText.T('导入文档为正文'), Mode=OneTime}" Click="OnImportDocument" />
+                    <Button x:Name="ComposeImportCancel" Content="{x:Bind core:LocaleText.T('取消导入'), Mode=OneTime}" Click="OnCancelImport" Visibility="Collapsed" />
+                </StackPanel>
+                <TextBlock x:Name="ComposeMarkdownHint" Text="{x:Bind core:LocaleText.T('原生 Markdown 编辑 · Ctrl+B 粗体 · Ctrl+I 斜体 · Ctrl+K 链接'), Mode=OneTime}" FontSize="12" TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <TextBox x:Name="ComposeBodyInput" Header="{x:Bind core:LocaleText.T('正文'), Mode=OneTime}" AcceptsReturn="True" Height="240" TextWrapping="Wrap"
+                         FontFamily="Cascadia Code, Consolas" PlaceholderText="{x:Bind core:LocaleText.T('在这里编写 Markdown 正文…'), Mode=OneTime}"
+                         Text="{x:Bind ViewModel.ComposeBody, Mode=TwoWay}">
+                    <TextBox.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="B" Modifiers="Control" Invoked="OnComposeAccelerator" />
+                        <KeyboardAccelerator Key="I" Modifiers="Control" Invoked="OnComposeAccelerator" />
+                        <KeyboardAccelerator Key="K" Modifiers="Control" Invoked="OnComposeAccelerator" />
+                    </TextBox.KeyboardAccelerators>
+                </TextBox>
+                <WebView2 x:Name="ComposePreviewWeb" Height="240" Visibility="Collapsed" />
+                <ProgressBar x:Name="ComposeImportProgress" IsIndeterminate="True" Visibility="Collapsed" />
+                <TextBlock x:Name="ComposeImportStatus" TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                <StackPanel x:Name="ComposeImportReview" Visibility="Collapsed" Spacing="8">
+                    <TextBox x:Name="ComposeImportExcerpt" Header="{x:Bind core:LocaleText.T('导入预览'), Mode=OneTime}" IsReadOnly="True" AcceptsReturn="True" MaxHeight="120" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="ComposeImportInsert" Content="{x:Bind core:LocaleText.T('插入正文'), Mode=OneTime}" Click="OnInsertImportedDocument" />
+                        <Button Content="{x:Bind core:LocaleText.T('放弃导入'), Mode=OneTime}" Click="OnDiscardImportedDocument" />
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock x:Name="ComposeError" TextWrapping="Wrap" Foreground="{ThemeResource SystemFillColorCriticalBrush}" />
+            </StackPanel>
+            </ScrollViewer>
+        </ContentDialog>
+    </Grid>
+</Window>

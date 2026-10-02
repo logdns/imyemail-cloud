@@ -1,0 +1,3 @@
+-keep class email.imy.cloud.** { *; }
+-keep class email.imy.cloud.chckcore.AndroidSecretStore { *; }
+-dontwarn email.imy.cloud.**

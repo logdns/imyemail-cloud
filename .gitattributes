@@ -1,0 +1,12 @@
+* text=auto
+*.cs text eol=lf
+*.csproj text eol=lf
+*.props text eol=lf
+*.targets text eol=lf
+*.bat text eol=crlf
+*.pdf binary
+*.docx binary
+apple/Sources/ChckAppCore/Resources/ThirdParty/* -text -diff
+windows/Chck.Mail/THIRD-PARTY-NOTICES.txt -text -diff
+windows/installer/Languages/* -text -diff
+windows/tools/markitdown-runtime/licenses/* -text -diff

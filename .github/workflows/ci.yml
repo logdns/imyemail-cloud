@@ -1,0 +1,318 @@
+name: multi-client-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: "1"
+
+jobs:
+  repository:
+    name: Repository hygiene and docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Verify required source roots
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in \
+            README.md \
+            CONTRIBUTING.md \
+            CODE_OF_CONDUCT.md \
+            SECURITY.md \
+            docs/README.md \
+            docs/ARCHITECTURE.md \
+            docs/DEVELOPMENT.md \
+            docs/RELEASE.md \
+            docs/SECURITY.md \
+            core/Cargo.toml \
+            apple/Package.swift \
+            android/settings.gradle.kts \
+            linux/Cargo.toml \
+            windows/Chck.Mail.sln \
+            LICENSE; do
+            test -e "$path"
+          done
+      - name: Reject generated packages and local secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files | grep -E '(^|/)(\.env$|local\.properties$|.*\.(p12|pfx|key|keystore|jks|mobileprovision)$|.*\.(apk|aab|ipa|dmg|deb|msix|tar\.gz)$)'; then
+            echo "Tracked generated package or local secret material detected" >&2
+            exit 1
+          fi
+          test -z "$(find . -type f -size +90M -not -path './.git/*' -print -quit)"
+      - name: Verify generated localizations
+        run: python3 scripts/export-client-locales.py --check
+      - name: Verify Android JNI branding boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'package email.imy.cloud.chckcore' \
+            android/core/chckcore/src/main/kotlin/email/chck/mail/chckcore/NativeBridge.kt
+          grep -Fq 'email/imy/cloud/chckcore/AndroidSecretStore' core/crates/chck-ffi-c/src/android.rs
+          grep -Fq 'Java_email_imy_cloud_chckcore_NativeBridge_nativeOpen' core/crates/chck-ffi-c/src/android.rs
+          grep -Fq 'Java_email_imy_cloud_chckcore_NativeBridge_nativeCall' core/crates/chck-ffi-c/src/android.rs
+          grep -Fq 'Java_email_imy_cloud_chckcore_NativeBridge_nativeClose' core/crates/chck-ffi-c/src/android.rs
+          test -e android/app/src/main/res/drawable/ic_stat_imyemail_cloud.xml
+      - name: Reject removed commercial and website sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git ls-files chckemail-old)"
+          test ! -e chck-website
+          test ! -e website
+          test ! -e web
+          test ! -e core/crates/chck-license
+          test ! -e store
+          if git grep -n -i -E 'api\.stripe\.com|stripe[_-]?(secret|publishable|webhook)|commercial license|商业授权|软件授权|license receipt|chck-website' -- \
+            core apple android linux windows push-bridge \
+            ':!**/*.md' ':!**/*LICENSE*' ':!**/licenses/**'; then
+            echo "Removed commercial or website material is still tracked" >&2
+            exit 1
+          fi
+
+  core:
+    name: Core (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-14, windows-latest]
+    defaults:
+      run:
+        working-directory: core
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Configure Rust
+        run: rustup component add rustfmt clippy
+      - name: Format
+        if: matrix.os == 'ubuntu-latest'
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: Tests
+        run: cargo test --workspace --locked
+      - name: Release CLI and C ABI
+        run: cargo build --locked --release -p chck-cli -p chck-ffi-c
+
+  apple:
+    name: macOS and iOS Simulator
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Configure Rust targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup component add rustfmt clippy
+          if [[ "$(uname -m)" == "arm64" ]]; then
+            rustup target add aarch64-apple-ios aarch64-apple-ios-sim
+          else
+            rustup target add x86_64-apple-ios
+          fi
+      - name: Build shared native engine
+        working-directory: apple
+        run: ./scripts/build-native.sh
+      - name: Swift tests
+        working-directory: apple
+        run: swift test -Xswiftc -warnings-as-errors
+      - name: Build macOS app package
+        working-directory: apple
+        run: ./scripts/package-app.sh
+      - name: Build iOS simulator native engine
+        working-directory: apple
+        shell: bash
+        run: PLATFORM_NAME=iphonesimulator ARCHS="$(uname -m)" ./scripts/build-ios-native.sh
+      - name: Build iOS simulator app
+        working-directory: apple
+        shell: bash
+        run: |
+          brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+          ./scripts/package-ios-simulator.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: apple-unsigned-development
+          path: |
+            apple/dist/*.zip
+            apple/dist/*.sha256
+            apple/dist/imyemail-cloud Simulator.app
+          if-no-files-found: error
+          retention-days: 14
+
+  android:
+    name: Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ANDROID_NDK_VERSION: 27.2.12479018
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+      - name: Configure Android SDK and Rust targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdk_root="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          test -n "$sdk_root"
+          sdkmanager_path="$(find "$sdk_root/cmdline-tools" -type f -path '*/bin/sdkmanager' -print -quit 2>/dev/null || true)"
+          if [[ -z "$sdkmanager_path" ]]; then
+            sdkmanager_path="$(command -v sdkmanager || true)"
+          fi
+          test -n "$sdkmanager_path"
+          sdkmanager_dir="$(dirname "$sdkmanager_path")"
+          export PATH="$sdkmanager_dir:$sdk_root/platform-tools:$PATH"
+          yes | "$sdkmanager_path" --licenses >/dev/null || true
+          "$sdkmanager_path" "platforms;android-35" "build-tools;35.0.0" "ndk;${ANDROID_NDK_VERSION}"
+          rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - name: Build JNI libraries
+        working-directory: android
+        shell: bash
+        run: ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk/${ANDROID_NDK_VERSION}" ./scripts/build-native.sh
+      - name: Unit tests, lint and debug APK
+        working-directory: android
+        run: ./gradlew :core:common:test :core:data:test :feature:thread:testDebugUnitTest :app:lintDebug :app:assembleDebug --no-daemon
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: android-debug-apk
+          path: |
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/reports/lint-results-debug.*
+          if-no-files-found: error
+          retention-days: 14
+
+  linux:
+    name: Linux ${{ matrix.artifact_arch }} DEB
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            deb_arch: amd64
+            artifact_arch: x86_64
+          - runner: ubuntu-24.04-arm
+            deb_arch: arm64
+            artifact_arch: arm64
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install GTK and packaging dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            appstream dbus-x11 desktop-file-utils dpkg-dev file libadwaita-1-dev \
+            libgtk-3-bin libgtk-4-dev libsecret-1-dev libwebkitgtk-6.0-dev \
+            pkg-config procps xauth xvfb
+      - name: Configure Rust
+        run: rustup component add rustfmt clippy
+      - name: Format
+        if: matrix.deb_arch == 'amd64'
+        working-directory: linux
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        working-directory: linux
+        run: cargo clippy --locked --all-targets --features gtk,secret,webkit -- -D warnings
+      - name: Tests
+        working-directory: linux
+        run: cargo test --locked --features gtk,secret,webkit
+      - name: Build and verify DEB
+        working-directory: linux
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./scripts/package-deb.sh
+          package="$(find dist -maxdepth 1 -name '*.deb' -print -quit)"
+          ./scripts/verify-deb.sh "$package" "${{ matrix.deb_arch }}"
+      - name: Install, launch and uninstall DEB
+        working-directory: linux
+        shell: bash
+        run: |
+          set -euo pipefail
+          package="$(find dist -maxdepth 1 -name '*.deb' -print -quit)"
+          sudo apt-get install -y "./$package"
+          ./scripts/smoke-desktop-launch.sh
+          sudo apt-get remove -y imyemail-cloud
+          test ! -e /usr/bin/imyemail-cloud
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: linux-${{ matrix.artifact_arch }}-unsigned-deb
+          path: |
+            linux/dist/*.deb
+            linux/dist/*.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  windows:
+    name: Windows x64 and ARM64
+    runs-on: windows-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: windows
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: "9.0.x"
+      - name: Verify formatting
+        shell: pwsh
+        run: |
+          $projects = @(
+            'Chck.Mail.Core','Chck.Mail.Data','Chck.Mail.MailKit','Chck.Mail.Sync',
+            'Chck.Mail.Imyemail','Chck.Mail.Design','Chck.Mail.Tests'
+          )
+          foreach ($project in $projects) {
+            dotnet format "$project/$project.csproj" whitespace --verify-no-changes --no-restore
+          }
+      - name: Tests
+        run: dotnet test Chck.Mail.Tests/Chck.Mail.Tests.csproj -c Release
+      - name: Build x64
+        run: dotnet build Chck.Mail/Chck.Mail.csproj -c Release -p:Platform=x64
+      - name: Build ARM64
+        run: dotnet build Chck.Mail/Chck.Mail.csproj -c Release -p:Platform=ARM64
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-unsigned-build
+          path: windows/Chck.Mail/bin/
+          if-no-files-found: error
+          retention-days: 14
+
+  services:
+    name: Push bridge and mail testkit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Push bridge tests
+        working-directory: push-bridge
+        run: cargo test --locked
+      - name: Push bridge release build
+        working-directory: push-bridge
+        run: cargo build --locked --release
+      - name: Mail testkit configuration
+        working-directory: email-testkit
+        run: |
+          test -f fixtures/simple.eml
+          docker compose config

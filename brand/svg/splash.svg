@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2480" height="1200" viewBox="0 0 2480 1200">
+  <rect width="2480" height="1200" fill="#3D6BFE"/>
+  <g transform="translate(986 236) scale(0.5)">
+    <path fill="#FFFFFF" d="M192 292h640c35.346 0 64 28.654 64 64v368c0 35.346-28.654 64-64 64H192c-35.346 0-64-28.654-64-64V356c0-35.346 28.654-64 64-64z"/>
+    <path fill="#3D6BFE" d="M160 348l352 248 352-248v-16L512 564 160 332z"/>
+    <path fill="#3D6BFE" d="M414 612l72 72 196-220 52 46-248 278-124-124z"/>
+  </g>
+  <text x="1240" y="860" text-anchor="middle" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="92" font-weight="600">imyemail-cloud</text>
+</svg>

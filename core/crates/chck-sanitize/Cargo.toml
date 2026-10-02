@@ -1,0 +1,12 @@
+[package]
+name = "chck-sanitize"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "邮件 HTML 净化与远程资源拦截"
+
+[dependencies]
+ammonia.workspace = true
+
+[lints]
+workspace = true

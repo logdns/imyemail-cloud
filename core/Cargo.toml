@@ -1,0 +1,58 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/chck-types",
+    "crates/chck-providers",
+    "crates/chck-sanitize",
+    "crates/chck-mime",
+    "crates/chck-proto-imap",
+    "crates/chck-proto-smtp",
+    "crates/chck-store",
+    "crates/chck-sync",
+    "crates/chck-imyemail",
+    "crates/chck-engine",
+    "crates/chck-ffi",
+    "crates/chck-ffi-c",
+    "crates/chck-cli",
+]
+
+[workspace.package]
+version = "0.2.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/logdns/imyemail-cloud"
+authors = ["imyemail-cloud contributors"]
+rust-version = "1.85"
+
+[workspace.dependencies]
+chck-types = { path = "crates/chck-types" }
+chck-providers = { path = "crates/chck-providers" }
+chck-sanitize = { path = "crates/chck-sanitize" }
+chck-mime = { path = "crates/chck-mime" }
+chck-proto-imap = { path = "crates/chck-proto-imap" }
+chck-proto-smtp = { path = "crates/chck-proto-smtp" }
+chck-store = { path = "crates/chck-store" }
+chck-sync = { path = "crates/chck-sync" }
+chck-imyemail = { path = "crates/chck-imyemail" }
+chck-engine = { path = "crates/chck-engine" }
+chck-ffi = { path = "crates/chck-ffi" }
+chck-cli = { path = "crates/chck-cli" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+rusqlite = { version = "0.37", features = ["bundled"] }
+ammonia = "4"
+uuid = { version = "1", features = ["v4"] }
+rustls = { version = "0.23", default-features = false, features = ["std", "ring", "tls12"] }
+rustls-pki-types = "1"
+webpki-roots = "1"
+sha2 = "0.10"
+security-framework = "3"
+
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "allow", priority = -1 }

@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+*.user
+.DS_Store
+*.userosscache
+project.lock.json
+artifacts/
+TestResults/
+*.nupkg
+.idea/

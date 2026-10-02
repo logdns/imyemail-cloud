@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>email.imy.cloud</id>
+  <name>imyemail-cloud</name>
+  <summary>Native mail, everywhere</summary>
+  <summary xml:lang="zh-CN">一次收件，处处原生。</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="email.imy.cloud">
+    <name>imyemail-cloud</name>
+  </developer>
+  <url type="homepage">https://imy.email</url>
+  <url type="bugtracker">https://github.com/logdns/imyemail-cloud/issues</url>
+  <url type="help">https://imy.email</url>
+  <url type="vcs-browser">https://github.com/logdns/imyemail-cloud</url>
+  <description>
+    <p>imyemail-cloud is a native Linux email client built with GTK4 and libadwaita. It talks IMAP/SMTP through the shared core engine used by every imyemail-cloud platform.</p>
+    <p xml:lang="zh-CN">imyemail-cloud 是 GTK4 + libadwaita 原生 Linux 邮件客户端，协议与同步来自六端共用的 core。</p>
+    <ul>
+      <li>Unified inbox, folder list, read, compose</li>
+      <li>18 built-in provider presets</li>
+      <li>Remote images blocked by default</li>
+      <li>Offline-first operations via core</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">email.imy.cloud.desktop</launchable>
+  <provides>
+    <binary>imyemail-cloud</binary>
+    <mediatype>x-scheme-handler/mailto</mediatype>
+  </provides>
+  <recommends>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </recommends>
+  <content_rating type="oars-1.1"/>
+  <branding>
+    <color type="primary" scheme_preference="light">#3D6BFE</color>
+    <color type="primary" scheme_preference="dark">#6B8AFF</color>
+  </branding>
+  <releases>
+    <release version="0.2.0" date="2026-10-02">
+      <description>
+        <p>First public MIT-licensed imyemail-cloud release.</p>
+      </description>
+    </release>
+  </releases>
+</component>

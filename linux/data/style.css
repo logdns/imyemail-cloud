@@ -1,0 +1,61 @@
+.account-stripe {
+  min-width: 3px;
+  background-color: @accent_bg_color;
+  border-radius: 2px;
+}
+
+.unread-badge {
+  background-color: @accent_bg_color;
+  color: @accent_fg_color;
+  border-radius: 999px;
+  padding: 0 8px;
+  font-weight: 600;
+  font-size: 0.8em;
+}
+
+.mail-row {
+  border-bottom: 1px solid alpha(@borders, 0.6);
+  background-color: @view_bg_color;
+}
+
+/* Keep the middle column opaque so wallpaper/translucent compositor effects
+ * never bleed through the message list.  The navigation and reader use the
+ * same Adwaita view color for a consistent three-pane surface. */
+.mail-list-scroll,
+.mail-list-scroll viewport,
+.boxed-list,
+.boxed-list > row {
+  background-color: @view_bg_color;
+}
+
+.markdown-editor,
+.markdown-editor text {
+  color: @view_fg_color;
+  background-color: @view_bg_color;
+}
+
+.markdown-toolbar {
+  background-color: @headerbar_bg_color;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.remote-banner {
+  background-color: alpha(#3D6BFE, 0.12);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.mail-body {
+  background: transparent;
+}
+
+.mail-body text {
+  background: transparent;
+}
+
+/* Shared visual rhythm, using native theme colors for contrast. */
+.navigation-sidebar row { border-radius: 8px; margin: 2px 8px; }
+.mail-row { padding: 10px 12px; }
+button { border-radius: 8px; }
+preferencesgroup { margin-bottom: 12px; }

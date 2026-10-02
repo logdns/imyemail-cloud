@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">imyemail-cloud</string>
+    <string name="widget_unread">Courrier non lu</string>
+    <string name="tile_pause_sync">Synchroniser plus tard</string>
+    <string name="shortcut_compose">Écrire une lettre</string>
+    <string name="shortcut_search">Recherche</string>
+</resources>

@@ -1,0 +1,36 @@
+namespace chck_mail {
+  string engine_open(string path);
+};
+
+[Error]
+enum EngineError {
+  "AuthFailed",
+  "Tls",
+  "NotFound",
+  "Unknown",
+};
+
+interface FfiEngine {
+  [Name="open"]
+  constructor(string path);
+  string add_account(string req_json);
+  string test_account(string req_json);
+  string list_accounts();
+  string list_providers();
+  void remove_account(string id);
+  string list_folders(string account_id);
+  void sync_folder(string folder_id);
+  string list_messages(string folder_id, u32 offset, u32 limit);
+  string unified_inbox(u32 offset, u32 limit);
+  string list_thread(string thread_id);
+  void bulk_delete(string ids_json);
+  string body(string message_id);
+  string search(string query);
+  void set_flags(string message_id, string flags_json);
+  string save_draft(string req_json);
+  string send(string req_json);
+  void undo_send(string draft_id);
+  string outbox();
+  string poll_events();
+  string tick(string account_id, boolean idle, u64 idle_wait_ms);
+};

@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=imyemail-cloud
+GenericName=Email Client
+Comment=Native mail, everywhere.
+Comment[zh_CN]=一次收件，处处原生。
+Exec=imyemail-cloud %u
+Icon=email.imy.cloud
+Terminal=false
+Type=Application
+Categories=Network;Email;Office;
+MimeType=x-scheme-handler/mailto;
+StartupNotify=true
+StartupWMClass=email.imy.cloud
+DBusActivatable=false
+Keywords=email;mail;imap;smtp;
+X-GNOME-UsesNotifications=true

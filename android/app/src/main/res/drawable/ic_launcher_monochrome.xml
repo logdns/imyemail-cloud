@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="1024"
+    android:viewportHeight="1024">
+    <!-- Canonical brand geometry, centered inside Android's 66dp safe circle.
+         Keep padding here: adaptive launchers crop the 108dp canvas to a mask. -->
+    <group android:scaleX="0.60" android:scaleY="0.60"
+        android:pivotX="512" android:pivotY="512" android:translateY="-33.6">
+        <path android:fillColor="#000000"
+            android:fillType="evenOdd"
+            android:pathData="M160 300h704c39.764 0 72 32.236 72 72v392c0 39.764-32.236 72-72 72H160c-39.764 0-72-32.236-72-72V372c0-39.764 32.236-72 72-72zm72 96v368c0 8.837 7.163 16 16 16h528c8.837 0 16-7.163 16-16V396L512 588 232 396z" />
+        <path android:fillColor="#000000"
+            android:fillType="evenOdd"
+            android:pathData="M414 612l72 72 196-220 52 46-248 278-124-124z" />
+    </group>
+</vector>

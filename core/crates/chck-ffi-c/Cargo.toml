@@ -1,0 +1,25 @@
+[package]
+name = "chck-ffi-c"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "C ABI for chck-ffi JSON MailEngine（Swift/Kotlin 进程内绑定）"
+
+[lib]
+name = "chck_mail"
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+chck-ffi.workspace = true
+chck-engine.workspace = true
+chck-types.workspace = true
+
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.21"
+
+[lints.rust]
+unsafe_code = "allow"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "allow", priority = -1 }

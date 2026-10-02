@@ -1,0 +1,64 @@
+[
+  {
+    "name": "et_xmlfile",
+    "version": "2.0.0",
+    "filename": "et_xmlfile-2.0.0-LICENCE.python",
+    "sourceUrl": "https://files.pythonhosted.org/packages/d3/38/af70d7ab1ae9d4da450eeec1fa3918940a5fafb9055e934af8d6eb0c2313/et_xmlfile-2.0.0.tar.gz",
+    "archiveSha256": "dab3f4764309081ce75662649be815c4c9081e88f0837825f90fd28317d4da54",
+    "sourceEntry": "et_xmlfile-2.0.0/LICENCE.python",
+    "sha256": "4ccdaaebc0f44b83720ec0399bb7ab329adce067dd62f73c5535a2dc05628ab2"
+  },
+  {
+    "name": "et_xmlfile",
+    "version": "2.0.0",
+    "filename": "et_xmlfile-2.0.0-LICENCE.rst",
+    "sourceUrl": "https://files.pythonhosted.org/packages/d3/38/af70d7ab1ae9d4da450eeec1fa3918940a5fafb9055e934af8d6eb0c2313/et_xmlfile-2.0.0.tar.gz",
+    "archiveSha256": "dab3f4764309081ce75662649be815c4c9081e88f0837825f90fd28317d4da54",
+    "sourceEntry": "et_xmlfile-2.0.0/LICENCE.rst",
+    "sha256": "0c84bb42f5d367e5ebf9fc2dde35b16141df5ee0fdc189250858bc6c5560f69e"
+  },
+  {
+    "name": "openpyxl",
+    "version": "3.1.5",
+    "filename": "openpyxl-3.1.5-LICENCE.rst",
+    "sourceUrl": "https://files.pythonhosted.org/packages/3d/f9/88d94a75de065ea32619465d2f77b29a0469500e99012523b91cc4141cd1/openpyxl-3.1.5.tar.gz",
+    "archiveSha256": "cf0e3cf56142039133628b5acffe8ef0c12bc902d2aadd3e0fe5878dc08d1050",
+    "sourceEntry": "openpyxl-3.1.5/LICENCE.rst",
+    "sha256": "0c84bb42f5d367e5ebf9fc2dde35b16141df5ee0fdc189250858bc6c5560f69e"
+  },
+  {
+    "name": "markitdown",
+    "version": "0.1.7",
+    "filename": "markitdown-0.1.7-LICENSE.txt",
+    "sourceUrl": "https://raw.githubusercontent.com/microsoft/markitdown/v0.1.7/LICENSE",
+    "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+  },
+  {
+    "name": "flatbuffers",
+    "version": "25.12.19",
+    "filename": "flatbuffers-25.12.19-LICENSE.txt",
+    "sourceUrl": "https://raw.githubusercontent.com/google/flatbuffers/v25.12.19/LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  {
+    "name": "magika",
+    "version": "0.6.3",
+    "filename": "magika-0.6.3-LICENSE.txt",
+    "sourceUrl": "https://raw.githubusercontent.com/google/magika/python-v0.6.3/LICENSE",
+    "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+  },
+  {
+    "name": "cobble",
+    "version": "0.1.4",
+    "filename": "cobble-0.1.4-README.rst",
+    "sourceUrl": "https://raw.githubusercontent.com/mwilliamson/python-cobble/0.1.4/README.rst",
+    "sha256": "d6d46202db973b560d2f521dced9110b3e0a46d9a75e1428dade8b7608dd0cca"
+  },
+  {
+    "name": "cobble",
+    "version": "0.1.4",
+    "filename": "cobble-0.1.4-setup.py.txt",
+    "sourceUrl": "https://raw.githubusercontent.com/mwilliamson/python-cobble/0.1.4/setup.py",
+    "sha256": "8854b0d83b3bb9db389d304e0cb5e070c684f40e979828847bd5bb54c21f16c4"
+  }
+]

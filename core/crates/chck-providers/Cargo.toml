@@ -1,0 +1,13 @@
+[package]
+name = "chck-providers"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "18 家邮箱服务商预设与 quirks"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

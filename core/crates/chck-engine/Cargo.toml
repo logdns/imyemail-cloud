@@ -1,0 +1,30 @@
+[package]
+name = "chck-engine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MailEngine 门面：对外唯一入口"
+
+[dependencies]
+chck-types.workspace = true
+chck-providers.workspace = true
+chck-store.workspace = true
+chck-sanitize.workspace = true
+chck-sync.workspace = true
+chck-proto-imap.workspace = true
+chck-proto-smtp.workspace = true
+chck-mime.workspace = true
+chck-imyemail.workspace = true
+uuid.workspace = true
+serde_json.workspace = true
+
+[target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
+security-framework.workspace = true
+
+[dev-dependencies]
+rustls.workspace = true
+rustls-pki-types.workspace = true
+rcgen = "0.14"
+
+[lints]
+workspace = true

@@ -1,0 +1,20 @@
+[package]
+name = "chck-proto-smtp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "SMTP Submission（S5：TLS 强制 + AUTH LOGIN）"
+
+[dependencies]
+chck-types.workspace = true
+chck-providers.workspace = true
+rustls.workspace = true
+rustls-pki-types.workspace = true
+webpki-roots.workspace = true
+
+[dev-dependencies]
+rcgen = "0.14"
+mailparse = "0.16"
+
+[lints]
+workspace = true

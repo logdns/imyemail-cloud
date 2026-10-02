@@ -1,0 +1,18 @@
+services:
+  greenmail:
+    image: greenmail/standalone:2.1.3
+    ports:
+      - "3025:3025"   # SMTP
+      - "3143:3143"   # IMAP
+      - "3465:3465"   # SMTPS
+      - "3993:3993"   # IMAPS
+    environment:
+      GREENMAIL_OPTS: >-
+        -Dgreenmail.setup.test.all
+        -Dgreenmail.users=dev:devpass@imyemail.test,alice:alicepass@imyemail.test
+        -Dgreenmail.hostname=0.0.0.0
+    healthcheck:
+      test: ["CMD", "true"]
+      interval: 5s
+      timeout: 3s
+      retries: 10

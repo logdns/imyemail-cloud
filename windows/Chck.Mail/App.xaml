@@ -1,0 +1,34 @@
+<Application
+    x:Class="Chck.Mail.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="SystemAccentColor">#3D6BFE</Color>
+                    <Color x:Key="SystemAccentColorDark1">#3158D6</Color>
+                    <Color x:Key="SystemAccentColorDark2">#284AB8</Color>
+                    <Color x:Key="SystemAccentColorLight1">#6B8AFF</Color>
+                    <Color x:Key="ChckBrandColor">#3D6BFE</Color>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="SystemAccentColor">#6B8AFF</Color>
+                    <Color x:Key="SystemAccentColorLight1">#8CA4FF</Color>
+                    <Color x:Key="SystemAccentColorLight2">#B5C4FF</Color>
+                    <Color x:Key="SystemAccentColorDark1">#3D6BFE</Color>
+                    <Color x:Key="ChckBrandColor">#6B8AFF</Color>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="HighContrast">
+                    <SolidColorBrush x:Key="ChckBrandBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <CornerRadius x:Key="ControlCornerRadius">8</CornerRadius>
+            <CornerRadius x:Key="OverlayCornerRadius">12</CornerRadius>
+            <SolidColorBrush x:Key="ChckBrandBrush" Color="{ThemeResource ChckBrandColor}" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

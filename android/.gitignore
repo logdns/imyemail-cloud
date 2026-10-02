@@ -1,0 +1,7 @@
+.gradle/
+build/
+local.properties
+core/chckcore/src/main/jniLibs/
+.idea/
+*.iml
+.DS_Store

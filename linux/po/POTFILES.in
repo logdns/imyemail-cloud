@@ -1,0 +1,7 @@
+data/email.imy.cloud.desktop
+data/email.imy.cloud.metainfo.xml
+src/main.rs
+src/window.rs
+src/pages/account.rs
+src/pages/compose.rs
+src/pages/settings.rs

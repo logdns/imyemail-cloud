@@ -1,0 +1,272 @@
+name: release-build
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag in vMAJOR.MINOR.PATCH format
+        required: true
+        default: v0.2.0
+        type: string
+      release_date:
+        description: Release label in YYYYMMDD format
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-build-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: "1"
+
+jobs:
+  validate:
+    name: Validate release label
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Validate input
+        shell: bash
+        env:
+          RELEASE_DATE: ${{ inputs.release_date }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_DATE" =~ ^[0-9]{8}$ ]]
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          version="${RELEASE_TAG#v}"
+          grep -Fq "version = \"$version\"" core/Cargo.toml
+          grep -Fq "version = \"$version\"" push-bridge/Cargo.toml
+          grep -Fq "version = \"$version\"" linux/Cargo.toml
+          grep -Fq "versionName = \"$version\"" android/app/build.gradle.kts
+          grep -Fq "<string>$version</string>" apple/packaging/Info.plist
+          grep -Fq "<Version>$version</Version>" windows/Chck.Mail/Chck.Mail.csproj
+
+  apple:
+    name: macOS signing input
+    needs: validate
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Build and test macOS package
+        working-directory: apple
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./scripts/build-native.sh
+          swift test -Xswiftc -warnings-as-errors
+          IMYEMAIL_CLOUD_MACOS_ZIP_NAME=imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip \
+            ./scripts/package-app.sh
+          file dist/imyemail-cloud.app/Contents/MacOS/ChckMail | grep -q 'arm64'
+          codesign --verify --deep --strict dist/imyemail-cloud.app
+      - name: Record provenance
+        shell: bash
+        run: |
+          mkdir -p release-output
+          cp apple/dist/imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip release-output/
+          cp apple/dist/imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip.sha256 release-output/
+          printf 'source_sha=%s\nrelease_date=%s\nplatform=macos-arm64\nsigning=unsigned-input\n' \
+            "$GITHUB_SHA" '${{ inputs.release_date }}' > release-output/provenance.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-input-macos-arm64
+          path: release-output/
+          if-no-files-found: error
+          retention-days: 14
+
+  android:
+    name: Android signing input
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      ANDROID_NDK_VERSION: 27.2.12479018
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+      - name: Configure Android SDK and Rust targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdk_root="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          test -n "$sdk_root"
+          sdkmanager_path="$(find "$sdk_root/cmdline-tools" -type f -path '*/bin/sdkmanager' -print -quit 2>/dev/null || true)"
+          test -n "$sdkmanager_path"
+          yes | "$sdkmanager_path" --licenses >/dev/null || true
+          "$sdkmanager_path" "platforms;android-35" "build-tools;35.0.0" "ndk;${ANDROID_NDK_VERSION}"
+          rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - name: Build, test and lint unsigned Release APK
+        working-directory: android
+        shell: bash
+        run: |
+          set -euo pipefail
+          ANDROID_NDK_HOME="${ANDROID_SDK_ROOT}/ndk/${ANDROID_NDK_VERSION}" ./scripts/build-native.sh
+          ./gradlew :core:common:test :core:data:test :core:chckcore:testDebugUnitTest \
+            :feature:thread:testDebugUnitTest :app:lintRelease :app:assembleRelease --no-daemon
+      - name: Record provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-output
+          cp android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            release-output/imyemail-cloud-android-${{ inputs.release_date }}-unsigned.apk
+          (cd release-output && sha256sum imyemail-cloud-android-${{ inputs.release_date }}-unsigned.apk > imyemail-cloud-android-${{ inputs.release_date }}-unsigned.apk.sha256)
+          printf 'source_sha=%s\nrelease_date=%s\nplatform=android\nsigning=unsigned-input\n' \
+            "$GITHUB_SHA" '${{ inputs.release_date }}' > release-output/provenance.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-input-android
+          path: release-output/
+          if-no-files-found: error
+          retention-days: 14
+
+  linux:
+    name: Linux ${{ matrix.file_arch }} signing input
+    needs: validate
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            deb_arch: amd64
+            file_arch: x86_64
+          - runner: ubuntu-24.04-arm
+            deb_arch: arm64
+            file_arch: arm64
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            appstream dbus-x11 desktop-file-utils dpkg-dev file libadwaita-1-dev \
+            libgtk-3-bin libgtk-4-dev libsecret-1-dev libwebkitgtk-6.0-dev \
+            pkg-config procps xauth xvfb
+      - name: Test and build DEB
+        working-directory: linux
+        shell: bash
+        env:
+          IMYEMAIL_CLOUD_LINUX_BUILD_DATE: ${{ inputs.release_date }}
+        run: |
+          set -euo pipefail
+          rustup component add rustfmt clippy
+          cargo clippy --locked --all-targets --features gtk,secret,webkit -- -D warnings
+          cargo test --locked --features gtk,secret,webkit
+          ./scripts/package-deb.sh
+          package="$(find dist -maxdepth 1 -name '*.deb' -print -quit)"
+          ./scripts/verify-deb.sh "$package" '${{ matrix.deb_arch }}'
+          sudo apt-get install -y "./$package"
+          ./scripts/smoke-desktop-launch.sh
+          sudo apt-get remove -y imyemail-cloud
+      - name: Record provenance
+        shell: bash
+        run: |
+          mkdir -p release-output
+          package=imyemail-cloud-linux-${{ matrix.file_arch }}-${{ inputs.release_date }}.deb
+          cp "linux/dist/$package" release-output/
+          (cd release-output && sha256sum "$package" > "$package.sha256")
+          printf 'source_sha=%s\nrelease_date=%s\nplatform=linux-%s\nsigning=unsigned-input\n' \
+            "$GITHUB_SHA" '${{ inputs.release_date }}' '${{ matrix.file_arch }}' > release-output/provenance.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-input-linux-${{ matrix.file_arch }}
+          path: release-output/
+          if-no-files-found: error
+          retention-days: 14
+
+  windows:
+    name: Windows unsigned installers
+    needs: validate
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: "9.0.x"
+      - name: Build verified self-contained publishes
+        shell: pwsh
+        run: ./windows/scripts/verify-windows.ps1 -OutputDirectory "$env:GITHUB_WORKSPACE\windows-release"
+      - name: Install pinned Inno Setup compiler
+        shell: pwsh
+        run: |
+          $installer = Join-Path $env:RUNNER_TEMP 'innosetup-6.7.0.exe'
+          Invoke-WebRequest -Uri 'https://github.com/jrsoftware/issrc/releases/download/is-6_7_0/innosetup-6.7.0.exe' -OutFile $installer
+          $expected = 'f45c7d68d1e660cf13877ec36738a5179ce72a33414f9959d35e99b68c52a697'
+          $actual = (Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "Inno Setup hash mismatch: $actual" }
+          Start-Process -FilePath $installer -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/SP-' -Wait
+      - name: Build unsigned installers
+        shell: pwsh
+        run: |
+          $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
+          ./windows/scripts/build-installer.ps1 -Architecture x64 -PublishDirectory ./windows-release/win-x64 -OutputDirectory ./release-output -IsccPath $iscc -BuildLabel '${{ inputs.release_date }}'
+          ./windows/scripts/build-installer.ps1 -Architecture ARM64 -PublishDirectory ./windows-release/win-arm64 -OutputDirectory ./release-output -IsccPath $iscc -BuildLabel '${{ inputs.release_date }}'
+          "source_sha=$env:GITHUB_SHA`nrelease_date=${{ inputs.release_date }}`nplatform=windows-x64-arm64`nsigning=unsigned-input" | Set-Content -LiteralPath ./release-output/provenance.txt -Encoding utf8NoBOM
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-input-windows
+          path: release-output/
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    name: Publish GitHub prerelease
+    needs: [apple, android, linux, windows]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: release-input-*
+          path: release-downloads
+      - name: Collect release assets and checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir release-assets
+          while IFS= read -r -d '' source; do
+            name="$(basename "$source")"
+            [[ "$name" != provenance.txt ]] || continue
+            test ! -e "release-assets/$name"
+            cp "$source" "release-assets/$name"
+          done < <(find release-downloads -type f -print0)
+          test -n "$(find release-assets -type f -print -quit)"
+          (
+            cd release-assets
+            find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 |
+              sort -z | xargs -0 sha256sum > SHA256SUMS
+          )
+      - name: Create GitHub prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          RELEASE_DATE: ${{ inputs.release_date }}
+        run: |
+          set -euo pipefail
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 && {
+            echo "Release already exists: $RELEASE_TAG" >&2
+            exit 1
+          }
+          gh release create "$RELEASE_TAG" release-assets/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "imyemail-cloud $RELEASE_TAG" \
+            --prerelease \
+            --notes "Open-source development release built on $RELEASE_DATE. Assets are unsigned development packages; see docs/RELEASE.md for signing, notarization, device, and store-validation boundaries."

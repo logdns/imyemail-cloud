@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "providers": [
+    {
+      "id": "gmail",
+      "domains": ["gmail.com", "googlemail.com"],
+      "displayName": { "zh": "Gmail", "en": "Gmail" },
+      "imap": { "host": "imap.gmail.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.gmail.com", "port": 465, "tls": "tls", "alt": { "port": 587, "tls": "starttls" } },
+      "auth": {
+        "type": "oauth2",
+        "helpUrl": "https://imy.email",
+        "authUrl": "https://accounts.google.com/o/oauth2/v2/auth",
+        "tokenUrl": "https://oauth2.googleapis.com/token",
+        "clientIdEnv": "IMYEMAIL_CLOUD_GMAIL_CLIENT_ID",
+        "redirectUri": "http://127.0.0.1:8743/oauth",
+        "scopes": ["https://mail.google.com/"]
+      },
+      "quirks": ["gmail-labels", "sent-append"],
+      "limits": { "attachmentMB": 25 },
+      "capabilities": { "condstore": true, "idle": true }
+    },
+    {
+      "id": "outlook",
+      "domains": ["outlook.com", "hotmail.com", "live.com", "msn.com"],
+      "displayName": { "zh": "Outlook / Hotmail", "en": "Outlook / Hotmail" },
+      "imap": { "host": "outlook.office365.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.office365.com", "port": 587, "tls": "starttls" },
+      "auth": {
+        "type": "oauth2",
+        "helpUrl": "https://imy.email",
+        "authUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/authorize",
+        "tokenUrl": "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+        "clientIdEnv": "IMYEMAIL_CLOUD_OUTLOOK_CLIENT_ID",
+        "redirectUri": "http://127.0.0.1:8743/oauth",
+        "scopes": ["https://outlook.office.com/IMAP.AccessAsUser.All", "https://outlook.office.com/SMTP.Send", "offline_access"]
+      },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 25 },
+      "capabilities": { "condstore": true, "idle": true }
+    },
+    {
+      "id": "yahoo",
+      "domains": ["yahoo.com", "yahoo.co.jp"],
+      "displayName": { "zh": "Yahoo", "en": "Yahoo" },
+      "imap": { "host": "imap.mail.yahoo.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.mail.yahoo.com", "port": 465, "tls": "tls", "alt": { "port": 587, "tls": "starttls" } },
+      "auth": { "type": "app-password", "helpUrl": "https://imy.email" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 25 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "icloud",
+      "domains": ["icloud.com", "me.com", "mac.com"],
+      "displayName": { "zh": "iCloud", "en": "iCloud" },
+      "imap": { "host": "imap.mail.me.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.mail.me.com", "port": 587, "tls": "starttls" },
+      "auth": { "type": "app-password", "helpUrl": "https://imy.email" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 20 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "aol",
+      "domains": ["aol.com"],
+      "displayName": { "zh": "AOL", "en": "AOL" },
+      "imap": { "host": "imap.aol.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.aol.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "app-password", "helpUrl": "https://imy.email" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 25 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "yandex",
+      "domains": ["yandex.com", "yandex.ru", "ya.ru"],
+      "displayName": { "zh": "Yandex", "en": "Yandex" },
+      "imap": { "host": "imap.yandex.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.yandex.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 25 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "mailru",
+      "domains": ["mail.ru", "inbox.ru", "list.ru", "bk.ru"],
+      "displayName": { "zh": "Mail.ru", "en": "Mail.ru" },
+      "imap": { "host": "imap.mail.ru", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.mail.ru", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 25 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "qq",
+      "domains": ["qq.com", "foxmail.com"],
+      "displayName": { "zh": "QQ 邮箱 / Foxmail", "en": "QQ Mail / Foxmail" },
+      "imap": { "host": "imap.qq.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.qq.com", "port": 465, "tls": "tls", "alt": { "port": 587, "tls": "starttls" } },
+      "auth": { "type": "authcode", "helpUrl": "https://imy.email" },
+      "quirks": ["imap-id", "rate-limit", "sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "exmail",
+      "domains": ["exmail.qq.com"],
+      "displayName": { "zh": "腾讯企业邮", "en": "Tencent Exmail" },
+      "imap": { "host": "imap.exmail.qq.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.exmail.qq.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "authcode", "helpUrl": "https://imy.email" },
+      "quirks": ["imap-id", "rate-limit", "sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "netease163",
+      "domains": ["163.com"],
+      "displayName": { "zh": "网易 163", "en": "NetEase 163" },
+      "imap": { "host": "imap.163.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.163.com", "port": 465, "tls": "tls", "alt": { "port": 587, "tls": "starttls" } },
+      "auth": { "type": "authcode", "helpUrl": "https://imy.email" },
+      "quirks": ["imap-id", "rate-limit", "sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "netease126",
+      "domains": ["126.com"],
+      "displayName": { "zh": "网易 126", "en": "NetEase 126" },
+      "imap": { "host": "imap.126.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.126.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "authcode", "helpUrl": "https://imy.email" },
+      "quirks": ["imap-id", "rate-limit", "sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "yeah",
+      "domains": ["yeah.net"],
+      "displayName": { "zh": "网易 yeah.net", "en": "NetEase yeah.net" },
+      "imap": { "host": "imap.yeah.net", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.yeah.net", "port": 465, "tls": "tls" },
+      "auth": { "type": "authcode", "helpUrl": "https://imy.email" },
+      "quirks": ["imap-id", "rate-limit", "sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "aliyun",
+      "domains": ["aliyun.com"],
+      "displayName": { "zh": "阿里邮箱", "en": "Aliyun Mail" },
+      "imap": { "host": "imap.aliyun.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.aliyun.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "aliyun-qiye",
+      "domains": ["qiye.aliyun.com"],
+      "displayName": { "zh": "阿里企业邮箱", "en": "Aliyun Enterprise Mail" },
+      "imap": { "host": "imap.qiye.aliyun.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.qiye.aliyun.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "189",
+      "domains": ["189.cn"],
+      "displayName": { "zh": "189 邮箱", "en": "189 Mail" },
+      "imap": { "host": "imap.189.cn", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.189.cn", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "sohu",
+      "domains": ["sohu.com"],
+      "displayName": { "zh": "搜狐邮箱", "en": "Sohu Mail" },
+      "imap": { "host": "imap.sohu.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.sohu.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "sina",
+      "domains": ["sina.com", "sina.cn"],
+      "displayName": { "zh": "新浪邮箱", "en": "Sina Mail" },
+      "imap": { "host": "imap.sina.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.sina.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "139",
+      "domains": ["139.com"],
+      "displayName": { "zh": "139 邮箱", "en": "139 Mail" },
+      "imap": { "host": "imap.139.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.139.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "authcode", "helpUrl": "https://imy.email" },
+      "quirks": ["rate-limit", "sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "21cn",
+      "domains": ["21cn.com"],
+      "displayName": { "zh": "21CN 邮箱", "en": "21CN Mail" },
+      "imap": { "host": "imap.21cn.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.21cn.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "authcode", "helpUrl": "https://imy.email" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    },
+    {
+      "id": "88",
+      "domains": ["88.com"],
+      "displayName": { "zh": "完美邮箱", "en": "88.com Mail" },
+      "imap": { "host": "imap.88.com", "port": 993, "tls": "tls" },
+      "smtp": { "host": "smtp.88.com", "port": 465, "tls": "tls" },
+      "auth": { "type": "password" },
+      "quirks": ["sent-append"],
+      "limits": { "attachmentMB": 50 },
+      "capabilities": { "condstore": false, "idle": true }
+    }
+  ]
+}

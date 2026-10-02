@@ -1,0 +1,17 @@
+[package]
+name = "chck-store"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "SQLite schema、迁移与本地存储"
+
+[dependencies]
+chck-mime.workspace = true
+chck-types.workspace = true
+rusqlite.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

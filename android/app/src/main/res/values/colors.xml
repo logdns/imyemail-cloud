@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="chck_brand">#3D6BFE</color>
+    <color name="chck_brand_dark">#6B8AFF</color>
+    <color name="chck_launch_background">#F5F6FA</color>
+</resources>

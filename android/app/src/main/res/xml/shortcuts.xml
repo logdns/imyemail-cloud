@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_stat_imyemail_cloud"
+        android:shortcutId="compose"
+        android:shortcutShortLabel="@string/shortcut_compose">
+        <intent
+            android:action="email.imy.cloud.COMPOSE"
+            android:targetClass="email.imy.cloud.MainActivity"
+            android:targetPackage="email.imy.cloud" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_stat_imyemail_cloud"
+        android:shortcutId="search"
+        android:shortcutShortLabel="@string/shortcut_search">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="email.imy.cloud.MainActivity"
+            android:targetPackage="email.imy.cloud" />
+    </shortcut>
+</shortcuts>

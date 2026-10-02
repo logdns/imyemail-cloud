@@ -1,0 +1,7 @@
+/target
+.DS_Store
+.flatpak-builder
+/build
+/builddir
+/cargo-home
+*.swp

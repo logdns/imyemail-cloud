@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "BrandMark.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "imy.email",
+    "version" : 1
+  }
+}

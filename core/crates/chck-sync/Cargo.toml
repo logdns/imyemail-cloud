@@ -1,0 +1,12 @@
+[package]
+name = "chck-sync"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "同步引擎状态机、IDLE / NOOP 保活"
+
+[dependencies]
+chck-types.workspace = true
+
+[lints]
+workspace = true

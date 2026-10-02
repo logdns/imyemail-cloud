@@ -1,0 +1,17 @@
+[package]
+name = "chck-imyemail"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "imyemail API：能力探测、服务端搜索、well-known 发现"
+
+[dependencies]
+chck-types.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+rustls.workspace = true
+rustls-pki-types.workspace = true
+webpki-roots.workspace = true
+
+[lints]
+workspace = true

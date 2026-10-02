@@ -1,0 +1,14 @@
+From: Evil <evil@imyemail.test>
+To: Dev <dev@imyemail.test>
+Subject: Please click
+Message-ID: <xss-001@imyemail.test>
+Date: Tue, 15 Sep 2026 10:01:00 +0800
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+
+<html><body>
+<p>Hello</p>
+<script>alert(1)</script>
+<img src="https://tracker.example/pixel.gif">
+<a href="javascript:alert(1)">link</a>
+</body></html>

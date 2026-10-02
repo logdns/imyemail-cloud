@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Chck.Mail.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chck.Mail.Core\Chck.Mail.Core.csproj" />
+    <ProjectReference Include="..\Chck.Mail.Data\Chck.Mail.Data.csproj" />
+    <ProjectReference Include="..\Chck.Mail.MailKit\Chck.Mail.MailKit.csproj" />
+    <ProjectReference Include="..\Chck.Mail.Sync\Chck.Mail.Sync.csproj" />
+    <ProjectReference Include="..\Chck.Mail.Imyemail\Chck.Mail.Imyemail.csproj" />
+    <ProjectReference Include="..\Chck.Mail.Design\Chck.Mail.Design.csproj" />
+  </ItemGroup>
+</Project>

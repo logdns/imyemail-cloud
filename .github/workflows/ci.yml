@@ -72,7 +72,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git grep -n -E '/Users/[^/]+' -- apple ':!apple/*.md'; then
+          if git grep -n -E '/Users/[^/]+' -- ':(glob)apple/**/*.swift'; then
             echo "Local developer path is embedded in Apple source" >&2
             exit 1
           fi

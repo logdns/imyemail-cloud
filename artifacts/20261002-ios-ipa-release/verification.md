@@ -35,6 +35,7 @@
 ## 聚焦安全结论
 
 - 发现并修复两个打包问题：首次归档缺少顶层 `Payload/`；Apple 源码包含旧开发机绝对路径。两项均在发布前被复验门禁拦截，修复后重建通过。
+- 首轮 GitHub 仓库卫生 job 的路径门禁扫描整个 Apple 目录，误命中 IPA 脚本自身用于二进制检查的 `/Users/...` 正则；已将源码门禁限定到 Swift 文件，二进制扫描仍由打包脚本独立执行。
 - 未把证书、私钥、provisioning profile、Keychain 或签名密码写入源码、构建产物或 GitHub Actions。
 - unsigned IPA 本身不能替代 Apple 签名、公证、真机安装、TestFlight 和 App Store 审核；这些仍是未验收边界。
 

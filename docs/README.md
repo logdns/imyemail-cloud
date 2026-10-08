@@ -1,5 +1,6 @@
 # 文档索引
 
+- [INSTALL.md](INSTALL.md) / [INSTALL.zh-CN.md](INSTALL.zh-CN.md)：各平台下载、Homebrew 安装与校验
 - [ARCHITECTURE.md](ARCHITECTURE.md)：仓库结构、运行边界和数据流
 - [DEVELOPMENT.md](DEVELOPMENT.md)：环境、测试和开发规则
 - [RELEASE.md](RELEASE.md)：版本、构建、GitHub Release 和签名边界

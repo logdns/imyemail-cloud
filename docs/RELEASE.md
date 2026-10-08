@@ -14,7 +14,9 @@
 
 ## GitHub Release
 
-`.github/workflows/release-build.yml` 支持手动输入 tag 和日期，重新测试并构建 macOS、Android、Linux、Windows 产物，最后创建可从 GitHub Releases 和 `/releases/latest` 发现的公开下载。tag 必须是 `vMAJOR.MINOR.PATCH`，并与源码版本一致。
+`.github/workflows/release-build.yml` 支持手动输入 tag 和日期，重新测试并构建 macOS、iOS、Android、Linux、Windows 产物，最后创建可从 GitHub Releases 和 `/releases/latest` 发现的公开下载。tag 必须是 `vMAJOR.MINOR.PATCH`，并与源码版本一致。
+
+发布后核验 Latest 对应标签与源码提交、附件清单和各独立 `.sha256`；下载后复算哈希。README 中带日期的附件直链必须固定到对应版本标签，不能使用 `/releases/latest/download/` 加旧日期文件名；Latest 页面可作为未来版本的动态入口。安装说明见 [INSTALL.zh-CN.md](INSTALL.zh-CN.md)。
 
 当前自动发布的是未签名开发产物：
 

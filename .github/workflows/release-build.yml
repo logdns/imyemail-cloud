@@ -285,4 +285,4 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "imyemail-cloud $RELEASE_TAG (unsigned development packages)" \
             --latest \
-            --notes "Open-source release built on $RELEASE_DATE. Downloadable assets are unsigned development packages, not signed store builds. See docs/RELEASE.md for signing, notarization, device, and store-validation boundaries."
+            --notes "Open-source release built on $RELEASE_DATE. Downloadable assets are unsigned development packages, not signed store builds. macOS (Apple Silicon, macOS 14+): first run \`brew tap logdns/imyemail-cloud\`, \`brew trust --tap logdns/imyemail-cloud\`, then \`brew install imyemail-cloud\`. See https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/INSTALL.md for installation and https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/RELEASE.md for signing, notarization, device, and store-validation boundaries."

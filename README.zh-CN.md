@@ -8,7 +8,7 @@ imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开
 
 ## 下载
 
-[下载最新版本](https://github.com/logdns/imyemail-cloud/releases/latest)；也可直接选择平台开发包：
+[下载最新版本](https://github.com/logdns/imyemail-cloud/releases/latest)；以下直链固定指向 `v0.2.1` 开发包，后续版本请从 Latest 页面选择：
 
 ### Homebrew（macOS Apple Silicon）
 
@@ -20,19 +20,19 @@ brew trust --tap logdns/imyemail-cloud
 brew install imyemail-cloud
 ```
 
-Homebrew 7 要求第三方 tap 先显式信任。完成后，日常安装使用 `brew install imyemail-cloud`，更新使用 `brew upgrade imyemail-cloud`。Homebrew 源公开在 [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud)。
+Homebrew 7 要求首次信任第三方 tap；之后使用 `brew upgrade imyemail-cloud` 更新。各平台安装、校验、卸载及签名限制见[安装指南](docs/INSTALL.zh-CN.md)。Homebrew 源公开在 [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud)。
 
 | 平台 | 下载 |
 | --- | --- |
-| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-ios-arm64-20261002-unsigned.ipa)（需使用有效 Apple 证书和 provisioning profile 自行签名） |
-| Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-android-20261002-unsigned.apk)（供开发或自行签名，不能直接作为正式商店安装包） |
-| macOS Apple Silicon | [Homebrew 源](https://github.com/logdns/homebrew-imyemail-cloud) 或 [ad-hoc 签名 ZIP](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
-| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-x86_64-20261002.deb) |
-| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-linux-arm64-20261002.deb) |
-| Windows x64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-windows-x64-20261002-setup.exe) |
-| Windows ARM64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/latest/download/imyemail-cloud-windows-arm64-20261002-setup.exe) |
+| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-ios-arm64-20261002-unsigned.ipa)（需使用有效 Apple 证书和 provisioning profile 自行签名） |
+| Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-android-20261002-unsigned.apk)（供开发或自行签名，不能直接作为正式商店安装包） |
+| macOS Apple Silicon | [Homebrew 源](https://github.com/logdns/homebrew-imyemail-cloud) 或 [ad-hoc 签名 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
+| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-linux-x86_64-20261002.deb) |
+| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-linux-arm64-20261002.deb) |
+| Windows x64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-windows-x64-20261002-setup.exe) |
+| Windows ARM64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-windows-arm64-20261002-setup.exe) |
 
-完整性校验：[SHA256SUMS](https://github.com/logdns/imyemail-cloud/releases/latest/download/SHA256SUMS)。这些是未签名开发包，平台签名、公证、真机与商店验收边界见 [发布说明](docs/RELEASE.md)。
+完整性校验：[v0.2.1 SHA256SUMS](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/SHA256SUMS)。这些是未签名开发包，平台签名、公证、真机与商店验收边界见 [发布说明](docs/RELEASE.md)。
 
 ## 目录
 

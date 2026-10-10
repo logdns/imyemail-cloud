@@ -28,7 +28,7 @@
 
 - macOS arm64/x86_64：应用 ZIP，ad-hoc 签名，未公证；首次启动遵循系统 Gatekeeper。
 - Windows x64/ARM64：未做 Authenticode 的便携 ZIP，解压后保留同目录的核心程序。
-- Linux x86_64/ARM64：DEB 与 tar.gz，需要 GTK 3 和已解锁的 Secret Service。
+- Linux x86_64/ARM64：Ubuntu 24.04 构建的 DEB 与 tar.gz，需要兼容系统、GTK 3、D-Bus 和已解锁的 Secret Service。上游打包器的 DEB 还声明 WebKitGTK 依赖，但本界面不渲染邮件 HTML。
 
 数据位于系统用户配置目录下独立的 `imyemail-cloud-mygo/`，不自动迁移或修改旧数据库。账号密码使用 macOS Keychain、Windows 系统凭据或 Linux Secret Service；钥匙库不可用时返回错误，不静默转为明文文件。私有 stdin/stdout 传递 JSON，不开放本地 HTTP 端口。请求/响应有大小限制，操作超时会终止核心进程并要求重新启动。
 

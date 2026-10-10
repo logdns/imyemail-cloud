@@ -6,6 +6,7 @@ MyGo Copyright (c) 2026 MyGo contributors.
 
 The packaged licenses directory includes the licenses of MyGo, purego,
 go-text/typesetting, golang.org/x/image and the shared Rust core's notices.
+The typesetting HarfBuzz port has a separate MIT notice, also included.
 The desktop-vault dependency keyring 3.6.3 is MIT OR Apache-2.0 and its
 platform credential-store dependencies remain subject to their own licenses.
 

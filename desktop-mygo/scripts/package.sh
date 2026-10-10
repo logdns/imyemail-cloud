@@ -29,6 +29,8 @@ for module in github.com/egoist/mygo github.com/ebitengine/purego github.com/go-
   name=${module//\//_}
   cp "$directory/LICENSE" "resources/licenses/$name.txt"
 done
+typesetting=$(go list -m -f '{{.Dir}}' github.com/go-text/typesetting)
+cp "$typesetting/harfbuzz/LICENSE" resources/licenses/github.com_go-text_typesetting_harfbuzz.txt
 target=$(rustc -vV | sed -n 's/^host: //p')
 cargo metadata --manifest-path ../core/Cargo.toml --locked --format-version 1 \
   --filter-platform "$target" --features chck-cli/desktop-vault > dist/cargo-metadata.json

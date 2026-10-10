@@ -40,7 +40,7 @@ The new workflow `.github/workflows/mygo-desktop.yml` tests and packages six des
 
 - macOS: extract the ad-hoc-signed ZIP and copy `imyemail-cloud-mygo.app` to Applications. It is **not Apple-notarized**; normal Gatekeeper approval remains required.
 - Windows: extract the unsigned portable ZIP into a user-owned directory, retaining the bundled `imyemail-cloud-core.exe`, then run `imyemail-cloud-mygo.exe`. Authenticode and installation/upgrade behavior need separate validation.
-- Linux: use the matching DEB or extract the archive and review its install script. GTK 3 and a functioning Secret Service are required; native GPU/runtime validation is separate from the headless tests.
+- Linux: packages are built on Ubuntu 24.04; use that release or a compatible runtime. Use the matching DEB or extract the archive and review its install script. GTK 3, D-Bus and a functioning Secret Service are required. The pinned toolkit's DEB also declares WebKitGTK even though this UI never renders mail HTML; native GPU/runtime validation is separate from headless tests.
 
 Download the matching `.sha256` or `SHA256SUMS` from the **same tagged release** and recompute before installation. No unsigned auto-updater is enabled.
 

@@ -2,7 +2,7 @@
 
 [Project](../README.md) · [中文说明](../docs/MYGO.zh-CN.md) · [Source framework](https://github.com/egoist/mygo)
 
-This is a separate **0.3.3 self-signed desktop preview**, using MyGo's Go-native GPU UI and the existing Rust mail core. It does not replace `imyemail-cloud-native`, its data or its independent Homebrew cask. Its own token is `imyemail-cloud-mygo`. MyGo is MIT licensed and pinned to commit `b8beccc577daa00fed7c24112b0a7a0550d4825b` in `go.mod`/`go.sum`. [Install both editions](../docs/INSTALL.md) · [Signatures](../docs/SIGNING.md) · [Preserved versions](../docs/VERSIONS.md).
+This is a separate **0.3.4 self-signed desktop preview**, using MyGo's Go-native GPU UI and the existing Rust mail core. It does not replace `imyemail-cloud-native`, its data or its independent Homebrew cask. Its own token is `imyemail-cloud-mygo`. MyGo is MIT licensed and pinned to commit `b8beccc577daa00fed7c24112b0a7a0550d4825b` in `go.mod`/`go.sum`. [Install both editions](../docs/INSTALL.md) · [Signatures](../docs/SIGNING.md) · [Preserved versions](../docs/VERSIONS.md).
 
 ## Features and boundaries
 
@@ -38,7 +38,7 @@ Packaged executables support `--version` and `--self-test --data-dir <absolute-e
 
 ## Downloads and installation
 
-Download: [MyGo 0.3.3 self-signed preview](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.3), six architectures/eight packages with signed SHA256SUMS. Native [0.2.4](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4) is independent. Historical [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) and [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) remain intact.
+Download: [MyGo 0.3.4 self-signed preview](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.4), six architectures/eight packages with signed SHA256SUMS. Native [0.2.4](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4) is independent. Historical [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) and [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) remain intact.
 
 `.github/workflows/mygo-desktop.yml` tests/packages six combinations; only a manually requested verified tagged build signs and publishes. No release overwrite or cask switch. Installation, update/uninstall and rollback instructions are centralized in [INSTALL.md](../docs/INSTALL.md).
 

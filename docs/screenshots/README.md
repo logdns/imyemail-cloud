@@ -1,12 +1,12 @@
 # UI screenshots / 软件界面截图
 
-Captured 2026-10-11. Native source: `9738a2e393ca31c469cea87ca4ffa45682745023`, UI unchanged in the new release. MyGo 0.3.3 source: the Pulse-inspired `desktop-mygo/design.go`, `view.go`, `view_test.go` and version metadata committed alongside these images; isolated Linux renderer capture after Go vet/race tests. Unedited PNGs, actual UI with synthetic `.test` mail only; no private data, desktop capture or AI mockup.
+Captured 2026-10-11. Native source: `9738a2e393ca31c469cea87ca4ffa45682745023`, UI unchanged in the new release. MyGo 0.3.4 source: the Pulse-inspired `desktop-mygo/design.go`, `view.go`, `view_test.go` and version metadata committed alongside these images; isolated Linux renderer capture after Go vet/race tests. Unedited PNGs, actual UI with synthetic `.test` mail only; no private data, desktop capture or AI mockup.
 
 | Image | Capture | Dimensions | SHA-256 |
 | --- | --- | --- | --- |
 | [imyemail-cloud-native.png](imyemail-cloud-native.png) | macOS SwiftUI Preview; [CI 38068249840](https://github.com/logdns/imyemail-cloud/actions/runs/38068249840), artifact `screenshot-native` | 1180 × 684 | `a58509cd3163954f8b75a0b03057ed2a2c87c3812226a64ed86afe7ba09dffea` |
-| [imyemail-cloud-mygo.png](imyemail-cloud-mygo.png) | MyGo headless renderer, `TestReadmeScreenshot`, Pulse-inspired light layout | 1120 × 760 | `08e62320b98da86d94a4b53a36985217ae8ff9231564c728681751611fa24e50` |
-| [imyemail-cloud-mygo-dark.png](imyemail-cloud-mygo-dark.png) | Same renderer/source/fixture, dark appearance | 1120 × 760 | `4e11d8f9f71af9a2e810c5ae84c4906de0a517e9fbb63c5a505e07770eb85fef` |
+| [imyemail-cloud-mygo.png](imyemail-cloud-mygo.png) | MyGo headless renderer, `TestReadmeScreenshot`, Pulse-inspired light layout | 1120 × 760 | `beb56e08826774d03a0794a38aa7343b833c89160e69e72f3f5ecb3a7a855932` |
+| [imyemail-cloud-mygo-dark.png](imyemail-cloud-mygo-dark.png) | Same renderer/source/fixture, dark appearance | 1120 × 760 | `3bc4efe9849e8bfc9494119ffbd948ee9504b93cc1b8d18b46193b453b4836ba` |
 
 ![MyGo dark appearance](imyemail-cloud-mygo-dark.png)
 

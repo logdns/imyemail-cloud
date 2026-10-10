@@ -7,7 +7,7 @@ Both editions remain independently maintained in the [same public repository](ht
 | Edition | Download | Platforms | Previous releases retained |
 | --- | --- | --- | --- |
 | `imyemail-cloud-native` 0.2.4 | [native-v0.2.4](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4) | macOS arm64, iOS/iPadOS, Android, Linux/Windows x64/ARM64 | [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1), [v0.2.0](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0) |
-| `imyemail-cloud-mygo` 0.3.3 preview | [mygo-v0.3.3](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.3) | macOS/Windows/Linux amd64/arm64 | [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) |
+| `imyemail-cloud-mygo` 0.3.4 preview | [mygo-v0.3.4](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.4) | macOS/Windows/Linux amd64/arm64 | [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) |
 
 MyGo is a Go-native desktop preview, not a web client or feature-equivalent mobile replacement. See [features and vault requirements](../desktop-mygo/README.md). GitHub Latest belongs to the original track; **select MyGo by its explicit tag**.
 

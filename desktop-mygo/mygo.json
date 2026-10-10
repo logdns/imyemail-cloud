@@ -1,7 +1,7 @@
 {
   "name": "imyemail-cloud-mygo",
   "identifier": "email.imy.cloud.mygo",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "out": "dist",
   "icon": "../brand/export/master/icon-1024.png",
   "macos": { "minimumSystemVersion": "14.0", "signingIdentity": "-" },

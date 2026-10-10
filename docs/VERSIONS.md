@@ -3,7 +3,7 @@
 | Track | Current | Retained history | Identity |
 | --- | --- | --- | --- |
 | `imyemail-cloud-native` | `native-v0.2.4` | `v0.2.0`, `v0.2.1` | `email.imy.cloud`, existing platform stores |
-| `imyemail-cloud-mygo` desktop preview | `mygo-v0.3.3` | `mygo-v0.3.0` | `email.imy.cloud.mygo`, separate config |
+| `imyemail-cloud-mygo` desktop preview | `mygo-v0.3.4` | `mygo-v0.3.0` | `email.imy.cloud.mygo`, separate config |
 
 Both remain in [logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud). Original `apple/`, `android/`, `linux/`, `windows/`, shared `core/` and services remain maintained; `desktop-mygo/` is additive. No historical public tag/package is replaced. Homebrew uses separate tokens. Dated evidence stays historical, not rewritten to claim a new signer.
 
@@ -42,6 +42,8 @@ Linux native DEB declares version-bounded `Breaks/Replaces: imyemail-cloud (<< 0
 Tags `native-v0.2.2` and `mygo-v0.3.1` retain a cancelled signing attempt at source `58b189c`; no downloadable Release was published for those tags. A hosted macOS trust prompt blocked signing. The fix uses incremented versions, not moved tags or replaced packages.
 
 Tags `native-v0.2.3` and `mygo-v0.3.2` likewise preserve a cancelled attempt at `c094a06`: macOS/Linux/Android/iOS packages built, but Windows user-root certificate import waited for interactive consent. No Release was published. Final hosted Windows preflight uses admin LocalMachine public trust and removes that trust after signing; client installation does not change machine-wide trust.
+
+Native `native-v0.2.4` is published from `7c7ac0c`. MyGo `mygo-v0.3.3` preserves an unsuccessful ARM64 signing attempt from that same source; no MyGo Release was published. ARM64 disallows LocalMachine TrustedPublisher import, which is unnecessary for signing verification. MyGo 0.3.4 removes that write, preflights both Windows architectures and preserves the published native package unchanged.
 
 macOS old and new native app bundles have the same ID and share data: **do not run both**. Close the old native app, back up its database and Keychain credentials, then replace only the old application bundle through the matching package manager. Do not rename/delete its profile. Homebrew's old `imyemail-cloud` token is preserved as a legacy cask; migrate explicitly with cleanup disabled, then install `imyemail-cloud-native`. Both casks conflict with each other, neither conflicts with MyGo. No automatic cross-edition account migration is provided.
 

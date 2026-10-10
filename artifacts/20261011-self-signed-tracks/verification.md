@@ -1,6 +1,6 @@
 # Dual-track self-signed release verification
 
-Date: 2026-10-11, Asia/Shanghai. Target: imyemail-cloud-native 0.2.4 (native-v0.2.4) and imyemail-cloud-mygo 0.3.3 (mygo-v0.3.3), independent in logdns/imyemail-cloud. Original v0.2.0/v0.2.1 and mygo-v0.3.0 tags/assets are preserved; local chckemail-old is untouched. Historical package bytes, names, signatures and hashes are not rewritten.
+Date: 2026-10-11, Asia/Shanghai. Target: imyemail-cloud-native 0.2.4 (native-v0.2.4) and imyemail-cloud-mygo 0.3.4 (mygo-v0.3.4), independent in logdns/imyemail-cloud. Original v0.2.0/v0.2.1 and mygo-v0.3.0 tags/assets are preserved; local chckemail-old is untouched. Historical package bytes, names, signatures and hashes are not rewritten.
 
 ## Source-first focused signing/release review
 
@@ -20,7 +20,13 @@ Native display/app/package prefixes change, not Bundle ID/applicationId/JNI/URL 
 
 Screenshots use the real native UI and synthetic mail only, not edited mockups or real mailbox contents. Apple preview capture and MyGo headless renderer capture do not prove live receiving, GPU/window-manager behavior or feature parity.
 
-Publication/download verification: pending until the final release workflows and independent downloaded-package checks complete.
+Native publication and independent download inspection passed; MyGo and tap remain pending until their final workflows/download checks complete.
+
+## Native publication and MyGo ARM64 correction
+
+Source `7c7ac0c5f0131cce1dfbaa75355263e49c9ecf22`: [native CI 38074763011](https://github.com/logdns/imyemail-cloud/actions/runs/38074763011) 10/10 and [MyGo CI 38074763020](https://github.com/logdns/imyemail-cloud/actions/runs/38074763020) 6/6 passed. Native [release 38075612809](https://github.com/logdns/imyemail-cloud/actions/runs/38075612809) published `native-v0.2.4`, all seven packages, signed manifest/certificate/provenance and per-package hashes. Independent full download in no-network sandbox passed pinned certificate/RSA signature/all signed hashes, versions/identities/architectures, Android three-core inventory, static linked iOS export, native DEB bounded legacy replacement, Windows signed PE envelopes. Windows installer payload/chain verification remains the release-runner evidence, not host execution; iOS stays unsigned.
+
+MyGo [release attempt 38075615010](https://github.com/logdns/imyemail-cloud/actions/runs/38075615010) stopped at ARM64 `Import-Certificate` to LocalMachine TrustedPublisher with `E_ACCESSDENIED`; the other five architecture jobs passed, but no Release was published. No packages/tags were overwritten. MyGo 0.3.4 removes the unnecessary TrustedPublisher write and keeps Root-only trust. [Three-platform preflight 38076533838](https://github.com/logdns/imyemail-cloud/actions/runs/38076533838) passed macOS, Windows x64 and Windows ARM64 signature/cleanup checks. Published native 0.2.4 stays immutable.
 
 ## Pulse layout and initial remote regression
 

@@ -254,51 +254,40 @@ func (app *mailApp) submit(send bool) {
 }
 
 func (app *mailApp) view(c *ui.Context) {
-	theme := *ui.LightTheme()
-	if c.Theme().Dark {
-		theme = *ui.DarkTheme()
-	}
-	theme.Accent, theme.AccentHover = ui.Hex("#16776d"), ui.Hex("#125e56")
+	theme := mailTheme(c.Theme().Dark)
 	c.SetTheme(&theme)
-	ui.Column(c).Fill().Children(func() {
-		ui.Row(c).Padding(18, 22).Gap(16).Children(func() {
-			ui.Text(c, "imyemail-cloud-mygo").Bold().FontSize(22)
-			ui.Text(c, "MYGO / "+version).TextColor(theme.TextMuted).Grow(1)
-			ui.Button(c, "Inbox").Disabled(app.busy).OnClick(app.loadInbox)
-			ui.Button(c, "Outbox").Disabled(app.busy).OnClick(app.loadOutbox)
-			ui.Button(c, "Add account").Disabled(app.busy).OnClick(func() { app.page = "account" })
-			ui.PrimaryButton(c, "Compose").Disabled(app.busy || len(app.accounts) == 0).OnClick(func() {
-				if app.composeAccountID == "" {
-					app.composeAccountID = app.accountID
-				}
-				app.page = "compose"
-			})
-		})
+	width, _ := c.Size()
+	sidebarWidth := float32(220)
+	if width < 1000 {
+		sidebarWidth = 200
+	}
+	ui.Row(c).Fill().Children(func() {
+		app.sidebar(c, sidebarWidth)
 		ui.Divider(c)
-		ui.Row(c).Grow(1).FillWidth().Children(func() {
-			ui.Column(c).Width(220).FillHeight().Padding(18).Gap(10).Children(func() {
-				ui.Text(c, "MAILBOXES").Bold().FontSize(12).TextColor(theme.TextMuted)
-				ui.Button(c, "All inboxes").Disabled(app.busy).OnClick(app.loadInbox)
-				for _, item := range app.accounts {
-					ui.Button(c.Key("account:"+item.ID), item.Email).Disabled(app.busy).OnClick(func() { app.loadFolders(item.ID) })
-				}
-				ui.Divider(c)
-				ui.Scroll(c).Grow(1).Children(func() {
-					for _, item := range app.folders {
-						ui.Button(c.Key("folder:"+item.ID), item.Name).Disabled(app.busy).OnClick(func() { app.loadFolder(item.ID, false) })
-					}
+		ui.Column(c).Grow(1).FillHeight().Padding(24).Gap(20).Children(func() {
+			ui.Row(c).Gap(12).AlignItems(ui.Center).FillWidth().Children(func() {
+				ui.Column(c).Grow(1).Gap(4).Children(func() {
+					ui.Text(c, "Your mail, at a glance.").FontSize(23).Bold()
+					ui.Text(c, "Private by design. Native by choice.").FontSize(12).TextColor(theme.TextMuted)
 				})
-				ui.Link(c, "About / Help", "https://imy.email")
+				ui.PrimaryButton(c, "Compose").Padding(10, 16).Disabled(app.busy || len(app.accounts) == 0).OnClick(func() {
+					if app.composeAccountID == "" {
+						app.composeAccountID = app.accountID
+					}
+					app.page = "compose"
+				})
 			})
-			ui.Divider(c)
-			ui.Column(c).Grow(1).FillHeight().Padding(20).Gap(12).Children(func() {
+			if width >= 1000 && app.page == "inbox" {
+				app.summary(c)
+			}
+			ui.Column(c).Grow(1).FillWidth().Gap(14).Children(func() {
 				switch app.page {
 				case "account":
 					app.accountView(c)
 				case "compose":
 					app.composeView(c)
 				case "outbox":
-					ui.Text(c, "Send queue").FontSize(28).Bold()
+					ui.Text(c, "Send queue").FontSize(24).Bold()
 					ui.Text(c, "Sent means SMTP submission, not guaranteed recipient delivery. Failed/unknown sends must not be blindly resubmitted.")
 					ui.Scroll(c).Grow(1).Children(func() {
 						for _, item := range app.outbox {
@@ -309,41 +298,74 @@ func (app *mailApp) view(c *ui.Context) {
 					app.inboxView(c)
 				}
 			})
+			ui.Row(c).Gap(8).AlignItems(ui.Center).FillWidth().Children(func() {
+				color := theme.Success
+				if app.busy {
+					color = theme.Warning
+				}
+				ui.Column(c).Width(6).Height(6).Radius(3).Background(color)
+				ui.Text(c, app.status).FontSize(11).TextColor(theme.TextMuted).Grow(1)
+			})
 		})
-		ui.Divider(c)
-		ui.Text(c, app.status).Padding(10, 20).FontSize(12).TextColor(theme.TextMuted)
 	})
 }
 
 func (app *mailApp) inboxView(c *ui.Context) {
+	theme := c.Theme()
+	filtered := app.filteredMessages()
+	width, _ := c.Size()
+	listWidth := float32(285)
+	if width < 1000 {
+		listWidth = 235
+	}
 	ui.Row(c).Gap(12).Children(func() {
-		ui.Text(c, "Inbox").Bold().FontSize(28).Grow(1)
+		ui.Text(c, "Inbox").Bold().FontSize(20).Grow(1)
+		ui.Text(c, fmt.Sprintf("%d cached", len(app.messages))).FontSize(12).TextColor(theme.TextMuted)
 		ui.Button(c, "Sync folder").Disabled(app.busy || app.folderID == "").OnClick(func() { app.loadFolder(app.folderID, true) })
 	})
 	ui.TextInput(c, &app.query).Label("Filter cached messages").Placeholder("Filter by subject or sender")
-	ui.Row(c).Grow(1).FillWidth().Gap(18).Children(func() {
-		ui.Scroll(c).Width(300).FillHeight().Children(func() {
-			if len(app.messages) == 0 {
-				ui.Text(c, "No cached messages. Add an account or synchronize a folder.")
-			}
-			for _, item := range app.messages {
-				if !strings.Contains(strings.ToLower(item.Subject+" "+item.sender()), strings.ToLower(app.query)) {
-					continue
+	ui.Row(c).Grow(1).FillWidth().Gap(16).Children(func() {
+		ui.Scroll(c).Width(listWidth).Shrink(0).FillHeight().Background(theme.Surface).Radius(14).Padding(8).Children(func() {
+			ui.Column(c).FillWidth().Gap(6).Children(func() {
+				if len(app.messages) == 0 {
+					ui.Text(c, "No cached messages. Add an account or synchronize a folder.").Padding(12).FontSize(13).TextColor(theme.TextMuted)
+				} else if len(filtered) == 0 {
+					ui.Text(c, "No matching cached messages.").Padding(12).TextColor(theme.TextMuted)
 				}
-				ui.Column(c.Key(item.ID)).Padding(10).Gap(4).Children(func() {
-					ui.Button(c, item.Subject).Label("Read " + item.ID).Disabled(app.busy).OnClick(func() { app.readMessage(item) })
-					ui.Text(c, item.sender()).FontSize(12)
-				})
-			}
+				for _, item := range filtered {
+					background := theme.Surface
+					if app.selected.ID == item.ID {
+						background = theme.SurfacePressed
+					}
+					ui.Button(c.Key(item.ID), "").Label("Read "+item.ID).FillWidth().Background(background).Border(0, ui.Transparent).Padding(14).Radius(10).Disabled(app.busy).OnClick(func() { app.readMessage(item) }).Children(func() {
+						ui.Column(c).FillWidth().Gap(6).Children(func() {
+							ui.Text(c, item.sender()).FontSize(12).FontWeight(600).TextColor(theme.Accent)
+							ui.Text(c, item.Subject).FontSize(14).Bold()
+							if item.Snippet != "" {
+								ui.Text(c, item.Snippet).FontSize(12).TextColor(theme.TextMuted)
+							}
+						})
+					})
+				}
+			})
 		})
-		ui.Column(c).Grow(1).FillHeight().Gap(12).Children(func() {
+		ui.Column(c).Grow(1).FillHeight().Background(theme.Surface).Radius(14).Padding(22).Gap(16).Children(func() {
 			if app.selected.ID == "" {
-				ui.Text(c, "Your mail, without a browser.").FontSize(22).Bold()
-				ui.Text(c, "Native MyGo UI. Plain-text reading. Rust mail engine.")
+				ui.Column(c).Grow(1).FillWidth().Center().Gap(14).Children(func() {
+					ui.Icon(c, inboxIcon).Width(38).Height(38).TextColor(theme.TextMuted)
+					ui.Text(c, "A little room to focus.").FontSize(20).Bold()
+					ui.Text(c, "Choose a message to start reading.").FontSize(13).TextColor(theme.TextMuted)
+				})
 			} else {
 				ui.Text(c, app.selected.Subject).FontSize(22).Bold()
-				ui.Text(c, app.selected.sender())
-				ui.TextArea(c, &app.body).Label("Message body").ReadOnly(true).Grow(1).FillWidth()
+				ui.Row(c).Gap(9).AlignItems(ui.Center).Children(func() {
+					ui.Column(c).Width(32).Height(32).Radius(10).Background(theme.Background).Center().Children(func() {
+						ui.Icon(c, accountIcon).Width(17).Height(17).TextColor(theme.Accent)
+					})
+					ui.Text(c, app.selected.sender()).FontSize(12).TextColor(theme.TextMuted).Grow(1)
+				})
+				ui.Divider(c)
+				ui.TextArea(c, &app.body).Label("Message body").ReadOnly(true).Grow(1).FillWidth().Background(theme.Surface).Border(0, ui.Transparent).FontSize(14)
 			}
 		})
 	})

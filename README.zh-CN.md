@@ -2,6 +2,16 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [中文文档导航](docs/README.md) · [最新版本下载](https://github.com/logdns/imyemail-cloud/releases/latest)
 
+## 看界面，选择下载
+
+| **imyemail-cloud-native · 0.2.2 原生版** | **imyemail-cloud-mygo · 0.3.1 桌面预览版** |
+| --- | --- |
+| [![原生客户端界面](docs/screenshots/imyemail-cloud-native.png)](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2) | [![MyGo 客户端界面](docs/screenshots/imyemail-cloud-mygo.png)](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1) |
+| 平台原生 UI：macOS、iOS/iPadOS、Android、Linux、Windows；希望继续使用原有客户端请选择此版。 | 使用 [egoist/mygo](https://github.com/egoist/mygo) 的 Go 原生桌面 UI：macOS、Windows、Linux，目前英文界面、纯文本邮件，功能较少。 |
+| **[下载原生版](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2)** · `brew install imyemail-cloud-native` | **[下载 MyGo](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)** · `brew install imyemail-cloud-mygo` |
+
+真实 UI 的合成邮件截图：原生版为 macOS Preview，MyGo 为实际 UI 无窗口渲染器，不含真实邮箱，不是 AI 效果图。[截图来源](docs/screenshots/README.md)。选择系统/CPU 下载即可，不必编译源码。两版免费、MIT 开源、独立账号数据及更新；MyGo 不等于原生版全部功能。桌面自签包**未获 Apple 公证/默认公信**，iOS IPA 仍须 Apple provisioning。
+
 imyemail-cloud 是 MIT 开源的多端原生邮件客户端，公开仓库为 [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)，产品链接为 [https://imy.email](https://imy.email)。**imyemail-cloud-native 0.2.2** 与 **imyemail-cloud-mygo 0.3.1 桌面预览版**独立保留、维护和发布。
 
 本仓库只包含客户端、共享邮件核心、可选推送桥、测试工具、构建脚本和开源文档。它不包含官网/Web 应用、支付、订阅、软件激活、设备名额或商业授权门禁；同步和发送等客户端功能不需要购买软件许可证。
@@ -39,6 +49,19 @@ Homebrew 7 要求首次信任第三方 tap；之后使用 `brew upgrade imyemail
 | MyGo 桌面六架构 | [独立自签包](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)，独立应用及 cask |
 
 按 [SIGNING.md](docs/SIGNING.md) 固定指纹验证对应 Release 的 **SHA256SUMS 签名**后再核验包。macOS/Windows 为代码自签，非公信/公证；Linux 为签名清单，非 APT 仓库签名；iOS unsigned。真机、商店验收独立。
+
+### MyGo：选择桌面系统 / CPU
+
+| 系统 | MyGo 0.3.1 下载 |
+| --- | --- |
+| macOS Apple Silicon | [ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-darwin-arm64-selfsigned.zip) |
+| macOS Intel | [ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-darwin-amd64-selfsigned.zip) |
+| Windows x64 | [便携 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-windows-amd64-selfsigned.zip) |
+| Windows ARM64 | [便携 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-windows-arm64-selfsigned.zip) |
+| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-amd64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-amd64.tar.gz) |
+| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-arm64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-arm64.tar.gz) |
+
+MyGo 没有 Android/iOS 安装包；整体解压，保留 Rust 核心和许可证。原生 macOS 仅提供 Apple Silicon 包，Intel Mac 可选 MyGo。[安装、校验与升级](docs/INSTALL.zh-CN.md)。
 
 ## 目录
 

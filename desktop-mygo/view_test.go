@@ -38,6 +38,12 @@ func TestReadmeScreenshot(t *testing.T) {
 	}
 	app := newMailApp(&fakeEngine{body: "Welcome to imyemail-cloud-mygo.\n\nThis is synthetic test mail rendered by the real native UI.\nNo private mailbox or credentials are used."})
 	app.loadInbox()
+	app.messages = []message{
+		{ID: "mail-1", Subject: "A calmer place for your mail", From: []address{{Name: "imyemail team", Email: "hello@imyemail.test"}}, Snippet: "Meet your new native inbox."},
+		{ID: "mail-2", Subject: "A few ideas for the week", From: []address{{Name: "Studio Notes", Email: "studio@imyemail.test"}}, Snippet: "Less noise. A little more focus."},
+		{ID: "mail-3", Subject: "Coffee on Friday?", From: []address{{Name: "Alex Chen", Email: "alex@imyemail.test"}}, Snippet: "Let's catch up after a busy week."},
+	}
+	app.folders = []folder{{ID: "inbox", Name: "Inbox"}, {ID: "archive", Name: "Archive"}, {ID: "sent", Name: "Sent"}}
 	tester := ui.NewTester(app.view, 1120, 760)
 	if err := tester.Click("Read mail-1"); err != nil {
 		t.Fatal(err)
@@ -52,6 +58,61 @@ func TestReadmeScreenshot(t *testing.T) {
 	}
 	if err := output.Close(); err != nil {
 		t.Fatal(err)
+	}
+	tester.SetDark(true)
+	tester.Frame()
+	darkOutput, err := os.Create(path + ".dark.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := png.Encode(darkOutput, tester.Image()); err != nil {
+		darkOutput.Close()
+		t.Fatal(err)
+	}
+	if err := darkOutput.Close(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestPulseInspiredLayoutKeepsActionsAndFilterStates(t *testing.T) {
+	for _, dark := range []bool{false, true} {
+		for _, width := range []int{880, 1120} {
+			app := newMailApp(&fakeEngine{body: "fixture body"})
+			app.loadInbox()
+			tester := ui.NewTester(app.view, width, 640)
+			tester.SetDark(dark)
+			tester.Frame()
+			for _, label := range []string{"Inbox", "Compose", "Add account", "Read mail-1"} {
+				bounds, found := tester.Find(label)
+				if !found || bounds.X < 0 || bounds.Y < 0 || bounds.X+bounds.W > float32(width) || bounds.Y+bounds.H > 640 {
+					t.Fatalf("action clipped in %dpx/dark=%v: %s %+v", width, dark, label, bounds)
+				}
+			}
+			app.query = "does not match"
+			tester.Frame()
+			if !tester.HasText("No matching cached messages.") {
+				t.Fatal("missing filtered empty state")
+			}
+			app.query = ""
+			tester.Frame()
+			if err := tester.Click("Outbox"); err != nil || app.page != "outbox" {
+				t.Fatalf("outbox action failed: %v", err)
+			}
+			if err := tester.Click("Add account"); err != nil || !tester.HasText("Save account") {
+				t.Fatalf("account controls missing: %v", err)
+			}
+		}
+	}
+}
+
+func TestSummaryReportsLoadedCacheNotServerTotals(t *testing.T) {
+	app := newMailApp(&fakeEngine{})
+	app.loadInbox()
+	tester := ui.NewTester(app.view, 1120, 760)
+	for _, label := range []string{"Cached messages", "Loaded folders", "1 cached"} {
+		if !tester.HasText(label) {
+			t.Fatal("loaded-cache scope missing: " + label)
+		}
 	}
 }
 

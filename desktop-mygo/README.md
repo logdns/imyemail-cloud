@@ -1,10 +1,14 @@
-# imyemail-cloud — MyGo desktop edition
+# imyemail-cloud-mygo — Go-native desktop edition
 
 [Project](../README.md) · [中文说明](../docs/MYGO.zh-CN.md) · [Source framework](https://github.com/egoist/mygo)
 
-This is a separate **0.3.1 self-signed desktop preview**, using MyGo's Go-native GPU UI and the existing Rust mail core. It does not replace original clients, their data or the `imyemail-cloud` Homebrew cask. Its own token is `imyemail-cloud-mygo`. MyGo is MIT licensed and pinned to commit `b8beccc577daa00fed7c24112b0a7a0550d4825b` in `go.mod`/`go.sum`. [Install both editions](../docs/INSTALL.md) · [Signatures](../docs/SIGNING.md) · [Preserved versions](../docs/VERSIONS.md).
+This is a separate **0.3.1 self-signed desktop preview**, using MyGo's Go-native GPU UI and the existing Rust mail core. It does not replace `imyemail-cloud-native`, its data or its independent Homebrew cask. Its own token is `imyemail-cloud-mygo`. MyGo is MIT licensed and pinned to commit `b8beccc577daa00fed7c24112b0a7a0550d4825b` in `go.mod`/`go.sum`. [Install both editions](../docs/INSTALL.md) · [Signatures](../docs/SIGNING.md) · [Preserved versions](../docs/VERSIONS.md).
 
 ## Features and boundaries
+
+### Pulse-inspired native layout
+
+The visual hierarchy borrows from [Pulse](https://pulse.egoist.dev/): a quiet gray sidebar, blue selection, original colored outline icons, rounded summary cards and a focused mail-reading panel. It is implemented with our own MyGo components, not Pulse branding/assets or a Web UI. Counts describe the loaded cache/folders, not server totals or real-time statistics. Light/dark follows system appearance; narrow windows omit summary cards to preserve controls. [UI captures](../docs/screenshots/README.md) use synthetic mail, not a live account.
 
 - Manual IMAP account setup with app passwords, verified TLS, account/folder selection and synchronization.
 - Cached inbox, subject/sender filtering and **plain-text** message reading; no HTML, scripts, images or remote resources are rendered.

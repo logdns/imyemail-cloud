@@ -2,6 +2,16 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [Documentation](docs/README.md) · [Latest downloads](https://github.com/logdns/imyemail-cloud/releases/latest)
 
+## Choose your edition
+
+| **imyemail-cloud-native · 0.2.2** | **imyemail-cloud-mygo · 0.3.1 preview** |
+| --- | --- |
+| [![Native client](docs/screenshots/imyemail-cloud-native.png)](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2) | [![MyGo client](docs/screenshots/imyemail-cloud-mygo.png)](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1) |
+| Platform-native UI: macOS, iOS/iPadOS, Android, Linux and Windows. Choose this for the existing client family. | Go-native desktop UI using [egoist/mygo](https://github.com/egoist/mygo): macOS, Windows and Linux; English UI, plain-text mail, fewer features. |
+| **[Download Native](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2)** · `brew install imyemail-cloud-native` | **[Download MyGo](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)** · `brew install imyemail-cloud-mygo` |
+
+Real UI captures with synthetic mail: macOS Preview and MyGo's headless renderer, not real mailboxes or AI mockups. [Screenshot provenance](docs/screenshots/README.md). Choose your platform below; no source build required. Both editions are free, MIT licensed and independently updated, with separate account data. MyGo is not feature-equivalent to native. Desktop packages are self-signed, **not publicly trusted or Apple-notarized**; iOS IPA requires Apple provisioning.
+
 imyemail-cloud is an MIT-licensed, multi-platform native email client. The public source repository is [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud), and all product links point to [https://imy.email](https://imy.email). Two independent editions are maintained: **imyemail-cloud-native 0.2.2** and **imyemail-cloud-mygo 0.3.1 desktop preview**.
 
 This repository contains only the native clients, shared mail core, optional push bridge, test tooling, build scripts, and open-source documentation. It contains no website/Web application, payments, subscriptions, software activation, device-seat limits, or commercial license gates. Client synchronization and sending do not require a purchased software license.
@@ -25,7 +35,7 @@ brew install imyemail-cloud-native
 brew install imyemail-cloud-mygo
 ```
 
-Homebrew 7 requires one-time trust for third-party taps. After that use `brew upgrade imyemail-cloud-native` to update. See the [installation guide](docs/INSTALL.md) for all platforms, verification, uninstall and signing limits. The tap source is public at [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud).
+Homebrew 7 requires one-time trust for third-party taps. Update each edition independently with `brew upgrade imyemail-cloud-native` or `brew upgrade imyemail-cloud-mygo`. See the [installation guide](docs/INSTALL.md) for all platforms, verification, uninstall and signing limits. The tap source is public at [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud).
 
 | Platform | Download |
 | --- | --- |
@@ -39,6 +49,19 @@ Homebrew 7 requires one-time trust for third-party taps. After that use `brew up
 | MyGo desktop, six architectures | [separate self-signed packages](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1), independent app and cask |
 
 Verify the matching release's **signed SHA256SUMS** using the pinned certificate in [SIGNING.md](docs/SIGNING.md). macOS/Windows code signatures are self-signed, not publicly trusted/notarized. Linux uses signed manifests, not APT repository signing. iOS remains unsigned. Device/store acceptance is separate.
+
+### MyGo: choose your desktop / CPU
+
+| Platform | MyGo 0.3.1 download |
+| --- | --- |
+| macOS Apple Silicon | [ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-darwin-arm64-selfsigned.zip) |
+| macOS Intel | [ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-darwin-amd64-selfsigned.zip) |
+| Windows x64 | [Portable ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-windows-amd64-selfsigned.zip) |
+| Windows ARM64 | [Portable ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-windows-arm64-selfsigned.zip) |
+| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-amd64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-amd64.tar.gz) |
+| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-arm64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.1/imyemail-cloud-mygo-0.3.1-linux-arm64.tar.gz) |
+
+MyGo has no Android/iOS package. Keep its bundled Rust helper and licenses when extracting. Native is packaged for macOS Apple Silicon only; Intel Mac users can choose MyGo. [Install, verify and upgrade](docs/INSTALL.md).
 
 ## Repository layout
 

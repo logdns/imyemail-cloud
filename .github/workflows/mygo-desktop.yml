@@ -102,7 +102,7 @@ jobs:
         if: matrix.platform == 'linux/amd64'
         with:
           name: screenshot-mygo
-          path: ${{ runner.temp }}/imyemail-cloud-mygo.png
+          path: ${{ runner.temp }}/imyemail-cloud-mygo*.png
           if-no-files-found: error
       - name: Build and package
         env:

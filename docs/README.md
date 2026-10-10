@@ -3,6 +3,8 @@
 - [INSTALL.md](INSTALL.md) / [INSTALL.zh-CN.md](INSTALL.zh-CN.md)：各平台下载、Homebrew 安装与校验
 - [SIGNING.md](SIGNING.md)：固定自签指纹、清单/代码/APK 验签、信任移除与密钥保留
 - [VERSIONS.md](VERSIONS.md)：两条版本线、旧源码恢复、后续独立维护与回滚
+- [界面截图](screenshots/README.md)：两版真实 UI 的合成邮件截图、来源和哈希
+- [双版本发布验证](../artifacts/20261011-self-signed-tracks/verification.md)：命名兼容、签名、测试、下载和 Homebrew 同步
 - [ARCHITECTURE.md](ARCHITECTURE.md)：仓库结构、运行边界和数据流
 - [DEVELOPMENT.md](DEVELOPMENT.md)：环境、测试和开发规则
 - [RELEASE.md](RELEASE.md)：版本、构建、GitHub Release 和签名边界

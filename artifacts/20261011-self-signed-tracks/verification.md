@@ -22,6 +22,12 @@ Screenshots use the real native UI and synthetic mail only, not edited mockups o
 
 Publication/download verification: pending until the final release workflows and independent downloaded-package checks complete.
 
+## Pulse layout and initial remote regression
+
+Source `9738a2e393ca31c469cea87ca4ffa45682745023`: native [CI 38068249840](https://github.com/logdns/imyemail-cloud/actions/runs/38068249840) passed 10/10; MyGo [CI 38068249845](https://github.com/logdns/imyemail-cloud/actions/runs/38068249845) passed 6/6. These runs predate the final Pulse layout and do not prove its final packages.
+
+Latest MyGo delta: own Go components borrow Pulse's visual hierarchy only; no Pulse assets copied, no HTML/WebView or remote-content execution added. Read-only plain-text reader, mail/vault/RPC paths unchanged. Go vet, race suite and actual screenshot fixture pass in the same isolated no-network container. Light/dark at 880/1120 widths retain Inbox/Compose/account/read actions; unmatched filter state and loaded-cache count scope have regression tests. Three tap fixtures also pass: independent numeric version selection, separate cask identities, pinned-certificate manifest and package tamper rejection. README images show synthetic mail; native Preview and MyGo headless render are explicitly labeled. Screenshot hashes/provenance: [screenshots](../../docs/screenshots/README.md).
+
 ## Local gates passed
 
 Final naming/signing worktree copied to a dedicated Colima container with no network, read-only source/dependency/toolchain mounts, empty allowlisted environment, scratch HOME/TMP/caches, non-root UID, dropped capabilities/no-new-privileges, 2 CPUs/4 GiB memory, 256 PIDs, 1 GiB file limit, 6 GiB scratch, 900 CPU seconds and 1200-second wall limit. No host credentials, real mailbox or OS vault mounted. Exit 0: six edition identity/DEB replacement tests; two signing/tamper fixtures; Go vet and race tests; real MyGo renderer screenshot fixture; six-language localization consistency (643 × 6); core/Linux/push-bridge Rust formatting. Host-side actionlint, shellcheck for affected Bash scripts and git diff --check pass. Remote platform compilation/signing and native screenshot remain separate gates.

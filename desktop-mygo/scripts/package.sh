@@ -16,6 +16,12 @@ if [[ "$goos" == windows ]]; then suffix=.exe; fi
 cargo build --manifest-path ../core/Cargo.toml --locked --release -p chck-cli --features desktop-vault
 core_target=${CARGO_TARGET_DIR:-../core/target}
 cp "$core_target/release/imyemail-cloud$suffix" "resources/imyemail-cloud-core$suffix"
+if [[ "$goos" == darwin ]]; then
+  if ! /usr/bin/codesign --verify --strict resources/imyemail-cloud-core; then
+    /usr/bin/codesign --force --sign - resources/imyemail-cloud-core
+  fi
+  /usr/bin/codesign --verify --strict resources/imyemail-cloud-core
+fi
 cp ../LICENSE resources/LICENSE
 cp THIRD-PARTY-NOTICES.txt resources/THIRD-PARTY-NOTICES.txt
 for module in github.com/egoist/mygo github.com/ebitengine/purego github.com/go-text/typesetting golang.org/x/image; do

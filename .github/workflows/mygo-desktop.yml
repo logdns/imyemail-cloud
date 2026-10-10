@@ -70,6 +70,7 @@ jobs:
           fi
           GOPROXY=off go vet ./...
           GOPROXY=off go test -count=1 ./...
+          python3 scripts/test_licenses.py
           cd ../core
           cargo +1.95.0 fmt --all -- --check
           cargo +1.95.0 clippy --locked --offline -p chck-cli --all-targets --features desktop-vault -- -D warnings
@@ -105,13 +106,19 @@ jobs:
           reference = next(pathlib.Path("resources").glob("imyemail-cloud-core*"))
           expected = hashlib.file_digest(reference.open("rb"), "sha256").hexdigest()
           helpers = list(root.rglob(reference.name))
-          assert helpers, "packaged helper missing"
+          expected_count = 2 if (root / "deb").is_dir() else 1
+          assert len(helpers) == expected_count, "packaged helper missing or duplicated"
           for helper in helpers:
               assert hashlib.file_digest(helper.open("rb"), "sha256").hexdigest() == expected, "packaged helper differs from this build"
           PY
           binary=$(python3 -c 'import pathlib,sys; names={"imyemail-cloud-mygo","imyemail-cloud-mygo.exe"}; paths=[path for path in pathlib.Path(sys.argv[1]).rglob("*") if path.is_file() and path.name in names and "deb" not in path.relative_to(sys.argv[1]).parts]; assert len(paths)==1, paths; print(paths[0].resolve())' "$unpacked")
           "$binary" --version
           "$binary" --self-test --data-dir "$(python3 -c 'import tempfile; print(tempfile.mkdtemp(prefix="mygo-smoke-"))')"
+          if [[ '${{ runner.os }}' == Linux ]]; then
+            deb_binary=$(python3 -c 'import pathlib,sys; paths=[path for path in pathlib.Path(sys.argv[1]).rglob("imyemail-cloud-mygo") if path.is_file() and not path.is_symlink()]; assert len(paths)==1, paths; print(paths[0].resolve())' "$unpacked/deb")
+            "$deb_binary" --version
+            "$deb_binary" --self-test --data-dir "$(python3 -c 'import tempfile; print(tempfile.mkdtemp(prefix="mygo-deb-smoke-"))')"
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: mygo-${{ strategy.job-index }}

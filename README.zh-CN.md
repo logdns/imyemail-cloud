@@ -8,6 +8,10 @@ imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开
 
 新增 [MyGo 原生桌面重构版](docs/MYGO.zh-CN.md)，桌面版本 `0.3.0`，使用独立的 `mygo-v0.3.0` 预览发布标签。原客户端与 Homebrew 安装保持不变。
 
+## MyGo 桌面预览版
+
+新增 [MyGo 0.3.0 独立桌面发布](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0)，基于原生 Go UI 与同次构建 Rust 核心，覆盖 macOS、Windows、Linux 的 x64/ARM64。能力、安装、签名与测试边界见 [MYGO.zh-CN.md](docs/MYGO.zh-CN.md)。这不是旧版全部功能的等价替换；原版下载、移动端和 Homebrew 保持不变。
+
 ## 下载
 
 [下载最新版本](https://github.com/logdns/imyemail-cloud/releases/latest)；以下直链固定指向 `v0.2.1` 开发包，后续版本请从 Latest 页面选择：

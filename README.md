@@ -8,6 +8,8 @@ This repository contains only the native clients, shared mail core, optional pus
 
 An additional [MyGo native desktop preview](desktop-mygo/README.md) is under development as version `0.3.0`, with a separate `mygo-v0.3.0` release track. It preserves the existing clients and Homebrew installation.
 
+MyGo downloads use the separate [0.3.0 desktop preview release](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0): macOS, Windows and Linux, each in amd64 and arm64 builds. See its [features, installation and signing limits](desktop-mygo/README.md); it is not a replacement for the full mobile/native feature set.
+
 ## Downloads
 
 [Download the latest release](https://github.com/logdns/imyemail-cloud/releases/latest), or choose a `v0.2.1` development package directly. The links below are pinned to `v0.2.1`; use the Latest page for future versions.
@@ -41,6 +43,7 @@ Verify these downloads with the matching [v0.2.1 SHA256SUMS](https://github.com/
 | Directory | Contents |
 | --- | --- |
 | `core/` | Rust IMAP, SMTP, MIME, synchronization, SQLite, HTML sanitization, and native interfaces |
+| `desktop-mygo/` | Additional native Go desktop preview, bundled Rust stdio core and six-architecture packaging |
 | `apple/` | Native macOS, iOS, and iPadOS SwiftUI clients |
 | `android/` | Native Android Jetpack Compose client |
 | `linux/` | Native Linux GTK4/libadwaita client |

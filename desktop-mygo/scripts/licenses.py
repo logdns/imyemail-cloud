@@ -2,7 +2,7 @@ import json
 import pathlib
 import sys
 
-metadata = json.loads(pathlib.Path(sys.argv[1]).read_text())
+metadata = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
 destination = pathlib.Path(sys.argv[2])
 packages = {package["id"]: package for package in metadata["packages"]}
 nodes = {node["id"]: node for node in metadata["resolve"]["nodes"]}
@@ -30,4 +30,4 @@ while pending:
         source = root / license_file
         if source.is_file() and not source.is_symlink() and source.resolve().is_relative_to(root.resolve()):
             (destination / (label + "-license-file.txt")).write_bytes(source.read_bytes())
-(destination / "rust-dependencies.txt").write_text("\n".join(sorted(notices)) + "\n")
+(destination / "rust-dependencies.txt").write_text("\n".join(sorted(notices)) + "\n", encoding="utf-8")

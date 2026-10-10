@@ -7,7 +7,7 @@
 | **imyemail-cloud-native · 0.2.4** | **imyemail-cloud-mygo · 0.3.4 preview** |
 | --- | --- |
 | [![Native client](docs/screenshots/imyemail-cloud-native.png)](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4) | [![MyGo client](docs/screenshots/imyemail-cloud-mygo.png)](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.4) |
-| Platform-native UI: macOS, iOS/iPadOS, Android, Linux and Windows. Choose this for the existing client family. | Go-native desktop UI using [egoist/mygo](https://github.com/egoist/mygo): macOS, Windows and Linux; English UI, plain-text mail, fewer features. |
+| Platform-native UI: macOS, iOS/iPadOS, Android, Linux and Windows. Choose this for the existing client family. | Go-native desktop UI using [egoist/mygo](https://github.com/egoist/mygo), inspired by [Pulse](https://pulse.egoist.dev/): macOS, Windows and Linux; English UI, plain-text mail, fewer features. |
 | **[Download Native](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4)** · `brew install imyemail-cloud-native` | **[Download MyGo](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.4)** · `brew install imyemail-cloud-mygo` |
 
 Real UI captures with synthetic mail: macOS Preview and MyGo's headless renderer, not real mailboxes or AI mockups. [Screenshot provenance](docs/screenshots/README.md). Choose your platform below; no source build required. Both editions are free, MIT licensed and independently updated, with separate account data. MyGo is not feature-equivalent to native. Desktop packages are self-signed, **not publicly trusted or Apple-notarized**; iOS IPA requires Apple provisioning.
@@ -26,7 +26,7 @@ MyGo downloads: [0.3.4 self-signed preview](https://github.com/logdns/imyemail-c
 
 ### Homebrew (macOS 14+)
 
-Trust the public tap once, then install with the short package name:
+Trust the public tap once, then choose the install command for your edition. Both can also be installed side by side:
 
 ```bash
 brew tap logdns/imyemail-cloud
@@ -93,6 +93,8 @@ cargo build --locked --release -p chck-cli -p chck-ffi-c
 Platform prerequisites and commands are documented in the [Apple](apple/README.md), [Android](android/README.md), [Linux](linux/README.md), and [Windows](windows/README.md) guides. See [development](docs/DEVELOPMENT.md), [architecture](docs/ARCHITECTURE.md), and [release](docs/RELEASE.md) documentation for the full workflow.
 
 ## Release boundary
+
+Published source passed native regression (10/10) and MyGo six-architecture CI (6/6). [Homebrew installation/signature/coexistence checks](https://github.com/logdns/homebrew-imyemail-cloud/actions/runs/38078815415) pass 3/3, and [independent signed-release sync](https://github.com/logdns/homebrew-imyemail-cloud/actions/runs/38078815748) passes. All fifteen package downloads were independently inspected; see [verification and audit limits](artifacts/20261011-self-signed-tracks/verification.md).
 
 CI builds/tests both editions. Only manually requested main-branch release/preflight jobs on disposable hosted runners receive signing secrets; preflight signs a dummy fixture and never publishes it. Self-signed desktop code and Android APKs do not imply Apple notarization, public trust, real-device acceptance or app-store release; iOS needs valid Apple provisioning. Historical unsigned packages are preserved with their original descriptions.
 

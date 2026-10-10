@@ -2,6 +2,10 @@
 
 [双版本安装与校验](INSTALL.zh-CN.md) · [自签证书/密钥边界](SIGNING.md) · [版本保留](VERSIONS.md)。自签不等于公信、公证、商店或真机验收；历史审计只覆盖其记录的源码与范围。
 
+MyGo 使用独立账号/系统凭据服务与私有 stdio helper，不监听本地 HTTP；邮件仅进入只读纯文本 UI，不启用 HTML/WebView/远程图片。Pulse 借鉴只涉及自有 UI 组件的视觉布局，不增加邮件执行或跨版本迁移能力。原生客户端仍需逐平台审查净化与 WebView 边界。
+
+当前发布、身份兼容、Pulse UI 与 Homebrew 同步为[限定范围增量复核](../artifacts/20261011-self-signed-tracks/verification.md)；先前 MyGo [quick 审查](../artifacts/20261010-mygo-desktop/security-review.md)有明确延后项。两者均不应称为完整协议/上游框架审计或“无漏洞”。真实邮箱、OS 凭据 ACL、GPU/真机及长期升级恢复仍待专门验收。
+
 ## 主要信任边界
 
 - 不可信邮件 MIME/HTML/URL → 解析器、净化器和平台 WebView；

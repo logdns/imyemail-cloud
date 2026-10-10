@@ -17,4 +17,6 @@
 
 当前原生版 `imyemail-cloud-native`：`0.2.4` / `native-v0.2.4`；MyGo `imyemail-cloud-mygo`：`0.3.4` / `mygo-v0.3.4`。两版分别自签发布，旧 `v0.2.0/v0.2.1/mygo-v0.3.0` 保留。项目主页：[https://imy.email](https://imy.email)，源码：[github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)。
 
+已发布并复验全部 15 个下载包。原生回归 10/10、MyGo 六架构 6/6、[双 cask 安装/验签/共存/卸载 3/3](https://github.com/logdns/homebrew-imyemail-cloud/actions/runs/38078815415) 与[双版本签名同步](https://github.com/logdns/homebrew-imyemail-cloud/actions/runs/38078815748)通过；实际源码、签名和审查缺口以[本轮验证记录](../artifacts/20261011-self-signed-tracks/verification.md)为准，不代表真机、真实邮箱、公证或商店验收。
+
 公开历史版本在 Git 标签/Release 中保留；原始 Chck 资料另存本地 `chckemail-old/`，被 Git 忽略，不属于公开仓库。日期证据按历史事实保留。

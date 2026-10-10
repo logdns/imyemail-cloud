@@ -52,6 +52,8 @@ brew install imyemail-cloud-mygo
 
 [架构](docs/ARCHITECTURE.md) · [开发门禁](docs/DEVELOPMENT.md) · [MyGo 能力边界](docs/MYGO.zh-CN.md) · [发布 SOP](docs/RELEASE.md) · [验证记录](artifacts/20261011-self-signed-tracks/verification.md)。共享核心修复必须两版回归，分别发布递增版本并更新对应 cask 与双语文档。截图与 CI 不代替真实邮箱收发、系统钥匙库 ACL、长期升级恢复或真机验收。
 
+发布源码原生回归 10/10、MyGo 六架构 CI 6/6；[Homebrew 安装/固定证书验签/共存卸载 3/3](https://github.com/logdns/homebrew-imyemail-cloud/actions/runs/38078815415)及[双版本签名同步](https://github.com/logdns/homebrew-imyemail-cloud/actions/runs/38078815748)通过。全部 15 个下载包已独立下载验签、复算哈希并检查产物；安全审查为限定范围，不宣称完整审计或无漏洞。
+
 参与贡献请阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 与 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)。安全问题按 [SECURITY.md](SECURITY.md) 私下报告，不公开未修复漏洞。
 
 ## License

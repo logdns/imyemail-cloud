@@ -8,8 +8,13 @@ permissions:
 
 jobs:
   windows:
-    runs-on: windows-latest
+    name: Windows signing ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-latest, windows-11-arm]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - name: Create disposable unsigned PE fixture

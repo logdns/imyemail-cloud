@@ -16,7 +16,7 @@ $Certificate = Import-PfxCertificate -FilePath $PfxPath -CertStoreLocation Cert:
 if ($Certificate.Thumbprint -ne $Expected.Thumbprint) { throw 'Unexpected signing identity.' }
 $Imported = @()
 try {
-    foreach ($Store in @('Root', 'TrustedPublisher')) {
+    foreach ($Store in @('Root')) {
         Write-Host "Importing pinned public certificate into hosted LocalMachine $Store store"
         $Imported += Import-Certificate -FilePath $PublicPath -CertStoreLocation "Cert:\LocalMachine\$Store"
     }
@@ -35,7 +35,7 @@ try {
     }
     Write-Host "Verified Authenticode signatures on $($Files.Count) binaries. Self-signed publisher: $($Expected.Thumbprint)"
 } finally {
-    foreach ($Store in @('Root', 'TrustedPublisher')) {
+    foreach ($Store in @('Root')) {
         Remove-Item "Cert:\LocalMachine\$Store\$($Expected.Thumbprint)" -ErrorAction SilentlyContinue
     }
     Remove-Item "Cert:\CurrentUser\My\$($Expected.Thumbprint)" -ErrorAction SilentlyContinue

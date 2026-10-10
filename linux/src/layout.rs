@@ -1,5 +1,5 @@
 pub const APP_ID: &str = "email.imy.cloud";
-pub const BRAND: &str = "imyemail-cloud";
+pub const BRAND: &str = "imyemail-cloud-native";
 pub const SUPPORT_URL: &str = "mailto:hello@imy.email?subject=imyemail-cloud%20Linux%20Issue";
 pub const TERMS_URL: &str = "https://imy.email";
 #[cfg_attr(not(feature = "gtk"), allow(dead_code))]
@@ -31,7 +31,7 @@ mod tests {
         assert!((240..=320).contains(&NAV_WIDTH));
         assert!((360..=480).contains(&LIST_WIDTH));
         assert_eq!(APP_ID, "email.imy.cloud");
-        assert_eq!(BRAND, "imyemail-cloud");
+        assert_eq!(BRAND, "imyemail-cloud-native");
         assert_eq!(SUPPORT_URL, "mailto:hello@imy.email?subject=imyemail-cloud%20Linux%20Issue");
         assert_eq!(TERMS_URL, "https://imy.email");
     }

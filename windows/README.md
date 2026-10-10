@@ -1,8 +1,8 @@
-# imyemail-cloud for Windows
+# imyemail-cloud-native for Windows
 
-Windows 10 1809+ / Windows 11 原生 WinUI 3 客户端，使用 MailKit、SQLite 和 WebView2。应用版本为 `0.2.1`，发布程序名为 `imyemail-cloud.exe`。
+Windows 10 1809+ / Windows 11 原生 WinUI 3 客户端，使用 MailKit、SQLite 和 WebView2。原版 `0.2.2`，发布程序名 `imyemail-cloud.exe`；MyGo `0.3.1` 独立便携程序，不替换原版。[安装/更新/卸载](../docs/INSTALL.zh-CN.md) · [固定证书 Authenticode 自签校验](../docs/SIGNING.md) · [历史版本](../docs/VERSIONS.md)。
 
-源码项目仍保留 `Chck.Mail.*` 目录和命名空间作为兼容标识；用户可见的产品、安装器、图标和包身份均为 `imyemail-cloud`。
+源码项目仍保留 `Chck.Mail.*` 目录和命名空间作为兼容标识；用户可见产品与安装包名为 `imyemail-cloud-native`。程序/图标文件名、MSIX 身份和 Inno AppId 保留旧值，保证原生版升级连续性，不是第三个版本。
 
 ## 可移植测试
 
@@ -29,6 +29,6 @@ dotnet test Chck.Mail.Tests/Chck.Mail.Tests.csproj -c Release
   -PublishDirectory .\artifacts\windows-build\win-x64
 ```
 
-开发安装器未签名；必须在对应 Windows 架构上验证安装、启动、升级、卸载、通知、高 DPI 和 WebView2。macOS 上的 .NET 测试不等于 WinUI 构建或发布验收。
+本地开发安装器默认未签名；手动 CI 发布会对本项目程序及安装器做固定证书自签（非公信/SmartScreen 信誉）。仍需对应架构设备验收安装、启动、升级、卸载、通知、高 DPI 和 WebView2；macOS .NET 测试不等于此验收。
 
 凭据使用 Windows Credential Locker。HTML 阅读禁用脚本、下载、权限请求和非用户发起导航，外链只允许 HTTP(S)/mailto。

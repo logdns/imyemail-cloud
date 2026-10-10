@@ -2,7 +2,7 @@
 
 [Project](../README.md) · [中文说明](../docs/MYGO.zh-CN.md) · [Source framework](https://github.com/egoist/mygo)
 
-This is a separate **0.3.0 desktop preview**, using MyGo's Go-native GPU UI and the existing Rust mail core. It does not replace the original Apple, Android, Linux or Windows clients, their databases, or the `imyemail-cloud` Homebrew cask. MyGo is MIT licensed and pinned to commit `b8beccc577daa00fed7c24112b0a7a0550d4825b` in `go.mod`/`go.sum`.
+This is a separate **0.3.1 self-signed desktop preview**, using MyGo's Go-native GPU UI and the existing Rust mail core. It does not replace original clients, their data or the `imyemail-cloud` Homebrew cask. Its own token is `imyemail-cloud-mygo`. MyGo is MIT licensed and pinned to commit `b8beccc577daa00fed7c24112b0a7a0550d4825b` in `go.mod`/`go.sum`. [Install both editions](../docs/INSTALL.md) · [Signatures](../docs/SIGNING.md) · [Preserved versions](../docs/VERSIONS.md).
 
 ## Features and boundaries
 
@@ -16,7 +16,7 @@ This first slice has no OAuth browser flow, attachment import/export, rich HTML 
 
 ## Build and test
 
-Requirements: Go **1.27.1**, Rust **1.95.0** and the pinned module dependencies. Linux packaging requires GTK 3, D-Bus development headers and pkg-config; runtime account operations require an unlocked Secret Service. macOS packaging requires Xcode command-line tools. Windows portable packages are unsigned.
+Requirements: Go **1.27.1**, Rust **1.95.0** and pinned dependencies. Linux requires GTK 3/D-Bus/pkg-config and an unlocked Secret Service. macOS requires Xcode command-line tools. Local builds default to ad-hoc macOS/unsigned Windows; tagged manual CI publication uses the stable self-signed identity.
 
 ```bash
 cd desktop-mygo
@@ -34,14 +34,14 @@ Packaged executables support `--version` and `--self-test --data-dir <absolute-e
 
 ## Downloads and installation
 
-Tagged download entry: [MyGo 0.3.0 desktop preview](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0). Six architectures and eight packages are published with SHA-256 files; the original client remains [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1).
+Download: [MyGo 0.3.1 self-signed preview](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1), six architectures/eight packages with signed SHA256SUMS. Native [0.2.2](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2) is independent. Historical [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) and [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) remain intact.
 
-The new workflow `.github/workflows/mygo-desktop.yml` tests and packages six desktop OS/architecture combinations. Only a manually requested, verified, tagged build publishes a separate `mygo-v0.3.0` preview release in the existing `logdns/imyemail-cloud` repository. The original `v0.2.1` remains available; do not replace its assets or silently switch the Homebrew tap.
+`.github/workflows/mygo-desktop.yml` tests/packages six combinations; only a manually requested verified tagged build signs and publishes. No release overwrite or cask switch. Installation, update/uninstall and rollback instructions are centralized in [INSTALL.md](../docs/INSTALL.md).
 
-- macOS: extract the ad-hoc-signed ZIP and copy `imyemail-cloud-mygo.app` to Applications. It is **not Apple-notarized**; normal Gatekeeper approval remains required.
-- Windows: extract the unsigned portable ZIP into a user-owned directory, retaining the bundled `imyemail-cloud-core.exe`, then run `imyemail-cloud-mygo.exe`. Authenticode and installation/upgrade behavior need separate validation.
+- macOS: extract the `*-selfsigned.zip` and copy `imyemail-cloud-mygo.app` to Applications, or `brew install imyemail-cloud-mygo` after tap/trust. **Not Apple-notarized**; Gatekeeper trust is separate.
+- Windows: extract the `*-selfsigned.zip` into a user-owned directory, retaining `imyemail-cloud-core.exe`, then run `imyemail-cloud-mygo.exe`. Both have self-signed Authenticode; no public trust/SmartScreen reputation is claimed.
 - Linux: packages are built on Ubuntu 24.04; use that release or a compatible runtime. Use the matching DEB, or extract the entire portable tar.gz and run `imyemail-cloud-mygo` in that directory, keeping its core and licenses beside it. The portable release archive does not include the toolkit's separate install/uninstall script. GTK 3, D-Bus and a functioning Secret Service are required. The pinned toolkit's DEB also declares WebKitGTK even though this UI never renders mail HTML; native GPU/runtime validation is separate from headless tests.
 
 Download the matching `.sha256` or `SHA256SUMS` from the **same tagged release** and recompute before installation. No unsigned auto-updater is enabled.
 
-On macOS/Linux, run `shasum -a 256 <downloaded-package>` or `sha256sum -c <downloaded-package>.sha256`. On Windows, run `Get-FileHash <downloaded-package> -Algorithm SHA256` in PowerShell. Compare the full digest, not a filename or size. Hashes establish download consistency; ad-hoc/unsigned packages do not authenticate the publisher independently.
+Follow [SIGNING.md](../docs/SIGNING.md) to pin the certificate and verify manifest signature before package hashes. Linux is signed-manifest authenticated, not APT repository signing. No real-mailbox, GUI/device, long-term upgrade or store acceptance is implied by headless CI.

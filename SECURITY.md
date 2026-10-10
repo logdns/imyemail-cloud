@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-安全修复只面向最新的 `main` 和最新 GitHub Release。旧开发包不承诺单独维护。
+安全修复面向 `main`、`imyemail-cloud-native` 最新 `native-v*` 和 `imyemail-cloud-mygo` 最新 `mygo-v*` 两条版本线；旧 `v*` 是原生历史标签。旧标签/安装包永久保留供复核与回滚，但不承诺对每个历史版本单独回补。共享核心修复须两版回归，分别递增发布。见[版本保留](docs/VERSIONS.md)、[安装](docs/INSTALL.zh-CN.md)与[自签校验](docs/SIGNING.md)。
 
 ## Reporting a vulnerability
 

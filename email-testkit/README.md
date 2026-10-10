@@ -1,5 +1,7 @@
 # email-testkit
 
+客户端[安装/下载](../docs/INSTALL.zh-CN.md)、[验签](../docs/SIGNING.md)、[双版本保留](../docs/VERSIONS.md)。测试邮局不是生产邮件服务，不随客户端自动安装。
+
 协议 golden 语料、畸形 MIME 样本、本地 Docker 测试邮局。`core` 与 Windows MailKit 适配层共用同一套语料。
 
 ## 布局

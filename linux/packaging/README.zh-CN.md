@@ -1,39 +1,11 @@
-# 在 Linux 上安装 imyemail-cloud
+# Linux 安装：原版与 MyGo
 
-imyemail-cloud 提供适用于 64 位 Intel/AMD（`amd64`）和 ARM（`arm64`）电脑的 Debian 安装包。
+[统一安装](https://github.com/logdns/imyemail-cloud/blob/main/docs/INSTALL.zh-CN.md) · [自签校验](https://github.com/logdns/imyemail-cloud/blob/main/docs/SIGNING.md) · [历史版本/更新](https://github.com/logdns/imyemail-cloud/blob/main/docs/VERSIONS.md)
 
-## 安装
+原生版 0.2.2：[native-v0.2.2](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2)，x86_64/ARM64 DEB；MyGo 0.3.1：[mygo-v0.3.1](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)，amd64/arm64 DEB 或 tar.gz。旧包保留，包与校验清单不能跨标签混用。
 
-双击下载的 `.deb`，使用系统“软件安装”打开；也可以在终端运行：
+先固定 RSA 证书指纹，验证 SHA256SUMS 签名和包哈希，再 `sudo apt install ./对应包.deb`。这是签名清单认证，不是 APT 仓库签名；历史 GPG 密钥/命令不适用于这批包。
 
-```bash
-sudo apt install ./imyemail-cloud-linux-x86_64-20260919.deb
-```
+原版需 GTK4/libadwaita/libsecret/WebKitGTK；MyGo 需兼容 Ubuntu 24.04 运行库、GTK 3、D-Bus、解锁的 Secret Service，保留核心和许可证。应用/数据独立，按架构选择。
 
-ARM 电脑请选择文件名包含 `arm64` 的安装包。`apt` 会安装 GTK、libadwaita、libsecret 和 WebKitGTK 等依赖，并把 imyemail-cloud 与正确图标注册到应用菜单。
-
-安装完成后可从应用菜单启动，也可运行 `imyemail-cloud`。
-
-## 验证下载
-
-首次使用时导入发布公钥，然后验证独立签名：
-
-```bash
-gpg --import imyemail-cloud-release.asc
-gpg --verify imyemail-cloud-linux-x86_64-20260919.deb.asc imyemail-cloud-linux-x86_64-20260919.deb
-sha256sum -c imyemail-cloud-linux-x86_64-20260919.deb.sha256
-```
-
-主密钥完整指纹应为：
-
-```text
-713C 3AC1 D1EB D447 8CCF  4C70 56CD D5AB 9315 5F22
-```
-
-## 卸载
-
-```bash
-sudo apt remove imyemail-cloud
-```
-
-卸载软件不会自动删除本地邮件数据库、设置或系统凭据。远程图片仍默认阻止，可在“设置 → 安全与隐私”中开启。
+运行 `imyemail-cloud-native` 或 `imyemail-cloud-mygo`；卸载仅用 `sudo apt remove 对应包名`，不要 purge/autoremove、删除邮件或钥匙库。原生兼容 CLI `imyemail-cloud` 和账号数据位置保持不变。更新前备份数据库及系统凭据，回滚遵循对应版本说明。

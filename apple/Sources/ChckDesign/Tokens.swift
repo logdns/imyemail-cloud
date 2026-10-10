@@ -47,7 +47,7 @@ public enum ChckSpacing {
 }
 
 public enum ChckBrand {
-    public static let product = "imyemail-cloud"
+    public static let product = "imyemail-cloud-native"
     public static let domain = "imy.email"
     public static let bundleID = "email.imy.cloud"
     public static let tagline = L10n.t("一次收件，处处原生。")

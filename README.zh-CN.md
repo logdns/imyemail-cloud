@@ -2,17 +2,17 @@
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [中文文档导航](docs/README.md) · [最新版本下载](https://github.com/logdns/imyemail-cloud/releases/latest)
 
-imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开仓库为 [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)，产品链接统一为 [https://imy.email](https://imy.email)。当前版本为 `0.2.1`。
+imyemail-cloud 是 MIT 开源的多端原生邮件客户端，公开仓库为 [github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)，产品链接为 [https://imy.email](https://imy.email)。**imyemail-cloud-native 0.2.2** 与 **imyemail-cloud-mygo 0.3.1 桌面预览版**独立保留、维护和发布。
 
 本仓库只包含客户端、共享邮件核心、可选推送桥、测试工具、构建脚本和开源文档。它不包含官网/Web 应用、支付、订阅、软件激活、设备名额或商业授权门禁；同步和发送等客户端功能不需要购买软件许可证。
 
 ## MyGo 桌面预览版
 
-新增 [MyGo 0.3.0 独立桌面发布](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0)，基于原生 Go UI 与同次构建 Rust 核心，覆盖 macOS、Windows、Linux 的 x64/ARM64。能力、安装、签名与测试边界见 [MYGO.zh-CN.md](docs/MYGO.zh-CN.md)。这不是旧版全部功能的等价替换；原版下载、移动端和 Homebrew 保持不变。
+新增 [MyGo 0.3.1 自签发布](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)，基于 [egoist/mygo](https://github.com/egoist/mygo) 原生 Go UI 与同次构建 Rust 核心，macOS/Windows/Linux x64/ARM64。它不替代原版全部功能；移动端、源码、数据和独立 Homebrew 包名保留。见[安装](docs/INSTALL.zh-CN.md)、[签名校验](docs/SIGNING.md)、[后续更新与回滚](docs/VERSIONS.md)。历史 [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1)、[v0.2.0](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0)、[mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) 标签和附件不覆盖。
 
 ## 下载
 
-[下载最新版本](https://github.com/logdns/imyemail-cloud/releases/latest)；以下直链固定指向 `v0.2.1` 开发包，后续版本请从 Latest 页面选择：
+[原生版 0.2.2 自签包](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2) · [MyGo 0.3.1 自签包](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)。Latest 属于原生版，MyGo 必须使用独立入口。
 
 ### Homebrew（macOS Apple Silicon）
 
@@ -21,22 +21,24 @@ imyemail-cloud 是一个 MIT 开源的多端原生邮件客户端项目，公开
 ```bash
 brew tap logdns/imyemail-cloud
 brew trust --tap logdns/imyemail-cloud
-brew install imyemail-cloud
+brew install imyemail-cloud-native
+brew install imyemail-cloud-mygo
 ```
 
-Homebrew 7 要求首次信任第三方 tap；之后使用 `brew upgrade imyemail-cloud` 更新。各平台安装、校验、卸载及签名限制见[安装指南](docs/INSTALL.zh-CN.md)。Homebrew 源公开在 [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud)。
+Homebrew 7 要求首次信任第三方 tap；之后使用 `brew upgrade imyemail-cloud-native` 更新。各平台安装、校验、卸载及签名限制见[安装指南](docs/INSTALL.zh-CN.md)。Homebrew 源公开在 [logdns/homebrew-imyemail-cloud](https://github.com/logdns/homebrew-imyemail-cloud)。
 
 | 平台 | 下载 |
 | --- | --- |
-| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-ios-arm64-20261002-unsigned.ipa)（需使用有效 Apple 证书和 provisioning profile 自行签名） |
-| Android | [unsigned APK](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-android-20261002-unsigned.apk)（供开发或自行签名，不能直接作为正式商店安装包） |
-| macOS Apple Silicon | [Homebrew 源](https://github.com/logdns/homebrew-imyemail-cloud) 或 [ad-hoc 签名 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-macos-arm64-20261002-unsigned.zip) |
-| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-linux-x86_64-20261002.deb) |
-| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-linux-arm64-20261002.deb) |
-| Windows x64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-windows-x64-20261002-setup.exe) |
-| Windows ARM64 | [unsigned installer](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/imyemail-cloud-windows-arm64-20261002-setup.exe) |
+| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.2/imyemail-cloud-native-ios-arm64-20261011-unsigned.ipa)，仍需 Apple provisioning |
+| Android | [签名 APK](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.2/imyemail-cloud-native-android-20261011-selfsigned.apk) |
+| macOS Apple Silicon | [自签 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.2/imyemail-cloud-native-macos-arm64-20261011-selfsigned.zip) 或原生版 Homebrew |
+| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.2/imyemail-cloud-native-linux-x86_64-20261011.deb) |
+| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.2/imyemail-cloud-native-linux-arm64-20261011.deb) |
+| Windows x64 | [自签安装器](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.2/imyemail-cloud-native-windows-x64-20261011-selfsigned-setup.exe) |
+| Windows ARM64 | [自签安装器](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.2/imyemail-cloud-native-windows-arm64-20261011-selfsigned-setup.exe) |
+| MyGo 桌面六架构 | [独立自签包](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)，独立应用及 cask |
 
-完整性校验：[v0.2.1 SHA256SUMS](https://github.com/logdns/imyemail-cloud/releases/download/v0.2.1/SHA256SUMS)。这些是未签名开发包，平台签名、公证、真机与商店验收边界见 [发布说明](docs/RELEASE.md)。
+按 [SIGNING.md](docs/SIGNING.md) 固定指纹验证对应 Release 的 **SHA256SUMS 签名**后再核验包。macOS/Windows 为代码自签，非公信/公证；Linux 为签名清单，非 APT 仓库签名；iOS unsigned。真机、商店验收独立。
 
 ## 目录
 
@@ -68,7 +70,7 @@ cargo build --locked --release -p chck-cli -p chck-ffi-c
 
 ## 发布边界
 
-CI 会测试共享核心和各平台工程，并生成开发产物。GitHub Releases 提供未签名开发包的公开下载，并在标题和说明中明确标记；它们不等于 Apple 公证包、签名 Android AAB、签名 Windows 安装包或应用商店版本。
+CI 测试两版并构建；仅手动请求、标签一致的发布接收密钥。桌面自签及 Android APK 签名不等于公信、Apple 公证、真机验收或商店发布；iOS 仍需 Apple provisioning。历史 unsigned 包按原说明保留。
 
 ## 参与和安全
 

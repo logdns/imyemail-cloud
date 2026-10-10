@@ -69,7 +69,7 @@ if ($PrivateFiles.Count -gt 0 -or $PrivateDirectories.Count -gt 0) { throw 'Publ
 # Keep packaging read-only: optimization must happen before build review and hashing.
 & (Join-Path $PSScriptRoot 'optimize-publish.ps1') -PublishDirectory $PublishDirectory -CheckOnly
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
-$OutputName = 'imyemail-cloud-windows-' + $Architecture.ToLowerInvariant() + '-' + $BuildLabel + '-setup'
+$OutputName = 'imyemail-cloud-native-windows-' + $Architecture.ToLowerInvariant() + '-' + $BuildLabel + '-setup'
 $Installer = Join-Path $OutputDirectory ($OutputName + '.exe')
 $CompilerArgs = @(
     "/DPublishDir=$PublishDirectory", "/DOutputDir=$OutputDirectory", "/DArchitecture=$Architecture",

@@ -262,7 +262,7 @@ func (app *mailApp) view(c *ui.Context) {
 	c.SetTheme(&theme)
 	ui.Column(c).Fill().Children(func() {
 		ui.Row(c).Padding(18, 22).Gap(16).Children(func() {
-			ui.Text(c, "imyemail-cloud").Bold().FontSize(24)
+			ui.Text(c, "imyemail-cloud-mygo").Bold().FontSize(22)
 			ui.Text(c, "MYGO / "+version).TextColor(theme.TextMuted).Grow(1)
 			ui.Button(c, "Inbox").Disabled(app.busy).OnClick(app.loadInbox)
 			ui.Button(c, "Outbox").Disabled(app.busy).OnClick(app.loadOutbox)

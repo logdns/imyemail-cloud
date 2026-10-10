@@ -60,6 +60,10 @@ jobs:
           test -z "$(find . -type f -size +90M -not -path './.git/*' -print -quit)"
       - name: Verify generated localizations
         run: python3 scripts/export-client-locales.py --check
+      - name: Verify signing identity and tamper rejection
+        run: python3 scripts/test-release-signing.py
+      - name: Verify independent edition names and upgrade identities
+        run: python3 scripts/test-edition-names.py
       - name: Verify Android JNI branding boundary
         shell: bash
         run: |
@@ -147,6 +151,29 @@ jobs:
       - name: Build macOS app package
         working-directory: apple
         run: ./scripts/package-app.sh
+      - name: Capture native UI with synthetic preview mail
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/native-screenshot/home" "$RUNNER_TEMP/native-screenshot/tmp"
+          env -i PATH=/usr/bin:/bin HOME="$RUNNER_TEMP/native-screenshot/home" \
+            TMPDIR="$RUNNER_TEMP/native-screenshot/tmp" IMYEMAIL_CLOUD_PREVIEW=1 \
+            IMYEMAIL_CLOUD_CAPTURE_PATH="$RUNNER_TEMP/native-screenshot/imyemail-cloud-native.png" \
+            IMYEMAIL_CLOUD_CAPTURE_APPEARANCE=light IMYEMAIL_CLOUD_CAPTURE_SCENE=modern \
+            apple/dist/imyemail-cloud-native.app/Contents/MacOS/ChckMail >"$RUNNER_TEMP/native-screenshot/capture.log" 2>&1 &
+          capture_pid=$!
+          trap 'kill "$capture_pid" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 40); do
+            test ! -s "$RUNNER_TEMP/native-screenshot/imyemail-cloud-native.png" || break
+            kill -0 "$capture_pid"
+            sleep 1
+          done
+          test -s "$RUNNER_TEMP/native-screenshot/imyemail-cloud-native.png"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: screenshot-native
+          path: ${{ runner.temp }}/native-screenshot/imyemail-cloud-native.png
+          if-no-files-found: error
       - name: Build iOS simulator native engine
         working-directory: apple
         shell: bash
@@ -168,7 +195,7 @@ jobs:
             apple/dist/*.zip
             apple/dist/*.ipa
             apple/dist/*.sha256
-            apple/dist/imyemail-cloud Simulator.app
+            apple/dist/imyemail-cloud-native Simulator.app
           if-no-files-found: error
           retention-days: 14
 
@@ -270,7 +297,7 @@ jobs:
           package="$(find dist -maxdepth 1 -name '*.deb' -print -quit)"
           sudo apt-get install -y "./$package"
           ./scripts/smoke-desktop-launch.sh
-          sudo apt-get remove -y imyemail-cloud
+          sudo apt-get remove -y imyemail-cloud-native
           test ! -e /usr/bin/imyemail-cloud
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:

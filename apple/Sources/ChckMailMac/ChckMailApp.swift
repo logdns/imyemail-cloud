@@ -49,7 +49,7 @@ final class ChckMailAppDelegate: NSObject, NSApplicationDelegate {
             defer: false
         )
         window.contentViewController = NSHostingController(rootView: root)
-        window.title = "imyemail-cloud"
+        window.title = ChckBrand.product
         window.titleVisibility = .hidden
         window.titlebarAppearsTransparent = true
         window.minSize = NSSize(width: 980, height: 560)

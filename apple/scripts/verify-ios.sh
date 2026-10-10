@@ -22,7 +22,7 @@ done
 ./scripts/package-ios-simulator.sh > "$RUN/package.log" 2>&1
 for family in iphone ipad; do
   udid="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))[sys.argv[2]])' "$RUN/devices.json" "$family")"
-  xcrun simctl install "$udid" "$ROOT/dist/imyemail-cloud Simulator.app"
+  xcrun simctl install "$udid" "$ROOT/dist/imyemail-cloud-native Simulator.app"
   SIMCTL_CHILD_IMYEMAIL_CLOUD_PREVIEW=0 xcrun simctl launch --terminate-running-process "$udid" email.imy.cloud -chck.notify NO
 done
 printf 'iOS verification reports: %s\n' "$RUN"

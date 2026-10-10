@@ -35,16 +35,38 @@ target=$(rustc -vV | sed -n 's/^host: //p')
 cargo metadata --manifest-path ../core/Cargo.toml --locked --format-version 1 \
   --filter-platform "$target" --features chck-cli/desktop-vault > dist/cargo-metadata.json
 python3 scripts/licenses.py dist/cargo-metadata.json resources/licenses
+if [[ "$goos" == windows && "${IMYEMAIL_CLOUD_SIGN_RELEASE:-0}" == 1 ]]; then
+  pwsh -NoProfile -File ../scripts/sign-windows.ps1 -Directory resources
+fi
 go tool mygo build -platform "$platform" -skip-dmg -skip-notarize
 
 output="dist/$goos-$goarch"
 version=$(python3 -c 'import json; print(json.load(open("mygo.json"))["version"])')
 asset="imyemail-cloud-mygo-$version-$goos-$goarch"
 if [[ "$goos" == darwin ]]; then
+  signing=adhoc
+  if [[ "${IMYEMAIL_CLOUD_SIGN_RELEASE:-0}" == 1 ]]; then
+    identity=${IMYEMAIL_CLOUD_MACOS_SIGNING_IDENTITY:?signing identity required}
+    keychain=${IMYEMAIL_CLOUD_MACOS_SIGNING_KEYCHAIN:?signing keychain required}
+    app="$output/imyemail-cloud-mygo.app"
+    while IFS= read -r -d '' candidate; do
+      if file "$candidate" | grep -q Mach-O; then
+        codesign --force --sign "$identity" --keychain "$keychain" --timestamp=none "$candidate"
+      fi
+    done < <(find "$app/Contents" -type f -print0)
+    codesign --force --sign "$identity" --keychain "$keychain" --timestamp=none "$app"
+    cp "$app/Contents/Resources/imyemail-cloud-core" resources/imyemail-cloud-core
+    signing=selfsigned
+  fi
   /usr/bin/codesign --verify --deep --strict "$output/imyemail-cloud-mygo.app"
-  /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$output/imyemail-cloud-mygo.app" "dist/release/$asset-adhoc.zip"
+  /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$output/imyemail-cloud-mygo.app" "dist/release/$asset-$signing.zip"
 elif [[ "$goos" == windows ]]; then
-  python3 - "$output" "dist/release/$asset-unsigned.zip" <<'PY'
+  signing=unsigned
+  if [[ "${IMYEMAIL_CLOUD_SIGN_RELEASE:-0}" == 1 ]]; then
+    pwsh -NoProfile -File ../scripts/sign-windows.ps1 -Directory "$output"
+    signing=selfsigned
+  fi
+  python3 - "$output" "dist/release/$asset-$signing.zip" <<'PY'
 import pathlib
 import sys
 import zipfile

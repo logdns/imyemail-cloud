@@ -12,7 +12,7 @@ object ChckColor {
 }
 
 object ChckBrand {
-    const val Product = "imyemail-cloud"
+    const val Product = "imyemail-cloud-native"
     const val Domain = "imy.email"
     const val ApplicationId = "email.imy.cloud"
     val Tagline get() = L10n.t("一次收件，处处原生。")

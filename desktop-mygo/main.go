@@ -11,7 +11,7 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-const version = "0.3.0"
+const version = "0.3.1"
 
 func main() {
 	if err := run(); err != nil {
@@ -27,7 +27,7 @@ func run() error {
 	dataPath := flag.String("data-dir", "", "absolute private data directory")
 	flag.Parse()
 	if *showVersion {
-		fmt.Printf("imyemail-cloud MyGo %s (%s/%s)\n", version, runtime.GOOS, runtime.GOARCH)
+		fmt.Printf("imyemail-cloud-mygo %s (%s/%s)\n", version, runtime.GOOS, runtime.GOARCH)
 		return nil
 	}
 	mygo.App.SetName("imyemail-cloud-mygo")
@@ -65,7 +65,7 @@ func run() error {
 		}
 		state := newMailApp(engine)
 		tester := ui.NewTester(state.view, 1120, 760)
-		if !tester.HasText("imyemail-cloud") || !tester.HasText("Inbox") {
+		if !tester.HasText("imyemail-cloud-mygo") || !tester.HasText("Inbox") {
 			return fmt.Errorf("native view smoke test failed")
 		}
 		fmt.Printf("self-test OK: native MyGo UI and bundled Rust engine, version %s\n", version)
@@ -74,7 +74,7 @@ func run() error {
 	state := newMailApp(engine)
 	mygo.App.WhenReady(func() {
 		window := mygo.NewWindow(mygo.WindowOptions{
-			Title: "imyemail-cloud | MyGo", Width: 1120, Height: 760,
+			Title: "imyemail-cloud-mygo", Width: 1120, Height: 760,
 			MinWidth: 880, MinHeight: 640, Content: ui.View(state.view),
 		})
 		state.dispatch = window.Update

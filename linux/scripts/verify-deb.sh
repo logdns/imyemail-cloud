@@ -5,6 +5,8 @@ PACKAGE=${1:?usage: verify-deb.sh path/to/package.deb}
 EXPECTED_ARCH=${2:-}
 
 test -f "$PACKAGE"
+test "$(dpkg-deb -f "$PACKAGE" Package)" = imyemail-cloud-native
+dpkg-deb -f "$PACKAGE" Replaces | grep -Fq 'imyemail-cloud (<< 0.2.2)'
 ACTUAL_ARCH=$(dpkg-deb -f "$PACKAGE" Architecture)
 if [ -n "$EXPECTED_ARCH" ] && [ "$ACTUAL_ARCH" != "$EXPECTED_ARCH" ]; then
   echo "Expected architecture $EXPECTED_ARCH, got $ACTUAL_ARCH" >&2
@@ -19,8 +21,8 @@ for path in \
   ./usr/share/icons/hicolor/scalable/apps/email.imy.cloud.svg \
   ./usr/share/icons/hicolor/128x128/apps/email.imy.cloud.png \
   ./usr/share/icons/hicolor/512x512/apps/email.imy.cloud.png \
-  ./usr/share/doc/imyemail-cloud/README.md \
-  ./usr/share/doc/imyemail-cloud/README.zh-CN.md; do
+  ./usr/share/doc/imyemail-cloud-native/README.md \
+  ./usr/share/doc/imyemail-cloud-native/README.zh-CN.md; do
   printf '%s\n' "$CONTENTS" | grep -q " $path$" || {
     echo "Package is missing $path" >&2
     exit 1
@@ -33,6 +35,7 @@ cleanup() {
 }
 trap cleanup EXIT HUP INT TERM
 dpkg-deb -x "$PACKAGE" "$TMP"
+test "$(readlink "$TMP/usr/bin/imyemail-cloud-native")" = imyemail-cloud
 
 grep -q '^Exec=imyemail-cloud %u$' "$TMP/usr/share/applications/email.imy.cloud.desktop"
 grep -q '^Icon=email.imy.cloud$' "$TMP/usr/share/applications/email.imy.cloud.desktop"

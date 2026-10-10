@@ -40,6 +40,8 @@ artifacts/**/signed-candidates*/
 *.cer
 *.key
 *.pem
+!signing/release-cert.pem
+!signing/release-public.pem
 *.gpg
 *.asc
 *.keystore

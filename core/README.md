@@ -1,5 +1,7 @@
 # imyemail-cloud core
 
+共享核心 `0.2.2` 同时服务原版和独立 MyGo 桌面版。[下载/安装](../docs/INSTALL.zh-CN.md) · [签名](../docs/SIGNING.md) · [双版本与历史恢复](../docs/VERSIONS.md)。
+
 跨平台共享 Rust 邮件核心，负责 IMAP/SMTP、MIME、同步、SQLite、本地搜索、HTML 净化、服务商预设及 C/JSON 接口。客户端 UI 不重复实现协议逻辑。
 
 现有 `chck-*` crate 和 ABI 名称是源码兼容标识，不代表对外产品品牌；对外产品名、链接和包信息均为 `imyemail-cloud`。

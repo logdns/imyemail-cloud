@@ -1,6 +1,8 @@
 # 文档索引
 
 - [INSTALL.md](INSTALL.md) / [INSTALL.zh-CN.md](INSTALL.zh-CN.md)：各平台下载、Homebrew 安装与校验
+- [SIGNING.md](SIGNING.md)：固定自签指纹、清单/代码/APK 验签、信任移除与密钥保留
+- [VERSIONS.md](VERSIONS.md)：两条版本线、旧源码恢复、后续独立维护与回滚
 - [ARCHITECTURE.md](ARCHITECTURE.md)：仓库结构、运行边界和数据流
 - [DEVELOPMENT.md](DEVELOPMENT.md)：环境、测试和开发规则
 - [RELEASE.md](RELEASE.md)：版本、构建、GitHub Release 和签名边界
@@ -11,6 +13,6 @@
 - [开源重构验证记录](../artifacts/20261002-open-source-refactor/verification.md)：本地门禁、聚焦安全检查和未验收边界
 - [Homebrew tap 发布验证](../artifacts/20261002-homebrew-tap/verification.md)：cask、安装、供应链校验和发布边界
 
-原版公开版本：`0.2.1`；MyGo 桌面独立预览轨道：`0.3.0` / `mygo-v0.3.0`。项目主页：[https://imy.email](https://imy.email)，源码：[github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)。
+当前原生版 `imyemail-cloud-native`：`0.2.2` / `native-v0.2.2`；MyGo `imyemail-cloud-mygo`：`0.3.1` / `mygo-v0.3.1`。两版分别自签发布，旧 `v0.2.0/v0.2.1/mygo-v0.3.0` 保留。项目主页：[https://imy.email](https://imy.email)，源码：[github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)。
 
-旧版本和原始资料只保存在维护者本地的 `chckemail-old/` 归档中，该目录被 Git 忽略，不属于公开仓库。
+公开历史版本在 Git 标签/Release 中保留；原始 Chck 资料另存本地 `chckemail-old/`，被 Git 忽略，不属于公开仓库。日期证据按历史事实保留。

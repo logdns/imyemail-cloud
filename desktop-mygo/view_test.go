@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"image/png"
+	"os"
 	"strings"
 	"testing"
 
@@ -12,7 +14,7 @@ func TestNativeInboxAndReadFlow(t *testing.T) {
 	app := newMailApp(&fakeEngine{body: "Plain-text fixture"})
 	app.loadInbox()
 	tester := ui.NewTester(app.view, 1120, 760)
-	if !tester.HasText("imyemail-cloud") || !tester.HasText("Inbox") {
+	if !tester.HasText("imyemail-cloud-mygo") || !tester.HasText("Inbox") {
 		t.Fatal(tester.Texts())
 	}
 	if err := tester.Click("Read mail-1"); err != nil {
@@ -26,6 +28,30 @@ func TestNativeInboxAndReadFlow(t *testing.T) {
 	}
 	if app.page != "compose" || !tester.HasText("New message") {
 		t.Fatal("composer did not open")
+	}
+}
+
+func TestReadmeScreenshot(t *testing.T) {
+	path := os.Getenv("IMYEMAIL_CLOUD_CAPTURE_PATH")
+	if path == "" {
+		t.Skip("screenshot output not requested")
+	}
+	app := newMailApp(&fakeEngine{body: "Welcome to imyemail-cloud-mygo.\n\nThis is synthetic test mail rendered by the real native UI.\nNo private mailbox or credentials are used."})
+	app.loadInbox()
+	tester := ui.NewTester(app.view, 1120, 760)
+	if err := tester.Click("Read mail-1"); err != nil {
+		t.Fatal(err)
+	}
+	output, err := os.Create(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := png.Encode(output, tester.Image()); err != nil {
+		output.Close()
+		t.Fatal(err)
+	}
+	if err := output.Close(); err != nil {
+		t.Fatal(err)
 	}
 }
 

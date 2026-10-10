@@ -88,7 +88,7 @@ fun SettingsScreen(
             ListItem(headlineContent = { Text(L10n.t("安全")) }, supportingContent = { Text(L10n.t("凭据存 Keystore EncryptedSharedPreferences")) })
             ListItem(headlineContent = { Text("AI") }, supportingContent = { Text(L10n.t("默认关闭，需自配端点")) })
             TextButton(onClick = { context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://imy.email"))) }) { Text(L10n.t("官方网站")) }
-            ListItem(headlineContent = { Text(L10n.t("关于")) }, supportingContent = { Text("${ChckBrand.Product} 0.2.1 · ${ChckBrand.Domain}") })
+            ListItem(headlineContent = { Text(L10n.t("关于")) }, supportingContent = { Text("${ChckBrand.Product} 0.2.2 · ${ChckBrand.Domain}") })
         }
     }
 }

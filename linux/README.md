@@ -1,6 +1,8 @@
-# imyemail-cloud for Linux
+# imyemail-cloud-native for Linux
 
 GTK4 + libadwaita 原生客户端，App ID 为 `email.imy.cloud`。邮件逻辑直接链接同仓库 `core/`。
+
+原版 `0.2.2` 与 MyGo `0.3.1` 独立包名/数据目录，历史版本保留。[安装/卸载](../docs/INSTALL.zh-CN.md) · [签名清单校验](../docs/SIGNING.md) · [后续更新与回滚](../docs/VERSIONS.md)。Linux 采用签名清单认证，不声称 APT 仓库签名。
 
 ## 基础验证
 

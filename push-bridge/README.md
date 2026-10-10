@@ -1,5 +1,7 @@
 # push-bridge
 
+双版本客户端入口：[安装](../docs/INSTALL.zh-CN.md)、[验签](../docs/SIGNING.md)、[历史版本](../docs/VERSIONS.md)。该桥为可选服务，不随任一桌面安装自动部署。
+
 imyemail 签名 Webhook → APNs/FCM。推送只含 `account_id` / `folder` / `count`。
 
 ```bash

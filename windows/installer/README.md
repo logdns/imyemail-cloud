@@ -1,5 +1,7 @@
 # Windows EXE installer
 
+[Install both editions](../../docs/INSTALL.md) · [Self-signed Authenticode](../../docs/SIGNING.md) · [Preserved versions](../../docs/VERSIONS.md). Tagged native releases sign the project binaries and installer; local builds stay unsigned by default. MyGo uses a separate portable ZIP, not this installer. Inno's generated uninstaller is not separately Authenticode-signed in this workflow.
+
 Requires **Inno Setup 6.7.0 or newer**, installed from
 https://github.com/jrsoftware/issrc/releases/download/is-6_7_0/innosetup-6.7.0.exe.
 The build script never downloads or executes a bootstrapper.
@@ -51,6 +53,6 @@ An upgrade replaces the application-owned `runtimes` dependency folder to avoid
 retaining obsolete RID-specific files when switching architecture. It does not
 delete any user-profile directory.
 
-These are unsigned development installers until a separate code-signing process
+Local builds are unsigned development installers until a separate code-signing process
 is configured. Validate installation, launch, upgrade and uninstall on Windows;
 compilation alone is not an installation test.

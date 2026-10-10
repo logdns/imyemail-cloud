@@ -62,7 +62,7 @@ struct MacMailboxView: View {
 
     private var topbar: some View {
         HStack(spacing: 12) {
-            Text("imyemail-cloud")
+            Text(ChckBrand.product)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(.secondary)
                 .padding(.leading, 82)

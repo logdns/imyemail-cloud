@@ -13,7 +13,7 @@ cp "$CORE_ROOT/target/release/libchck_mail.dylib" "$ROOT/Sources/ChckAppCore/Res
 swift build -c release --product ChckMailMac
 BIN_DIR="$(swift build -c release --show-bin-path)"
 BIN="$BIN_DIR/ChckMailMac"
-APP="$ROOT/dist/imyemail-cloud.app"
+APP="$ROOT/dist/imyemail-cloud-native.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Frameworks"
 cp "$BIN" "$APP/Contents/MacOS/ChckMail"
@@ -65,7 +65,7 @@ done < <(find "$APP/Contents" -type f -print0)
 /usr/bin/codesign "${SIGN_ARGS[@]}" "$APP"
 /usr/bin/codesign --verify --deep --strict "$APP"
 ARCH="$(uname -m)"
-ZIP_NAME="${IMYEMAIL_CLOUD_MACOS_ZIP_NAME:-imyemail-cloud-macos-$ARCH.zip}"
+ZIP_NAME="${IMYEMAIL_CLOUD_MACOS_ZIP_NAME:-imyemail-cloud-native-macos-$ARCH.zip}"
 [[ "$ZIP_NAME" != */* && "$ZIP_NAME" == *.zip ]] || { echo 'invalid IMYEMAIL_CLOUD_MACOS_ZIP_NAME' >&2; exit 1; }
 ZIP="$ROOT/dist/$ZIP_NAME"
 rm -f "$ZIP"

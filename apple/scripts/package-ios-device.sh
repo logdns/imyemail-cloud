@@ -6,7 +6,7 @@ set -euo pipefail
 # certificate and provisioning profile supplied outside this repository.
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DERIVED="$ROOT/.build-ios-device"
-IPA_NAME="${IMYEMAIL_CLOUD_IOS_IPA_NAME:-imyemail-cloud-ios-arm64-unsigned.ipa}"
+IPA_NAME="${IMYEMAIL_CLOUD_IOS_IPA_NAME:-imyemail-cloud-native-ios-arm64-unsigned.ipa}"
 
 [[ "$IPA_NAME" != */* && "$IPA_NAME" == *.ipa ]] || {
   echo 'invalid IMYEMAIL_CLOUD_IOS_IPA_NAME' >&2
@@ -52,12 +52,12 @@ mkdir -p "$ROOT/dist"
 STAGE="$(mktemp -d "$ROOT/dist/.ios-device.XXXXXX")"
 trap 'rm -rf "$STAGE"' EXIT
 mkdir -p "$STAGE/Payload"
-ditto "$PRODUCT" "$STAGE/Payload/imyemail-cloud.app"
+ditto "$PRODUCT" "$STAGE/Payload/imyemail-cloud-native.app"
 IPA="$ROOT/dist/$IPA_NAME"
 rm -f "$IPA" "$IPA.sha256"
 (cd "$STAGE" && COPYFILE_DISABLE=1 ditto -c -k --keepParent Payload "$IPA")
 unzip -tq "$IPA"
-unzip -Z1 "$IPA" | grep '^Payload/imyemail-cloud\.app/ChckMailIOS$' >/dev/null
+unzip -Z1 "$IPA" | grep '^Payload/imyemail-cloud-native\.app/ChckMailIOS$' >/dev/null
 if unzip -Z1 "$IPA" | grep -E '^__MACOSX/|\.dylib$' >/dev/null; then
   echo 'unexpected metadata or dynamic library found in IPA' >&2
   exit 1

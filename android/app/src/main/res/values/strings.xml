@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">imyemail-cloud</string>
+    <string name="app_name">imyemail-cloud-native</string>
     <string name="widget_unread">Unread mail</string>
     <string name="tile_pause_sync">Sync later</string>
     <string name="shortcut_compose">Compose</string>

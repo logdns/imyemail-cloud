@@ -1,12 +1,12 @@
-name: release-build
+name: Native release
 
 on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Release tag in vMAJOR.MINOR.PATCH format
+        description: Native release tag in native-vMAJOR.MINOR.PATCH format
         required: true
-        default: v0.2.1
+        default: native-v0.2.2
         type: string
       release_date:
         description: Release label in YYYYMMDD format
@@ -14,7 +14,7 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release-build-${{ github.ref }}
@@ -36,11 +36,20 @@ jobs:
         env:
           RELEASE_DATE: ${{ inputs.release_date }}
           RELEASE_TAG: ${{ inputs.release_tag }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/main
           [[ "$RELEASE_DATE" =~ ^[0-9]{8}$ ]]
-          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
-          version="${RELEASE_TAG#v}"
+          [[ "$RELEASE_TAG" =~ ^native-v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          git fetch origin "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+          test "$(git cat-file -t "$RELEASE_TAG")" = tag
+          test "$(git rev-parse "$RELEASE_TAG^{}")" = "$GITHUB_SHA"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Refusing to sign an existing release' >&2
+            exit 1
+          fi
+          version="${RELEASE_TAG#native-v}"
           grep -Fq "version = \"$version\"" core/Cargo.toml
           grep -Fq "version = \"$version\"" push-bridge/Cargo.toml
           grep -Fq "version = \"$version\"" linux/Cargo.toml
@@ -50,7 +59,7 @@ jobs:
           grep -Fq "<Version>$version</Version>" windows/Chck.Mail/Chck.Mail.csproj
 
   apple:
-    name: macOS and iOS signing inputs
+    name: macOS self-signed and iOS unsigned
     needs: validate
     runs-on: macos-15
     timeout-minutes: 60
@@ -63,32 +72,40 @@ jobs:
           rustup target add aarch64-apple-ios
           brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
       - name: Build and test macOS package
+        env:
+          RELEASE_P12_BASE64: ${{ secrets.RELEASE_P12_BASE64 }}
+          RELEASE_P12_PASSWORD: ${{ secrets.RELEASE_P12_PASSWORD }}
+        working-directory: .
+        shell: bash
+        run: |
+          bash scripts/prepare-macos-signing.sh
+      - name: Package self-signed macOS
         working-directory: apple
         shell: bash
         run: |
           set -euo pipefail
           ./scripts/build-native.sh
           swift test -Xswiftc -warnings-as-errors
-          IMYEMAIL_CLOUD_MACOS_ZIP_NAME=imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip \
+          IMYEMAIL_CLOUD_MACOS_ZIP_NAME=imyemail-cloud-native-macos-arm64-${{ inputs.release_date }}-selfsigned.zip \
             ./scripts/package-app.sh
-          file dist/imyemail-cloud.app/Contents/MacOS/ChckMail | grep -q 'arm64'
-          codesign --verify --deep --strict dist/imyemail-cloud.app
+          file dist/imyemail-cloud-native.app/Contents/MacOS/ChckMail | grep -q 'arm64'
+          codesign --verify --deep --strict dist/imyemail-cloud-native.app
       - name: Build unsigned iOS IPA
         working-directory: apple
         shell: bash
         run: |
           set -euo pipefail
-          IMYEMAIL_CLOUD_IOS_IPA_NAME=imyemail-cloud-ios-arm64-${{ inputs.release_date }}-unsigned.ipa \
+          IMYEMAIL_CLOUD_IOS_IPA_NAME=imyemail-cloud-native-ios-arm64-${{ inputs.release_date }}-unsigned.ipa \
             ./scripts/package-ios-device.sh
       - name: Record provenance
         shell: bash
         run: |
           mkdir -p release-output
-          cp apple/dist/imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip release-output/
-          cp apple/dist/imyemail-cloud-macos-arm64-${{ inputs.release_date }}-unsigned.zip.sha256 release-output/
-          cp apple/dist/imyemail-cloud-ios-arm64-${{ inputs.release_date }}-unsigned.ipa release-output/
-          cp apple/dist/imyemail-cloud-ios-arm64-${{ inputs.release_date }}-unsigned.ipa.sha256 release-output/
-          printf 'source_sha=%s\nrelease_date=%s\nplatform=macos-arm64,ios-arm64\nsigning=unsigned-input\n' \
+          cp apple/dist/imyemail-cloud-native-macos-arm64-${{ inputs.release_date }}-selfsigned.zip release-output/
+          cp apple/dist/imyemail-cloud-native-macos-arm64-${{ inputs.release_date }}-selfsigned.zip.sha256 release-output/
+          cp apple/dist/imyemail-cloud-native-ios-arm64-${{ inputs.release_date }}-unsigned.ipa release-output/
+          cp apple/dist/imyemail-cloud-native-ios-arm64-${{ inputs.release_date }}-unsigned.ipa.sha256 release-output/
+          printf 'source_sha=%s\nrelease_date=%s\nplatform=macos-arm64,ios-arm64\nsigning=macos-selfsigned,ios-unsigned\n' \
             "$GITHUB_SHA" '${{ inputs.release_date }}' > release-output/provenance.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -96,9 +113,15 @@ jobs:
           path: release-output/
           if-no-files-found: error
           retention-days: 14
+      - name: Remove ephemeral signing identity
+        if: always()
+        shell: bash
+        run: |
+          security remove-trusted-cert signing/release-cert.pem || true
+          security delete-keychain "$RUNNER_TEMP/imyemail-signing/release.keychain-db" || true
 
   android:
-    name: Android signing input
+    name: Android self-signed APK
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 75
@@ -133,14 +156,27 @@ jobs:
           ./gradlew :core:common:test :core:data:test :core:chckcore:testDebugUnitTest \
             :feature:thread:testDebugUnitTest :app:lintRelease :app:assembleRelease --no-daemon
       - name: Record provenance
+        env:
+          ANDROID_RELEASE_P12_BASE64: ${{ secrets.ANDROID_RELEASE_P12_BASE64 }}
+          ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
         shell: bash
         run: |
           set -euo pipefail
+          umask 077
+          printf '%s' "$ANDROID_RELEASE_P12_BASE64" | base64 --decode > "$RUNNER_TEMP/android.p12"
+          tools="$ANDROID_SDK_ROOT/build-tools/35.0.0"
           mkdir -p release-output
-          cp android/app/build/outputs/apk/release/app-release-unsigned.apk \
-            release-output/imyemail-cloud-android-${{ inputs.release_date }}-unsigned.apk
-          (cd release-output && sha256sum imyemail-cloud-android-${{ inputs.release_date }}-unsigned.apk > imyemail-cloud-android-${{ inputs.release_date }}-unsigned.apk.sha256)
-          printf 'source_sha=%s\nrelease_date=%s\nplatform=android\nsigning=unsigned-input\n' \
+          "$tools/zipalign" -f -P 16 4 android/app/build/outputs/apk/release/app-release-unsigned.apk "$RUNNER_TEMP/aligned.apk"
+          output=release-output/imyemail-cloud-native-android-${{ inputs.release_date }}-selfsigned.apk
+          "$tools/apksigner" sign --ks "$RUNNER_TEMP/android.p12" --ks-key-alias release \
+            --ks-pass env:ANDROID_RELEASE_PASSWORD --key-pass env:ANDROID_RELEASE_PASSWORD \
+            --out "$output" "$RUNNER_TEMP/aligned.apk"
+          "$tools/apksigner" verify --verbose --print-certs "$output" | tee "$RUNNER_TEMP/android-verification.txt"
+          grep -Fqi bf5abd221fb25fa384223e2be1543ddf2818998c5ae4d1f3175a73f9faa9d10d "$RUNNER_TEMP/android-verification.txt"
+          "$tools/zipalign" -c -P 16 4 "$output"
+          rm -f "$RUNNER_TEMP/android.p12"
+          cp signing/android-cert.der release-output/
+          printf 'source_sha=%s\nrelease_date=%s\nplatform=android\nsigning=selfsigned\n' \
             "$GITHUB_SHA" '${{ inputs.release_date }}' > release-output/provenance.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -188,12 +224,12 @@ jobs:
           ./scripts/verify-deb.sh "$package" '${{ matrix.deb_arch }}'
           sudo apt-get install -y "./$package"
           ./scripts/smoke-desktop-launch.sh
-          sudo apt-get remove -y imyemail-cloud
+          sudo apt-get remove -y imyemail-cloud-native
       - name: Record provenance
         shell: bash
         run: |
           mkdir -p release-output
-          package=imyemail-cloud-linux-${{ matrix.file_arch }}-${{ inputs.release_date }}.deb
+          package=imyemail-cloud-native-linux-${{ matrix.file_arch }}-${{ inputs.release_date }}.deb
           cp "linux/dist/$package" release-output/
           (cd release-output && sha256sum "$package" > "$package.sha256")
           printf 'source_sha=%s\nrelease_date=%s\nplatform=linux-%s\nsigning=unsigned-input\n' \
@@ -206,7 +242,7 @@ jobs:
           retention-days: 14
 
   windows:
-    name: Windows unsigned installers
+    name: Windows self-signed installers
     needs: validate
     runs-on: windows-latest
     timeout-minutes: 90
@@ -228,12 +264,21 @@ jobs:
           if ($actual -ne $expected) { throw "Inno Setup hash mismatch: $actual" }
           Start-Process -FilePath $installer -ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/SP-' -Wait
       - name: Build unsigned installers
+        env:
+          RELEASE_P12_BASE64: ${{ secrets.RELEASE_P12_BASE64 }}
+          RELEASE_P12_PASSWORD: ${{ secrets.RELEASE_P12_PASSWORD }}
         shell: pwsh
         run: |
+          ./scripts/sign-windows.ps1 -Directory ./windows-release
           $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
           ./windows/scripts/build-installer.ps1 -Architecture x64 -PublishDirectory ./windows-release/win-x64 -OutputDirectory ./release-output -IsccPath $iscc -BuildLabel '${{ inputs.release_date }}'
           ./windows/scripts/build-installer.ps1 -Architecture ARM64 -PublishDirectory ./windows-release/win-arm64 -OutputDirectory ./release-output -IsccPath $iscc -BuildLabel '${{ inputs.release_date }}'
-          "source_sha=$env:GITHUB_SHA`nrelease_date=${{ inputs.release_date }}`nplatform=windows-x64-arm64`nsigning=unsigned-input" | Set-Content -LiteralPath ./release-output/provenance.txt -Encoding utf8NoBOM
+          ./scripts/sign-windows.ps1 -Directory ./release-output
+          foreach ($Installer in Get-ChildItem ./release-output -Filter '*-setup.exe') {
+            Rename-Item -LiteralPath $Installer.FullName -NewName ($Installer.Name.Replace('-setup.exe', '-selfsigned-setup.exe'))
+          }
+          Get-ChildItem ./release-output -Filter '*.sha256' | Remove-Item
+          "source_sha=$env:GITHUB_SHA`nrelease_date=${{ inputs.release_date }}`nplatform=windows-x64-arm64`nsigning=selfsigned" | Set-Content -LiteralPath ./release-output/provenance.txt -Encoding utf8NoBOM
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: release-input-windows
@@ -246,7 +291,10 @@ jobs:
     needs: [apple, android, linux, windows]
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: release-input-*
@@ -263,26 +311,23 @@ jobs:
             cp "$source" "release-assets/$name"
           done < <(find release-downloads -type f -print0)
           test -n "$(find release-assets -type f -print -quit)"
-          (
-            cd release-assets
-            find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 |
-              sort -z | xargs -0 sha256sum > SHA256SUMS
-          )
       - name: Create GitHub Release
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.release_tag }}
           RELEASE_DATE: ${{ inputs.release_date }}
+          RELEASE_KEY_BASE64: ${{ secrets.RELEASE_KEY_BASE64 }}
         run: |
           set -euo pipefail
           gh release view "$RELEASE_TAG" >/dev/null 2>&1 && {
             echo "Release already exists: $RELEASE_TAG" >&2
             exit 1
           }
+          bash scripts/sign-release-manifest.sh release-assets
           gh release create "$RELEASE_TAG" release-assets/* \
             --repo "$GITHUB_REPOSITORY" \
-            --target "$GITHUB_SHA" \
-            --title "imyemail-cloud $RELEASE_TAG (unsigned development packages)" \
+            --verify-tag \
+            --title "imyemail-cloud-native $RELEASE_TAG (self-signed native clients)" \
             --latest \
-            --notes "Open-source release built on $RELEASE_DATE. Downloadable assets are unsigned development packages, not signed store builds. macOS (Apple Silicon, macOS 14+): first run \`brew tap logdns/imyemail-cloud\`, \`brew trust --tap logdns/imyemail-cloud\`, then \`brew install imyemail-cloud\`. See https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/INSTALL.md for installation and https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/RELEASE.md for signing, notarization, device, and store-validation boundaries."
+            --notes "imyemail-cloud-native, source $GITHUB_SHA. Native tags now use native-v; old v0.2.0/v0.2.1 and mygo-v0.3.0 remain intact. Every new native package uses imyemail-cloud-native; existing application/data/upgrade identities are preserved. macOS/Windows self-signed code signatures; Android signed APK; Linux signed SHA256SUMS (not an APT repository). iOS remains unsigned and requires valid Apple provisioning. Not publicly trusted, Apple-notarized or store releases. Certificate SHA-256: 476ea6e573714e9c46a43471b5938d791e1c3851beb7b3eef8269cf084f48548. Install/verify/update/rollback: https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/INSTALL.md. Separate MyGo edition: https://github.com/$GITHUB_REPOSITORY/releases/tag/mygo-v0.3.1"

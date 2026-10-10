@@ -1,5 +1,7 @@
 # 开发指南
 
+`imyemail-cloud-native 0.2.2` 和 `imyemail-cloud-mygo 0.3.1` 独立维护；[安装/下载](INSTALL.zh-CN.md)、[验签](SIGNING.md)、[历史源码恢复与后续更新](VERSIONS.md)。共享核心变更须两条 CI 回归，发布私钥不进入开发/PR 环境。发布前运行 `python3 scripts/test-edition-names.py`，锁住命名、旧安装升级身份、独立数据空间和 DEB 迁移边界。
+
 ## 基本要求
 
 - Rust 以 `core/rust-toolchain.toml` 为准。

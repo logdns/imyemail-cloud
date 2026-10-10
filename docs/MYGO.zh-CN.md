@@ -1,6 +1,6 @@
 # MyGo 桌面重构版
 
-本次新增 `desktop-mygo/`，基于 [egoist/mygo](https://github.com/egoist/mygo) 的原生 Go UI，复用原有 Rust 邮件核心。桌面版本为 `0.3.0`，采用独立的 `mygo-v0.3.0` 预览发布标签；原来的 `v0.2.1`、移动端、Homebrew cask 和本地归档保持不变。
+`desktop-mygo/` 基于 [egoist/mygo](https://github.com/egoist/mygo) 原生 Go UI，复用 Rust 核心。当前为 `0.3.1` / `mygo-v0.3.1` 自签预览；原版 `0.2.2` 独立更新。历史 `v0.2.0`、`v0.2.1`、`mygo-v0.3.0` 及本地归档不覆盖。见[统一安装](INSTALL.zh-CN.md)、[验签](SIGNING.md)、[版本保留](VERSIONS.md)。
 
 ## 当前能力
 
@@ -15,19 +15,19 @@
 
 ## 安装与安全边界
 
-下载入口：[MyGo 0.3.0 桌面预览版](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0)。六架构、8 个安装/便携包已发布，附独立 `.sha256` 与 `SHA256SUMS`；旧版 [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) 仍为独立下载入口。
+下载：[MyGo 0.3.1 自签预览](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)，六架构/8 包、独立哈希及签名清单；[原生版 0.2.2](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2) 独立下载。旧版仍可下载。
 
 | 平台 | 架构 | 附件文件名 |
 | --- | --- | --- |
-| macOS 14+ | Apple Silicon | `imyemail-cloud-mygo-0.3.0-darwin-arm64-adhoc.zip` |
-| macOS 14+ | Intel | `imyemail-cloud-mygo-0.3.0-darwin-amd64-adhoc.zip` |
-| Windows | x64 | `imyemail-cloud-mygo-0.3.0-windows-amd64-unsigned.zip` |
-| Windows | ARM64 | `imyemail-cloud-mygo-0.3.0-windows-arm64-unsigned.zip` |
-| Linux | x86_64 | `imyemail-cloud-mygo-0.3.0-linux-amd64.deb` / `.tar.gz` |
-| Linux | ARM64 | `imyemail-cloud-mygo-0.3.0-linux-arm64.deb` / `.tar.gz` |
+| macOS 14+ | Apple Silicon | `imyemail-cloud-mygo-0.3.1-darwin-arm64-selfsigned.zip` |
+| macOS 14+ | Intel | `imyemail-cloud-mygo-0.3.1-darwin-amd64-selfsigned.zip` |
+| Windows | x64 | `imyemail-cloud-mygo-0.3.1-windows-amd64-selfsigned.zip` |
+| Windows | ARM64 | `imyemail-cloud-mygo-0.3.1-windows-arm64-selfsigned.zip` |
+| Linux | x86_64 | `imyemail-cloud-mygo-0.3.1-linux-amd64.deb` / `.tar.gz` |
+| Linux | ARM64 | `imyemail-cloud-mygo-0.3.1-linux-arm64.deb` / `.tar.gz` |
 
-- macOS arm64/x86_64：应用 ZIP，ad-hoc 签名，未公证；首次启动遵循系统 Gatekeeper。
-- Windows x64/ARM64：未做 Authenticode 的便携 ZIP，解压后保留同目录的核心程序。
+- macOS arm64/x86_64：固定证书自签 ZIP，未公证；首次启动遵循 Gatekeeper。可单独 `brew install imyemail-cloud-mygo`，首次 tap/trust 见统一安装文档。
+- Windows x64/ARM64：UI/核心有自签 Authenticode，ZIP 本身通过签名清单认证，非默认公信；保留同目录核心。
 - Linux x86_64/ARM64：Ubuntu 24.04 构建的 DEB 与 tar.gz，需要兼容系统、GTK 3、D-Bus 和已解锁的 Secret Service。上游打包器的 DEB 还声明 WebKitGTK 依赖，但本界面不渲染邮件 HTML。
 
 Linux DEB 可通过 `sudo apt install ./对应文件.deb` 安装；便携 tar.gz 整体解压后，直接运行其中的 `imyemail-cloud-mygo`，保留同目录核心与许可证。便携下载不包含上游单独生成的 install/uninstall 脚本；不要用旧版或不匹配版本的脚本安装它。
@@ -36,6 +36,6 @@ Linux DEB 可通过 `sudo apt install ./对应文件.deb` 安装；便携 tar.gz
 
 下载时使用对应标签下的 `.sha256` 或 `SHA256SUMS` 核验。系统签名、公证、真实邮箱、真机 GUI、长期升级与数据恢复不等同于 CI 编译或无窗口测试通过。
 
-macOS/Linux 使用 `shasum -a 256 文件名` 或 `sha256sum -c 文件名.sha256`；Windows PowerShell 使用 `Get-FileHash 文件名 -Algorithm SHA256`，与同一 Release 中的完整哈希比较。不要为运行预览版关闭系统安全功能。Homebrew 的 `brew install imyemail-cloud` 仍安装原版，不会切换到 MyGo。
+按 [SIGNING.md](SIGNING.md) 固定完整指纹、验证清单签名，再核对包哈希。Linux 是签名清单，非 APT 仓库签名。不要关闭系统安全功能。`brew install imyemail-cloud-native` 安装原生版，`brew install imyemail-cloud-mygo` 独立安装预览版。
 
 源码、精确依赖与构建说明见 [desktop-mygo/README.md](../desktop-mygo/README.md)。旧版安装入口见 [INSTALL.zh-CN.md](INSTALL.zh-CN.md)。

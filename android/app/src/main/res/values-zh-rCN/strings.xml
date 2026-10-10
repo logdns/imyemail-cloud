@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">imyemail-cloud</string>
+    <string name="app_name">imyemail-cloud-native</string>
     <string name="widget_unread">未读邮件</string>
     <string name="tile_pause_sync">稍后同步</string>
     <string name="shortcut_compose">写信</string>

@@ -15,11 +15,11 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationTitle>imyemail-cloud</ApplicationTitle>
+    <ApplicationTitle>imyemail-cloud-native</ApplicationTitle>
     <AssemblyName>imyemail-cloud</AssemblyName>
     <SatelliteResourceLanguages>en;en-US;zh;zh-Hans;zh-CN;zh-Hant;zh-TW;ja;ja-JP;es;es-ES;fr;fr-FR</SatelliteResourceLanguages>
-    <Version>0.2.1</Version>
-    <InformationalVersion>0.2.1</InformationalVersion>
+    <Version>0.2.2</Version>
+    <InformationalVersion>0.2.2</InformationalVersion>
     <ApplicationIcon>Assets\imyemail-cloud.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>

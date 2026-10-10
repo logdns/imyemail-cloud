@@ -9,22 +9,22 @@
   #error Architecture is required (x64 or ARM64)
 #endif
 #ifndef AppVersion
-  #define AppVersion "0.2.1"
+  #define AppVersion "0.2.2"
 #endif
 #ifndef OutputName
-  #define OutputName "imyemail-cloud-windows-" + LowerCase(Architecture) + "-setup"
+  #define OutputName "imyemail-cloud-native-windows-" + LowerCase(Architecture) + "-setup"
 #endif
 
 [Setup]
 ; One product identity across x64 and ARM64; an architecture switch is an upgrade.
 AppId={{39D3BD46-178F-4D6E-9D44-D42A1EDE76E7}
-AppName=imyemail-cloud
+AppName=imyemail-cloud-native
 AppVersion={#AppVersion}
 AppPublisher=imyemail-cloud
 AppPublisherURL=https://imy.email
 AppSupportURL=https://imy.email
 DefaultDirName={localappdata}\Programs\imyemail-cloud
-DefaultGroupName=imyemail-cloud
+DefaultGroupName=imyemail-cloud-native
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
@@ -52,9 +52,9 @@ CloseApplicationsFilter=*.exe,*.dll
 RestartApplications=no
 ; Never force-close a process that may contain an unsent draft.
 AllowCancelDuringInstall=no
-UninstallDisplayName=imyemail-cloud
+UninstallDisplayName=imyemail-cloud-native
 VersionInfoVersion={#AppVersion}
-VersionInfoDescription=imyemail-cloud ({#Architecture}) Setup
+VersionInfoDescription=imyemail-cloud-native ({#Architecture}) Setup
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
@@ -88,11 +88,11 @@ Type: filesandordirs; Name: "{app}\runtimes"
 Type: filesandordirs; Name: "{app}\MarkItDown"
 
 [Icons]
-Name: "{userprograms}\imyemail-cloud"; Filename: "{app}\imyemail-cloud.exe"; WorkingDir: "{app}"
-Name: "{userdesktop}\imyemail-cloud"; Filename: "{app}\imyemail-cloud.exe"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{userprograms}\imyemail-cloud-native"; Filename: "{app}\imyemail-cloud.exe"; WorkingDir: "{app}"
+Name: "{userdesktop}\imyemail-cloud-native"; Filename: "{app}\imyemail-cloud.exe"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\imyemail-cloud.exe"; Description: "{cm:LaunchProgram,imyemail-cloud}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\imyemail-cloud.exe"; Description: "{cm:LaunchProgram,imyemail-cloud-native}"; Flags: nowait postinstall skipifsilent
 
 ; No UninstallDelete section: account databases and credentials stay in the
 ; user's profile. Only files owned by this installer are removed.

@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:core="using:Chck.Mail.Core"
-    Title="imyemail-cloud">
+    Title="imyemail-cloud-native">
     <Grid x:Name="RootGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Image Source="ms-appx:///Assets/Square44x44Logo.png" Width="24" Height="24" />
-            <TextBlock Grid.Column="1" Text="imyemail-cloud" FontWeight="SemiBold" VerticalAlignment="Center" />
+            <TextBlock Grid.Column="1" Text="imyemail-cloud-native" FontWeight="SemiBold" VerticalAlignment="Center" />
         </Grid>
         <Grid Grid.Row="1" Padding="20,8,20,16" ColumnSpacing="12">
             <Grid.ColumnDefinitions>
@@ -197,7 +197,7 @@
                         <PivotItem Header="{x:Bind core:LocaleText.T('关于'), Mode=OneTime}">
                             <StackPanel Spacing="12" Margin="0,12,0,0">
                                 <HyperlinkButton Content="https://imy.email" NavigateUri="https://imy.email" />
-                                <TextBlock Text="imyemail-cloud" Style="{StaticResource TitleTextBlockStyle}" />
+                                <TextBlock Text="imyemail-cloud-native" Style="{StaticResource TitleTextBlockStyle}" />
                                 <TextBlock Text="{x:Bind core:LocaleText.T('留一点时间，给重要的事。'), Mode=OneTime}" />
                                 <TextBlock Text="{x:Bind core:LocaleText.T('Windows · 开发测试版 20260916.4'), Mode=OneTime}" />
                                 <TextBlock Text="{x:Bind core:LocaleText.T('原生 Windows 客户端 · 本地保存邮件缓存与设置'), Mode=OneTime}" TextWrapping="Wrap" />

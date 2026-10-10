@@ -1,5 +1,7 @@
 # 架构
 
+[双版本安装](INSTALL.zh-CN.md) · [签名与发布信任边界](SIGNING.md) · [历史源码保留](VERSIONS.md)。两版 App ID/数据独立，原版不被 MyGo 替代。
+
 imyemail-cloud 采用共享邮件核心加原生 UI 的结构：
 
 ```text
@@ -29,4 +31,4 @@ Apple / Android / Linux / Windows
 
 `desktop-mygo/` 是独立的 Go/MyGo 原生 UI 桌面重构版，通过私有 stdin/stdout 调用同次构建的 Rust CLI 核心。它使用独立数据目录和系统凭据服务，不迁移旧客户端状态，不启用 Web UI、监听端口或不签名的自动更新。当前能力边界见 [MYGO.zh-CN.md](MYGO.zh-CN.md)。
 
-部分 crate、Swift 类型、Kotlin 源目录和 .NET 命名空间仍使用 `chck`/`Chck`，用于保持 ABI、数据库和工程兼容。它们不是对外品牌；产品名、域名、链接、包名和发布产物统一为 `imyemail-cloud` / `imy.email`。
+部分 crate、Swift 类型、Kotlin 源目录和 .NET 命名空间仍使用 `chck`/`Chck`，用于保持 ABI、数据库和工程兼容。它们不是对外品牌。仓库品牌为 `imyemail-cloud`，产品分别为 `imyemail-cloud-native` 与 `imyemail-cloud-mygo`，产品链接保持 `https://imy.email`。原生内部可执行文件、应用/钥匙库/数据库身份保持旧值；MyGo 使用独立身份。包名、标签、数据和升级矩阵见 [VERSIONS.md](VERSIONS.md)。

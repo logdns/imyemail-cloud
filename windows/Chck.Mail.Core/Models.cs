@@ -139,7 +139,7 @@ public sealed record Signature(string Id, string AccountId, string Name, string 
 
 public static class ChckBrand
 {
-    public const string Product = "imyemail-cloud";
+    public const string Product = "imyemail-cloud-native";
     public const string Domain = "imy.email";
     public const string PackageFamily = "imyemail-cloud";
 }

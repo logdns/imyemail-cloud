@@ -1,5 +1,7 @@
 # 验证记录索引
 
+- [2026-10-11：双版本命名、签名、截图与独立发布](20261011-self-signed-tracks/verification.md)
+
 - [2026-10-10：MyGo 原生桌面重构、测试与发布验证](20261010-mygo-desktop/verification.md)
 
 - [2026-10-08：双语安装文档与 Release 入口整理](20261008-documentation-release/verification.md)

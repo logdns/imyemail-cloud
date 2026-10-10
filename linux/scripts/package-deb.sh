@@ -51,7 +51,7 @@ install -d \
   "$STAGE/usr/share/metainfo" \
   "$STAGE/usr/share/icons/hicolor/scalable/apps" \
   "$STAGE/usr/share/icons/hicolor/symbolic/apps" \
-  "$STAGE/usr/share/doc/imyemail-cloud"
+  "$STAGE/usr/share/doc/imyemail-cloud-native"
 
 install -m 0755 "$BINARY" "$STAGE/usr/bin/imyemail-cloud"
 strip "$STAGE/usr/bin/imyemail-cloud"
@@ -66,13 +66,14 @@ for size in 16 24 32 48 64 128 256 512; do
   install -m 0644 "$ROOT/data/icons/hicolor/${size}x${size}/apps/email.imy.cloud.png" "$destination/"
 done
 
-install -m 0644 "$ROOT/packaging/README.en.md" "$STAGE/usr/share/doc/imyemail-cloud/README.md"
-install -m 0644 "$ROOT/packaging/README.zh-CN.md" "$STAGE/usr/share/doc/imyemail-cloud/README.zh-CN.md"
-install -m 0644 "$ROOT/LICENSE" "$STAGE/usr/share/doc/imyemail-cloud/copyright"
+install -m 0644 "$ROOT/packaging/README.en.md" "$STAGE/usr/share/doc/imyemail-cloud-native/README.md"
+install -m 0644 "$ROOT/packaging/README.zh-CN.md" "$STAGE/usr/share/doc/imyemail-cloud-native/README.zh-CN.md"
+install -m 0644 "$ROOT/LICENSE" "$STAGE/usr/share/doc/imyemail-cloud-native/copyright"
+ln -s imyemail-cloud "$STAGE/usr/bin/imyemail-cloud-native"
 
 INSTALLED_SIZE=$(du -sk "$STAGE/usr" | awk '{print $1}')
 cat >"$STAGE/DEBIAN/control" <<EOF
-Package: imyemail-cloud
+Package: imyemail-cloud-native
 Version: $VERSION
 Section: mail
 Priority: optional
@@ -82,7 +83,9 @@ Homepage: https://imy.email
 Installed-Size: $INSTALLED_SIZE
 Depends: libc6 (>= 2.34), libgcc-s1, libgtk-4-1 (>= 4.14), libadwaita-1-0 (>= 1.5), libsecret-1-0, libwebkitgtk-6.0-4
 Recommends: gnome-keyring, desktop-file-utils
-Description: Native imyemail-cloud client for Linux
+Breaks: imyemail-cloud (<< 0.2.2)
+Replaces: imyemail-cloud (<< 0.2.2)
+Description: imyemail-cloud-native client for Linux
  A GTK4 and libadwaita email client using the shared imyemail-cloud mail engine.
  Remote images are blocked by default and may be enabled for HTTPS images.
 EOF
@@ -115,7 +118,7 @@ chmod 0755 "$STAGE/DEBIAN/postrm"
 
 OUTPUT_DIR=${IMYEMAIL_CLOUD_LINUX_OUTPUT_DIR:-$ROOT/dist}
 install -d "$OUTPUT_DIR"
-OUTPUT="$OUTPUT_DIR/imyemail-cloud-linux-$FILE_ARCH-$BUILD_DATE.deb"
+OUTPUT="$OUTPUT_DIR/imyemail-cloud-native-linux-$FILE_ARCH-$BUILD_DATE.deb"
 dpkg-deb --build --root-owner-group "$STAGE" "$OUTPUT"
 sha256sum "$OUTPUT" >"$OUTPUT.sha256"
 printf '%s\n' "$OUTPUT"

@@ -15,7 +15,7 @@
 
 ## 安装与安全边界
 
-下载入口：[MyGo 0.3.0 桌面预览版](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0)。只有发布门禁完成后附件才可用；旧版 [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) 仍为独立下载入口。
+下载入口：[MyGo 0.3.0 桌面预览版](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0)。六架构、8 个安装/便携包已发布，附独立 `.sha256` 与 `SHA256SUMS`；旧版 [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) 仍为独立下载入口。
 
 | 平台 | 架构 | 附件文件名 |
 | --- | --- | --- |
@@ -29,6 +29,8 @@
 - macOS arm64/x86_64：应用 ZIP，ad-hoc 签名，未公证；首次启动遵循系统 Gatekeeper。
 - Windows x64/ARM64：未做 Authenticode 的便携 ZIP，解压后保留同目录的核心程序。
 - Linux x86_64/ARM64：Ubuntu 24.04 构建的 DEB 与 tar.gz，需要兼容系统、GTK 3、D-Bus 和已解锁的 Secret Service。上游打包器的 DEB 还声明 WebKitGTK 依赖，但本界面不渲染邮件 HTML。
+
+Linux DEB 可通过 `sudo apt install ./对应文件.deb` 安装；便携 tar.gz 整体解压后，直接运行其中的 `imyemail-cloud-mygo`，保留同目录核心与许可证。便携下载不包含上游单独生成的 install/uninstall 脚本；不要用旧版或不匹配版本的脚本安装它。
 
 数据位于系统用户配置目录下独立的 `imyemail-cloud-mygo/`，不自动迁移或修改旧数据库。账号密码使用 macOS Keychain、Windows 系统凭据或 Linux Secret Service；钥匙库不可用时返回错误，不静默转为明文文件。私有 stdin/stdout 传递 JSON，不开放本地 HTTP 端口。请求/响应有大小限制，操作超时会终止核心进程并要求重新启动。
 

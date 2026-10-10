@@ -7,6 +7,7 @@
 - [SECURITY.md](SECURITY.md)：客户端安全模型和检查清单
 - [MYGO.zh-CN.md](MYGO.zh-CN.md)：Go 原生桌面重构版、六架构下载、功能边界与独立预览发布
 - [MyGo 验证记录](../artifacts/20261010-mygo-desktop/verification.md)：隔离测试、限定范围审计、构建与下载核验
+- [MyGo 安全审查摘要](../artifacts/20261010-mygo-desktop/security-review.md)：源码控制、partial coverage 与待验收边界
 - [开源重构验证记录](../artifacts/20261002-open-source-refactor/verification.md)：本地门禁、聚焦安全检查和未验收边界
 - [Homebrew tap 发布验证](../artifacts/20261002-homebrew-tap/verification.md)：cask、安装、供应链校验和发布边界
 

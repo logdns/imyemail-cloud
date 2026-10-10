@@ -23,7 +23,7 @@ cd desktop-mygo
 go mod download
 go vet ./...
 go test -count=1 ./...
-bash scripts/package.sh darwin/arm64
+RUSTUP_TOOLCHAIN=1.95.0 bash scripts/package.sh darwin/arm64
 ```
 
 `package.sh` builds the current platform only (`darwin/amd64`, `linux/amd64`, `linux/arm64`, `windows/amd64`, `windows/arm64` also supported), invokes the pinned `go tool mygo build`, bundles the same-build Rust engine and license notices, and generates packages with SHA-256 under `dist/release/`. Version metadata comes from `mygo.json`.
@@ -34,13 +34,13 @@ Packaged executables support `--version` and `--self-test --data-dir <absolute-e
 
 ## Downloads and installation
 
-Tagged download entry: [MyGo 0.3.0 desktop preview](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0). Download availability is conditional on the release gates below; the original client remains [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1).
+Tagged download entry: [MyGo 0.3.0 desktop preview](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0). Six architectures and eight packages are published with SHA-256 files; the original client remains [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1).
 
 The new workflow `.github/workflows/mygo-desktop.yml` tests and packages six desktop OS/architecture combinations. Only a manually requested, verified, tagged build publishes a separate `mygo-v0.3.0` preview release in the existing `logdns/imyemail-cloud` repository. The original `v0.2.1` remains available; do not replace its assets or silently switch the Homebrew tap.
 
 - macOS: extract the ad-hoc-signed ZIP and copy `imyemail-cloud-mygo.app` to Applications. It is **not Apple-notarized**; normal Gatekeeper approval remains required.
 - Windows: extract the unsigned portable ZIP into a user-owned directory, retaining the bundled `imyemail-cloud-core.exe`, then run `imyemail-cloud-mygo.exe`. Authenticode and installation/upgrade behavior need separate validation.
-- Linux: packages are built on Ubuntu 24.04; use that release or a compatible runtime. Use the matching DEB or extract the archive and review its install script. GTK 3, D-Bus and a functioning Secret Service are required. The pinned toolkit's DEB also declares WebKitGTK even though this UI never renders mail HTML; native GPU/runtime validation is separate from headless tests.
+- Linux: packages are built on Ubuntu 24.04; use that release or a compatible runtime. Use the matching DEB, or extract the entire portable tar.gz and run `imyemail-cloud-mygo` in that directory, keeping its core and licenses beside it. The portable release archive does not include the toolkit's separate install/uninstall script. GTK 3, D-Bus and a functioning Secret Service are required. The pinned toolkit's DEB also declares WebKitGTK even though this UI never renders mail HTML; native GPU/runtime validation is separate from headless tests.
 
 Download the matching `.sha256` or `SHA256SUMS` from the **same tagged release** and recompute before installation. No unsigned auto-updater is enabled.
 

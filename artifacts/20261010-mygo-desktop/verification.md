@@ -30,6 +30,24 @@
 - macOS 系统调用不能在本机满足完整硬资源限制，未在宿主账户执行审计目标；跨平台打包/包自检交给平台 CI，不声称真机或真实邮箱验收。
 - 正式创建下载前必须等待新 MyGo 六架构 CI、原工程回归与限定范围审计；发布标签不可移动，下载附件必须独立复算 SHA-256。
 
+## 最终源码门禁
+
+- 源码：`7838430d77aa0d597d795bba2f99c968031aeb3b`；不可移动 annotated tag：`mygo-v0.3.0`。
+- MyGo 六架构门禁 [38063232640](https://github.com/logdns/imyemail-cloud/actions/runs/38063232640)：6/6 成功，包含 fmt/vet、12 项 Go 测试、Unicode 许可证测试、Rust fmt/Clippy/5 项 desktop 测试、原生 Release 构建、解压包自检。Linux DEB 与 tar 内核心均检查数量和同次构建哈希，并分别自检。
+- 原工程回归 [38063232604](https://github.com/logdns/imyemail-cloud/actions/runs/38063232604)：10/10 成功，Apple/iOS Simulator、Android、Windows、Linux、三系统 core、Push Bridge/testkit、仓库卫生均通过。
+- 同一最终源码的 Linux arm64 在禁外网容器重新构建，DEB/tar 解压后的 `--version` 与 `--self-test` 均通过；两包内置核心哈希一致，HarfBuzz 单独 MIT notice 存在，DEB 显示独立 package 名/0.3.0/arm64 与 GTK/WebKitGTK/D-Bus 依赖。便携 tar 不包含独立安装脚本。
+- 发布工作流 [38063935501](https://github.com/logdns/imyemail-cloud/actions/runs/38063935501) 从标签对应提交再次构建；最终发布和下载复验另行记录，不用分支上的包代替最终附件。
+
+## 公开发布与下载复验
+
+- [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) 公开、非 draft、prerelease；发布工作流六个构建与 publish 作业全部成功。GitHub annotated tag 对象 `7f6eabeb1bab569d6e68eeeb534cef4344ffc164` 指向上述最终源码，未移动原 tag。
+- 8 个最终包与各 `.sha256`、`SHA256SUMS` 共 17 个附件全部重新下载。禁外网、只读输入、512 MiB/1 CPU/32 PID/128 MiB scratch/90 秒墙钟容器独立检查：8/8 总表及独立哈希相符；Mach-O、PE、ELF 的 UI 与 helper 架构均正确；每包各一个主程序与核心。
+- 所有主程序 Go build info 为 Go 1.27.1、固定 MyGo 版本、`vcs.revision=7838430d77aa0d597d795bba2f99c968031aeb3b`、`vcs.modified=false`，不是旧包。macOS Info.plist 为 `email.imy.cloud.mygo` / 0.3.0，并有 CodeResources；签名有效性由各 macOS 发布 CI 对解压包实际验证，不声称本机做了公证。
+- Linux DEB 与 tar 内 helper SHA-256 按架构分别一致；DEB control 名称/版本/架构正确。每包均包含主许可证、HarfBuzz 单独 MIT notice 与 Rust 依赖声明。附件哈希见 [SHA256SUMS](SHA256SUMS)；源代码与检查通过不等于全部第三方许可证义务审计。
+- 使用无 GitHub token 的 `curl -q` 匿名下载 macOS arm64 ZIP 和 SHA256SUMS，与上述下载逐字节一致，公开下载入口可用。
+- GitHub Latest 仍为原 `v0.2.1`；Homebrew cask blob SHA 仍是 `15e601633588b71f1a25f4d71935e7c8ca16057d`，没有改动 tap。旧版 bundle 完整历史校验通过，`chckemail-old/` 仍被忽略。
+- 发布后只提交下载状态、安装说明纠正和验证证据；不改产品源码、标签或已发布包，也不以证据提交触发新版本发布。
+
 ## 未验收边界
 
 - Developer ID/Apple 公证、Authenticode、真实邮箱收发、GUI 真机/长期升级/回滚数据兼容性未验收。

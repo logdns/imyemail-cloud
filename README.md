@@ -6,7 +6,7 @@ imyemail-cloud is an MIT-licensed, multi-platform native email client. The publi
 
 This repository contains only the native clients, shared mail core, optional push bridge, test tooling, build scripts, and open-source documentation. It contains no website/Web application, payments, subscriptions, software activation, device-seat limits, or commercial license gates. Client synchronization and sending do not require a purchased software license.
 
-An additional [MyGo native desktop preview](desktop-mygo/README.md) is under development as version `0.3.0`, with a separate `mygo-v0.3.0` release track. It preserves the existing clients and Homebrew installation.
+An additional [MyGo native desktop preview](desktop-mygo/README.md) is available as version `0.3.0`, with a separate `mygo-v0.3.0` release track. It preserves the existing clients and Homebrew installation.
 
 MyGo downloads use the separate [0.3.0 desktop preview release](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0): macOS, Windows and Linux, each in amd64 and arm64 builds. See its [features, installation and signing limits](desktop-mygo/README.md); it is not a replacement for the full mobile/native feature set.
 

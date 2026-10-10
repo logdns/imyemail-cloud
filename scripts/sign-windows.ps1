@@ -11,12 +11,14 @@ $Expected = New-Object Security.Cryptography.X509Certificates.X509Certificate2($
 $PfxPath = Join-Path $env:RUNNER_TEMP 'release.p12'
 [IO.File]::WriteAllBytes($PfxPath, [Convert]::FromBase64String($env:RELEASE_P12_BASE64))
 $Password = ConvertTo-SecureString $env:RELEASE_P12_PASSWORD -AsPlainText -Force
+Write-Host 'Importing private identity into the disposable CurrentUser My store'
 $Certificate = Import-PfxCertificate -FilePath $PfxPath -CertStoreLocation Cert:\CurrentUser\My -Password $Password
 if ($Certificate.Thumbprint -ne $Expected.Thumbprint) { throw 'Unexpected signing identity.' }
 $Imported = @()
 try {
     foreach ($Store in @('Root', 'TrustedPublisher')) {
-        $Imported += Import-Certificate -FilePath $PublicPath -CertStoreLocation "Cert:\CurrentUser\$Store"
+        Write-Host "Importing pinned public certificate into hosted LocalMachine $Store store"
+        $Imported += Import-Certificate -FilePath $PublicPath -CertStoreLocation "Cert:\LocalMachine\$Store"
     }
     $Files = @(Get-ChildItem -LiteralPath $Directory -Recurse -File | Where-Object { $_.Name -match '^(imyemail-cloud.*|Chck\.Mail.*)\.(exe|dll)$' })
     if ($Files.Count -eq 0) { throw 'No Windows binaries found to sign.' }
@@ -33,8 +35,9 @@ try {
     }
     Write-Host "Verified Authenticode signatures on $($Files.Count) binaries. Self-signed publisher: $($Expected.Thumbprint)"
 } finally {
-    foreach ($Store in @('Root', 'TrustedPublisher', 'My')) {
-        Remove-Item "Cert:\CurrentUser\$Store\$($Expected.Thumbprint)" -ErrorAction SilentlyContinue
+    foreach ($Store in @('Root', 'TrustedPublisher')) {
+        Remove-Item "Cert:\LocalMachine\$Store\$($Expected.Thumbprint)" -ErrorAction SilentlyContinue
     }
+    Remove-Item "Cert:\CurrentUser\My\$($Expected.Thumbprint)" -ErrorAction SilentlyContinue
     Remove-Item -LiteralPath $PfxPath -ErrorAction SilentlyContinue
 }

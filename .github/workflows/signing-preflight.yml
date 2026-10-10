@@ -7,6 +7,30 @@ permissions:
   contents: read
 
 jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Create disposable unsigned PE fixture
+        shell: pwsh
+        run: |
+          $directory = Join-Path $env:RUNNER_TEMP 'signing-fixture'
+          New-Item -ItemType Directory -Path $directory | Out-Null
+          Add-Type -TypeDefinition 'public static class SigningFixture { public static int Value() { return 0; } }' -OutputAssembly "$directory\imyemail-cloud-fixture.dll"
+      - name: Sign, verify and clean up without interactive trust prompts
+        timeout-minutes: 2
+        shell: pwsh
+        env:
+          RELEASE_P12_BASE64: ${{ secrets.RELEASE_P12_BASE64 }}
+          RELEASE_P12_PASSWORD: ${{ secrets.RELEASE_P12_PASSWORD }}
+        run: |
+          ./scripts/sign-windows.ps1 -Directory "$env:RUNNER_TEMP\signing-fixture"
+          $expected = New-Object Security.Cryptography.X509Certificates.X509Certificate2("$env:GITHUB_WORKSPACE\signing\release-cert.der")
+          foreach ($store in @('Cert:\LocalMachine\Root', 'Cert:\LocalMachine\TrustedPublisher', 'Cert:\CurrentUser\My')) {
+            if (Test-Path "$store\$($expected.Thumbprint)") { throw "Ephemeral identity not removed from $store" }
+          }
+          if (Test-Path "$env:RUNNER_TEMP\release.p12") { throw 'Temporary private key remains.' }
   macos:
     runs-on: macos-14
     timeout-minutes: 5

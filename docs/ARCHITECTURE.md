@@ -27,4 +27,6 @@ Apple / Android / Linux / Windows
 
 ## 兼容名称
 
+`desktop-mygo/` 是独立的 Go/MyGo 原生 UI 桌面重构版，通过私有 stdin/stdout 调用同次构建的 Rust CLI 核心。它使用独立数据目录和系统凭据服务，不迁移旧客户端状态，不启用 Web UI、监听端口或不签名的自动更新。当前能力边界见 [MYGO.zh-CN.md](MYGO.zh-CN.md)。
+
 部分 crate、Swift 类型、Kotlin 源目录和 .NET 命名空间仍使用 `chck`/`Chck`，用于保持 ABI、数据库和工程兼容。它们不是对外品牌；产品名、域名、链接、包名和发布产物统一为 `imyemail-cloud` / `imy.email`。

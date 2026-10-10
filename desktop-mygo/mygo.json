@@ -1,0 +1,15 @@
+{
+  "name": "imyemail-cloud-mygo",
+  "identifier": "email.imy.cloud.mygo",
+  "version": "0.3.0",
+  "out": "dist",
+  "icon": "../brand/export/master/icon-1024.png",
+  "macos": { "minimumSystemVersion": "14.0", "signingIdentity": "-" },
+  "linux": {
+    "maintainer": "imyemail-cloud maintainers",
+    "comment": "Native MyGo email client",
+    "categories": ["Network", "Email"],
+    "depends": ["libdbus-1-3"],
+    "command": "imyemail-cloud-mygo"
+  }
+}

@@ -64,3 +64,6 @@ apple/Sources/ChckAppCore/Resources/libchck_mail.dylib
 android/core/chckcore/src/main/jniLibs/
 android/local.properties
 windows/artifacts/
+desktop-mygo/resources/
+desktop-mygo/.mygo/
+desktop-mygo/mygo_windows_*.syso

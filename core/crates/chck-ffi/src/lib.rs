@@ -42,6 +42,13 @@ impl FfiEngine {
         CoreEngine::open_with_os_secrets(path, os).map(|inner| Self { inner }).map_err(err)
     }
 
+    pub fn open_with_strict_os_secrets(
+        path: &str,
+        os: Box<dyn SecretBackend>,
+    ) -> Result<Self, String> {
+        CoreEngine::open_with_strict_os_secrets(path, os).map(|inner| Self { inner }).map_err(err)
+    }
+
     pub fn add_account(&self, req_json: &str) -> Result<String, String> {
         let req: AddAccountRequest = serde_json::from_str(req_json).map_err(json_err)?;
         to_json(self.inner.add_account(req).map_err(err)?)

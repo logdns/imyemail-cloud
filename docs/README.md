@@ -11,3 +11,4 @@
 当前公开版本：`0.2.1`。项目主页：[https://imy.email](https://imy.email)，源码：[github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)。
 
 旧版本和原始资料只保存在维护者本地的 `chckemail-old/` 归档中，该目录被 Git 忽略，不属于公开仓库。
+- [MYGO.zh-CN.md](MYGO.zh-CN.md)：新增 Go 原生桌面重构版、功能边界与独立预览发布

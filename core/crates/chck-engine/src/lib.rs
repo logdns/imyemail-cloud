@@ -69,6 +69,13 @@ impl CoreEngine {
         Self::open_with_secrets(path, Box::new(overlay))
     }
 
+    pub fn open_with_strict_os_secrets(
+        path: impl AsRef<Path>,
+        os: Box<dyn SecretBackend>,
+    ) -> Result<Self, EngineError> {
+        Self::open_with_secrets(path.as_ref(), os)
+    }
+
     #[must_use]
     pub fn catalog(&self) -> &ProviderCatalog {
         &self.catalog

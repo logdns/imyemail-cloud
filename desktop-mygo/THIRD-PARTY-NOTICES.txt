@@ -1,0 +1,12 @@
+imyemail-cloud MyGo desktop edition
+
+This edition uses MyGo under the MIT license, pinned to commit
+b8beccc577daa00fed7c24112b0a7a0550d4825b (github.com/egoist/mygo).
+MyGo Copyright (c) 2026 MyGo contributors.
+
+The packaged licenses directory includes the licenses of MyGo, purego,
+go-text/typesetting, golang.org/x/image and the shared Rust core's notices.
+The desktop-vault dependency keyring 3.6.3 is MIT OR Apache-2.0 and its
+platform credential-store dependencies remain subject to their own licenses.
+
+imyemail-cloud remains MIT licensed. No commercial activation is required.

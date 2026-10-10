@@ -4,6 +4,8 @@ use chck_ffi::FfiEngine;
 use chck_types::{AddAccountRequest, SendRequest};
 use std::path::{Path, PathBuf};
 
+pub mod desktop;
+
 pub fn default_db() -> PathBuf {
     if let Ok(p) = std::env::var("IMYEMAIL_CLOUD_DB") {
         return PathBuf::from(p);

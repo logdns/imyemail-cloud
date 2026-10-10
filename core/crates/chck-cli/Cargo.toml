@@ -15,6 +15,15 @@ chck-types.workspace = true
 chck-ffi.workspace = true
 serde_json.workspace = true
 
+[features]
+desktop-vault = ["dep:keyring"]
+
+[target.'cfg(target_os = "windows")'.dependencies]
+keyring = { version = "3.6.3", default-features = false, features = ["windows-native"], optional = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+keyring = { version = "3.6.3", default-features = false, features = ["sync-secret-service", "crypto-rust"], optional = true }
+
 [dev-dependencies]
 rustls.workspace = true
 rustls-pki-types.workspace = true

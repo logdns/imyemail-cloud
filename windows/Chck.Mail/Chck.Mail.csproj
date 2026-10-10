@@ -18,8 +18,8 @@
     <ApplicationTitle>imyemail-cloud-native</ApplicationTitle>
     <AssemblyName>imyemail-cloud</AssemblyName>
     <SatelliteResourceLanguages>en;en-US;zh;zh-Hans;zh-CN;zh-Hant;zh-TW;ja;ja-JP;es;es-ES;fr;fr-FR</SatelliteResourceLanguages>
-    <Version>0.2.3</Version>
-    <InformationalVersion>0.2.3</InformationalVersion>
+    <Version>0.2.4</Version>
+    <InformationalVersion>0.2.4</InformationalVersion>
     <ApplicationIcon>Assets\imyemail-cloud.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>

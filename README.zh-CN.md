@@ -4,26 +4,26 @@
 
 ## 看界面，选择下载
 
-| **imyemail-cloud-native · 0.2.3 原生版** | **imyemail-cloud-mygo · 0.3.2 桌面预览版** |
+| **imyemail-cloud-native · 0.2.4 原生版** | **imyemail-cloud-mygo · 0.3.3 桌面预览版** |
 | --- | --- |
-| [![原生客户端](docs/screenshots/imyemail-cloud-native.png)](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.3) | [![MyGo 客户端](docs/screenshots/imyemail-cloud-mygo.png)](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.2) |
+| [![原生客户端](docs/screenshots/imyemail-cloud-native.png)](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4) | [![MyGo 客户端](docs/screenshots/imyemail-cloud-mygo.png)](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.3) |
 | 平台原生 UI：macOS、iOS/iPadOS、Android、Linux、Windows；延续现有客户端。 | Go/MyGo 原生 UI：macOS、Windows、Linux；借鉴 [Pulse](https://pulse.egoist.dev/) 的侧栏、蓝色选中态、圆角卡片和明暗风格，使用自己的组件与图标。 |
-| **[下载原生版](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.3)** · `brew install imyemail-cloud-native` | **[下载 MyGo](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.2)** · `brew install imyemail-cloud-mygo` |
+| **[下载原生版](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4)** · `brew install imyemail-cloud-native` | **[下载 MyGo](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.3)** · `brew install imyemail-cloud-mygo` |
 
 真实 UI 的合成邮件截图：原生版为 macOS Preview，MyGo 为实际 UI 无窗口渲染器，不含真实邮箱，不是 AI 效果图。[截图来源及深色界面](docs/screenshots/README.md)。选择系统/CPU 下载即可，不必编译源码。两版免费、MIT 开源，账号、数据与更新独立；MyGo 使用英文界面与纯文本阅读，不等于原生版全部功能。
 
 ## 下载与安装
 
-| 系统 | 原生版 0.2.3 | MyGo 0.3.2 |
+| 系统 | 原生版 0.2.4 | MyGo 0.3.3 |
 | --- | --- | --- |
-| macOS Apple Silicon | [自签 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.3/imyemail-cloud-native-macos-arm64-20261011-selfsigned.zip) | [自签 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-darwin-arm64-selfsigned.zip) |
-| macOS Intel | 不提供 | [自签 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-darwin-amd64-selfsigned.zip) |
-| Windows x64 | [自签安装器](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.3/imyemail-cloud-native-windows-x64-20261011-selfsigned-setup.exe) | [自签便携 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-windows-amd64-selfsigned.zip) |
-| Windows ARM64 | [自签安装器](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.3/imyemail-cloud-native-windows-arm64-20261011-selfsigned-setup.exe) | [自签便携 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-windows-arm64-selfsigned.zip) |
-| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.3/imyemail-cloud-native-linux-x86_64-20261011.deb) | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-linux-amd64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-linux-amd64.tar.gz) |
-| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.3/imyemail-cloud-native-linux-arm64-20261011.deb) | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-linux-arm64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.2/imyemail-cloud-mygo-0.3.2-linux-arm64.tar.gz) |
-| Android | [固定密钥签名 APK](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.3/imyemail-cloud-native-android-20261011-selfsigned.apk) | 不提供 |
-| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.3/imyemail-cloud-native-ios-arm64-20261011-unsigned.ipa)，仍须 Apple provisioning | 不提供 |
+| macOS Apple Silicon | [自签 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.4/imyemail-cloud-native-macos-arm64-20261011-selfsigned.zip) | [自签 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-darwin-arm64-selfsigned.zip) |
+| macOS Intel | 不提供 | [自签 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-darwin-amd64-selfsigned.zip) |
+| Windows x64 | [自签安装器](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.4/imyemail-cloud-native-windows-x64-20261011-selfsigned-setup.exe) | [自签便携 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-windows-amd64-selfsigned.zip) |
+| Windows ARM64 | [自签安装器](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.4/imyemail-cloud-native-windows-arm64-20261011-selfsigned-setup.exe) | [自签便携 ZIP](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-windows-arm64-selfsigned.zip) |
+| Linux x86_64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.4/imyemail-cloud-native-linux-x86_64-20261011.deb) | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-linux-amd64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-linux-amd64.tar.gz) |
+| Linux ARM64 | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.4/imyemail-cloud-native-linux-arm64-20261011.deb) | [DEB](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-linux-arm64.deb) / [tar.gz](https://github.com/logdns/imyemail-cloud/releases/download/mygo-v0.3.3/imyemail-cloud-mygo-0.3.3-linux-arm64.tar.gz) |
+| Android | [固定密钥签名 APK](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.4/imyemail-cloud-native-android-20261011-selfsigned.apk) | 不提供 |
+| iOS/iPadOS arm64 | [unsigned IPA](https://github.com/logdns/imyemail-cloud/releases/download/native-v0.2.4/imyemail-cloud-native-ios-arm64-20261011-unsigned.ipa)，仍须 Apple provisioning | 不提供 |
 
 ### Homebrew（macOS 14+）
 

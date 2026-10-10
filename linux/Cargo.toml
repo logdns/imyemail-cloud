@@ -1,6 +1,6 @@
 [package]
 name = "linux"
-version = "0.2.3"
+version = "0.2.4"
 edition = "2024"
 license = "MIT"
 description = "imyemail-cloud Linux 客户端。GTK4 + libadwaita，crate 直连 core。"

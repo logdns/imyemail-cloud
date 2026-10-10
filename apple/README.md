@@ -2,7 +2,7 @@
 
 SwiftUI 原生客户端，支持 macOS、iOS 和 iPadOS；邮件协议通过同仓库 `core/` 的进程内接口执行。Bundle ID 为 `email.imy.cloud`，产品链接为 [https://imy.email](https://imy.email)。
 
-原版 `0.2.3` 与 MyGo `0.3.2` 独立保留：[安装/升级/卸载](../docs/INSTALL.zh-CN.md) · [自签校验](../docs/SIGNING.md) · [历史版本恢复](../docs/VERSIONS.md)。MyGo 仅桌面，另用 `brew install imyemail-cloud-mygo`。
+原版 `0.2.4` 与 MyGo `0.3.3` 独立保留：[安装/升级/卸载](../docs/INSTALL.zh-CN.md) · [自签校验](../docs/SIGNING.md) · [历史版本恢复](../docs/VERSIONS.md)。MyGo 仅桌面，另用 `brew install imyemail-cloud-mygo`。
 
 ## Homebrew 安装（Apple Silicon）
 

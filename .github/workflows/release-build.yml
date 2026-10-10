@@ -6,7 +6,7 @@ on:
       release_tag:
         description: Native release tag in native-vMAJOR.MINOR.PATCH format
         required: true
-        default: native-v0.2.3
+        default: native-v0.2.4
         type: string
       release_date:
         description: Release label in YYYYMMDD format
@@ -331,4 +331,4 @@ jobs:
             --verify-tag \
             --title "imyemail-cloud-native $RELEASE_TAG (self-signed native clients)" \
             --latest \
-            --notes "imyemail-cloud-native, source $GITHUB_SHA. Independent native-v release track; historical releases remain intact. Existing application/data/upgrade identities are preserved. macOS/Windows self-signed code signatures; Android signed APK; Linux signed SHA256SUMS, not APT repository signing. iOS is unsigned and requires Apple provisioning. Not publicly trusted, Apple-notarized or store-approved. Certificate SHA-256: 476ea6e573714e9c46a43471b5938d791e1c3851beb7b3eef8269cf084f48548. Install/verify/update/rollback: https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/INSTALL.md. Separate Pulse-inspired MyGo: https://github.com/$GITHUB_REPOSITORY/releases/tag/mygo-v0.3.2"
+            --notes "imyemail-cloud-native, source $GITHUB_SHA. Independent native-v release track; historical releases remain intact. Existing application/data/upgrade identities are preserved. macOS/Windows self-signed code signatures; Android signed APK; Linux signed SHA256SUMS, not APT repository signing. iOS is unsigned and requires Apple provisioning. Not publicly trusted, Apple-notarized or store-approved. Certificate SHA-256: 476ea6e573714e9c46a43471b5938d791e1c3851beb7b3eef8269cf084f48548. Install/verify/update/rollback: https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/INSTALL.md. Separate Pulse-inspired MyGo: https://github.com/$GITHUB_REPOSITORY/releases/tag/mygo-v0.3.3"

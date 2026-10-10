@@ -2,9 +2,9 @@
 
 ## 版本
 
-`imyemail-cloud-native` 使用 `native-v0.2.3`，`imyemail-cloud-mygo` 使用 `mygo-v0.3.2`；历史 `v0.2.0/v0.2.1/mygo-v0.3.0` 不覆盖、不改包名。原生版需同步 Rust、Apple、Android、Linux、Windows 及锁文件；MyGo 更新自身 Go/config 版本。Android versionCode 单调递增。身份与数据兼容规则见 [VERSIONS.md](VERSIONS.md)。
+`imyemail-cloud-native` 使用 `native-v0.2.4`，`imyemail-cloud-mygo` 使用 `mygo-v0.3.3`；历史 `v0.2.0/v0.2.1/mygo-v0.3.0` 不覆盖、不改包名。原生版需同步 Rust、Apple、Android、Linux、Windows 及锁文件；MyGo 更新自身 Go/config 版本。Android versionCode 单调递增。身份与数据兼容规则见 [VERSIONS.md](VERSIONS.md)。
 
-macOS 发布前先手动运行 `signing-preflight.yml`：在临时 hosted runner 检查导入、无交互 trust、签名、固定指纹与清理；不会发布 fixture。不得把签名初始化挂起当作构建通过。
+发布前先手动运行 `signing-preflight.yml`：在临时 macOS/Windows hosted runner 检查导入、无交互 trust、签名、固定指纹与清理；不会发布 fixture。不得把签名初始化挂起当作构建通过。Windows 仅在临时 runner 使用 LocalMachine 公共信任，私钥仍在 CurrentUser My，签名后全部删除；不修改用户机器的信任。
 
 ## 发布前检查
 

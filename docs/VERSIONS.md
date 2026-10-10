@@ -2,8 +2,8 @@
 
 | Track | Current | Retained history | Identity |
 | --- | --- | --- | --- |
-| `imyemail-cloud-native` | `native-v0.2.3` | `v0.2.0`, `v0.2.1` | `email.imy.cloud`, existing platform stores |
-| `imyemail-cloud-mygo` desktop preview | `mygo-v0.3.2` | `mygo-v0.3.0` | `email.imy.cloud.mygo`, separate config |
+| `imyemail-cloud-native` | `native-v0.2.4` | `v0.2.0`, `v0.2.1` | `email.imy.cloud`, existing platform stores |
+| `imyemail-cloud-mygo` desktop preview | `mygo-v0.3.3` | `mygo-v0.3.0` | `email.imy.cloud.mygo`, separate config |
 
 Both remain in [logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud). Original `apple/`, `android/`, `linux/`, `windows/`, shared `core/` and services remain maintained; `desktop-mygo/` is additive. No historical public tag/package is replaced. Homebrew uses separate tokens. Dated evidence stays historical, not rewritten to claim a new signer.
 
@@ -37,9 +37,11 @@ Native: `native-vMAJOR.MINOR.PATCH`, `release-build.yml`; MyGo: `mygo-vMAJOR.MIN
 
 Native display/package names change, not its Bundle ID, Android applicationId, JNI symbols, URI schemes, Windows MSIX identity, Inno AppId/install directory, OS-vault namespace or database paths. The shared Rust CLI and Windows executable retain `imyemail-cloud` internally for existing integrations. The native cask exposes that CLI as `imyemail-cloud-native`, while MyGo bundles `imyemail-cloud-core`; they do not collide.
 
-Linux native DEB declares version-bounded `Breaks/Replaces: imyemail-cloud (<< 0.2.3)` and retains `/usr/bin/imyemail-cloud` with a new `imyemail-cloud-native` alias. APT may replace the legacy package, never MyGo; inspect its proposed transaction and cancel if unrelated packages would be removed. Existing desktop ID/profile/vault are unchanged.
+Linux native DEB declares version-bounded `Breaks/Replaces: imyemail-cloud (<< 0.2.4)` and retains `/usr/bin/imyemail-cloud` with a new `imyemail-cloud-native` alias. APT may replace the legacy package, never MyGo; inspect its proposed transaction and cancel if unrelated packages would be removed. Existing desktop ID/profile/vault are unchanged.
 
 Tags `native-v0.2.2` and `mygo-v0.3.1` retain a cancelled signing attempt at source `58b189c`; no downloadable Release was published for those tags. A hosted macOS trust prompt blocked signing. The fix uses incremented versions, not moved tags or replaced packages.
+
+Tags `native-v0.2.3` and `mygo-v0.3.2` likewise preserve a cancelled attempt at `c094a06`: macOS/Linux/Android/iOS packages built, but Windows user-root certificate import waited for interactive consent. No Release was published. Final hosted Windows preflight uses admin LocalMachine public trust and removes that trust after signing; client installation does not change machine-wide trust.
 
 macOS old and new native app bundles have the same ID and share data: **do not run both**. Close the old native app, back up its database and Keychain credentials, then replace only the old application bundle through the matching package manager. Do not rename/delete its profile. Homebrew's old `imyemail-cloud` token is preserved as a legacy cask; migrate explicitly with cleanup disabled, then install `imyemail-cloud-native`. Both casks conflict with each other, neither conflicts with MyGo. No automatic cross-edition account migration is provided.
 

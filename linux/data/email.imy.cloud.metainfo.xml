@@ -39,7 +39,7 @@
     <color type="primary" scheme_preference="dark">#6B8AFF</color>
   </branding>
   <releases>
-    <release version="0.2.3" date="2026-10-11">
+    <release version="0.2.4" date="2026-10-11">
       <description>
         <p>Separate native and MyGo edition names; preserve account identities and add self-signed release verification.</p>
       </description>

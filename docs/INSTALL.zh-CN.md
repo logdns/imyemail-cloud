@@ -6,8 +6,8 @@
 
 | 版本线 | 当前下载 | 平台 | 保留历史 |
 | --- | --- | --- | --- |
-| 原生版 `imyemail-cloud-native` 0.2.3 | [native-v0.2.3 自签包](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.3) | macOS arm64、iOS/iPadOS、Android、Linux/Windows x64/ARM64 | [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1)、[v0.2.0](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0) |
-| `imyemail-cloud-mygo` 0.3.2 预览 | [mygo-v0.3.2 自签包](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.2) | macOS/Windows/Linux amd64/arm64 | [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) |
+| 原生版 `imyemail-cloud-native` 0.2.4 | [native-v0.2.4 自签包](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4) | macOS arm64、iOS/iPadOS、Android、Linux/Windows x64/ARM64 | [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1)、[v0.2.0](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0) |
+| `imyemail-cloud-mygo` 0.3.3 预览 | [mygo-v0.3.3 自签包](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.3) | macOS/Windows/Linux amd64/arm64 | [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) |
 
 MyGo 是原生 Go 桌面版，不是 Web 程序，也不等价于原版全部功能；[能力与钥匙库要求](MYGO.zh-CN.md)。GitHub Latest 属于原版，MyGo 使用独立标签入口。
 
@@ -40,7 +40,7 @@ Homebrew 7 首次须信任第三方 tap。更新：`brew update && brew upgrade 
 
 `imyemail-cloud-native-android-20261011-selfsigned.apk`：核验哈希及 APK 签名后，按系统提示允许所选下载应用安装。最低 Android 8，包含 arm64-v8a/armeabi-v7a/x86_64 核心，不是 Play Store 包，未声称真机验收。
 
-更新必须沿用**同一签名密钥**并增加 versionCode（0.2.3 为 5）。Debug、自行重签或历史 Chck APK 可能不同签名，不能直接覆盖；先备份，不要为绕过签名不一致直接卸载账号。
+更新必须沿用**同一签名密钥**并增加 versionCode（0.2.4 为 6）。Debug、自行重签或历史 Chck APK 可能不同签名，不能直接覆盖；先备份，不要为绕过签名不一致直接卸载账号。
 
 ## Linux
 
@@ -62,4 +62,4 @@ MyGo 需兼容运行库、GTK 3、D-Bus、已解锁 Secret Service，无明文�
 
 应用 ID、数据库/钥匙库位置、Windows 安装升级标识不变。先关闭旧原生版，不要让旧/新两个原生 app 同时读写同一数据库；MyGo 独立，不受改名影响。
 
-旧 Homebrew 用户先备份原生数据库和 Keychain，再执行 `HOMEBREW_NO_INSTALL_CLEANUP=1 brew uninstall --cask imyemail-cloud`（不用 `--zap`），然后 `brew install imyemail-cloud-native`。旧 cask 保留为历史入口，与新原生 cask 互斥，不与 MyGo 冲突。Linux 新 DEB 只对旧 `imyemail-cloud (< 0.2.3)` 声明 Breaks/Replaces；确认 APT 计划后安装，不删除邮箱数据。原生内部 CLI/Windows 程序保留 `imyemail-cloud` 文件名用于兼容，新 Homebrew CLI/Linux 别名为 `imyemail-cloud-native`。
+旧 Homebrew 用户先备份原生数据库和 Keychain，再执行 `HOMEBREW_NO_INSTALL_CLEANUP=1 brew uninstall --cask imyemail-cloud`（不用 `--zap`），然后 `brew install imyemail-cloud-native`。旧 cask 保留为历史入口，与新原生 cask 互斥，不与 MyGo 冲突。Linux 新 DEB 只对旧 `imyemail-cloud (< 0.2.4)` 声明 Breaks/Replaces；确认 APT 计划后安装，不删除邮箱数据。原生内部 CLI/Windows 程序保留 `imyemail-cloud` 文件名用于兼容，新 Homebrew CLI/Linux 别名为 `imyemail-cloud-native`。

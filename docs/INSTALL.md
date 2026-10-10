@@ -6,8 +6,8 @@ Both editions remain independently maintained in the [same public repository](ht
 
 | Edition | Download | Platforms | Previous releases retained |
 | --- | --- | --- | --- |
-| `imyemail-cloud-native` 0.2.3 | [native-v0.2.3](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.3) | macOS arm64, iOS/iPadOS, Android, Linux/Windows x64/ARM64 | [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1), [v0.2.0](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0) |
-| `imyemail-cloud-mygo` 0.3.2 preview | [mygo-v0.3.2](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.2) | macOS/Windows/Linux amd64/arm64 | [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) |
+| `imyemail-cloud-native` 0.2.4 | [native-v0.2.4](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.4) | macOS arm64, iOS/iPadOS, Android, Linux/Windows x64/ARM64 | [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1), [v0.2.0](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.0) |
+| `imyemail-cloud-mygo` 0.3.3 preview | [mygo-v0.3.3](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.3) | macOS/Windows/Linux amd64/arm64 | [mygo-v0.3.0](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0) |
 
 MyGo is a Go-native desktop preview, not a web client or feature-equivalent mobile replacement. See [features and vault requirements](../desktop-mygo/README.md). GitHub Latest belongs to the original track; **select MyGo by its explicit tag**.
 
@@ -42,7 +42,7 @@ The self-signed publisher is untrusted by default; SmartScreen reputation is sep
 
 Select `imyemail-cloud-native-android-20261011-selfsigned.apk`, verify the hash and APK signer, then allow installation from your chosen download app if desired. Android 8+, arm64-v8a/armeabi-v7a/x86_64 cores. No Play Store/device acceptance is implied.
 
-Updates require the **same signing key** and increased versionCode (0.2.3 uses 5). Debug, privately re-signed or historical Chck APKs may have another signer and cannot upgrade in place. Back up data before any uninstall; never delete accounts merely to bypass a signer mismatch.
+Updates require the **same signing key** and increased versionCode (0.2.4 uses 6). Debug, privately re-signed or historical Chck APKs may have another signer and cannot upgrade in place. Back up data before any uninstall; never delete accounts merely to bypass a signer mismatch.
 
 ## Linux
 

@@ -2,7 +2,7 @@
 
 [Install / 安装](INSTALL.zh-CN.md) · [Release policy](RELEASE.md) · [Preserved versions](VERSIONS.md)
 
-Stable release identity: self-issued RSA-3072 code-signing leaf, CA:false, valid 2026-10-10 to 2031-10-09 UTC. Used for both desktop editions and RSA/SHA-256 manifests. Only public material is tracked in `signing/`; private keys stay outside Git and in manually dispatched release secrets. PR/development jobs receive no signing secrets. Self-signed is not public trust, Apple Developer ID/notarization, SmartScreen reputation or store approval.
+Stable release identity: self-issued RSA-3072 code-signing leaf, CA:false, valid 2026-10-10 to 2031-10-09 UTC. Used for both desktop editions and RSA/SHA-256 manifests. Only public material is tracked in `signing/`; private keys stay outside Git and in manually dispatched main-branch release/preflight secrets on ephemeral hosted runners. PR/development jobs receive no signing secrets. Self-signed is not public trust, Apple Developer ID/notarization, SmartScreen reputation or store approval.
 
 完整代码签名证书 SHA-256 / complete certificate fingerprint:
 
@@ -35,11 +35,13 @@ After `Verified OK`, compare the exact filename and entire digest. `sha256sum -c
 
 ```bash
 codesign --verify --deep --strict /Applications/imyemail-cloud-mygo.app
-codesign -d --extract-certificates /tmp/imyemail-leaf /Applications/imyemail-cloud-mygo.app
+codesign -d --extract-certificates=/tmp/imyemail-leaf /Applications/imyemail-cloud-mygo.app
 openssl x509 -inform DER -in /tmp/imyemail-leaf0 -noout -fingerprint -sha256
 ```
 
 Use the original app name for that edition. Leaf fingerprint must match. Chain trust/Gatekeeper can still reject signed bytes: use normal OS approval, never disable Gatekeeper/SIP/quarantine protection. Not notarized; no certificate is automatically trusted on your host.
+
+Hosted signing uses a disposable private-key keychain and admin-domain trust to avoid GUI prompts. Cleanup deletes the fingerprint-matched system certificate, private keychain and temporary P12; runner teardown clears its orphaned trust-settings record. User-domain trust removal is not used because it can wait indefinitely for interactive authorization. These scripts reject self-hosted runners and are not user installation commands. The bounded preflight signs/verifies a dummy binary, compares the extracted certificate fingerprint and checks cleanup without publishing it.
 
 ## Windows Authenticode / 可选用户信任
 

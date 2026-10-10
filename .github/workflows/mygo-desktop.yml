@@ -63,7 +63,11 @@ jobs:
         run: |
           set -euo pipefail
           cd desktop-mygo
-          test -z "$(gofmt -l *.go)"
+          unformatted=$(gofmt -l *.go)
+          if [[ -n "$unformatted" ]]; then
+            printf 'Go formatting check failed:\n%s\n' "$unformatted" >&2
+            exit 1
+          fi
           GOPROXY=off go vet ./...
           GOPROXY=off go test -count=1 ./...
           cd ../core
@@ -82,10 +86,30 @@ jobs:
         run: |
           set -euo pipefail
           cd desktop-mygo
-          os_arch=$(echo '${{ matrix.platform }}' | tr / -)
-          binary="dist/$os_arch/imyemail-cloud-mygo"
-          if [[ '${{ runner.os }}' == macOS ]]; then binary="$binary.app/Contents/MacOS/imyemail-cloud-mygo"; fi
-          if [[ '${{ runner.os }}' == Windows ]]; then binary="$binary.exe"; fi
+          unpacked=$(mktemp -d)
+          if [[ '${{ runner.os }}' == macOS ]]; then
+            ditto -x -k dist/release/*-adhoc.zip "$unpacked"
+            codesign --verify --deep --strict "$unpacked/imyemail-cloud-mygo.app"
+          elif [[ '${{ runner.os }}' == Windows ]]; then
+            python3 -c 'import glob,sys,zipfile; zipfile.ZipFile(glob.glob("dist/release/*-unsigned.zip")[0]).extractall(sys.argv[1])' "$unpacked"
+          else
+            tar -xzf dist/release/*.tar.gz -C "$unpacked"
+            mkdir "$unpacked/deb"
+            dpkg-deb -x dist/release/*.deb "$unpacked/deb"
+          fi
+          python3 - "$unpacked" <<'PY'
+          import hashlib
+          import pathlib
+          import sys
+          root = pathlib.Path(sys.argv[1])
+          reference = next(pathlib.Path("resources").glob("imyemail-cloud-core*"))
+          expected = hashlib.file_digest(reference.open("rb"), "sha256").hexdigest()
+          helpers = list(root.rglob(reference.name))
+          assert helpers, "packaged helper missing"
+          for helper in helpers:
+              assert hashlib.file_digest(helper.open("rb"), "sha256").hexdigest() == expected, "packaged helper differs from this build"
+          PY
+          binary=$(python3 -c 'import pathlib,sys; names={"imyemail-cloud-mygo","imyemail-cloud-mygo.exe"}; paths=[path for path in pathlib.Path(sys.argv[1]).rglob("*") if path.is_file() and path.name in names and "deb" not in path.relative_to(sys.argv[1]).parts]; assert len(paths)==1, paths; print(paths[0].resolve())' "$unpacked")
           "$binary" --version
           "$binary" --self-test --data-dir "$(python3 -c 'import tempfile; print(tempfile.mkdtemp(prefix="mygo-smoke-"))')"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

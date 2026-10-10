@@ -43,6 +43,8 @@ dotnet test Chck.Mail.Tests/Chck.Mail.Tests.csproj -c Release
 
 ## 改动规则
 
+MyGo 桌面版独立使用 Go 1.27.1、Rust 1.95.0。入口、原生 UI 测试、系统凭据要求和六架构打包命令见 [desktop-mygo/README.md](../desktop-mygo/README.md)；不要把它与旧客户端的系统依赖或版本混用。
+
 1. 协议、同步、存储和 HTML 净化问题优先在共享核心修复，并添加回归测试。
 2. UI 保持平台原生；Preview 只能在显式预览模式使用。
 3. 涉及 HTML/WebView、凭据、TLS、FFI/JNI、附件或发布脚本时，必须检查对应信任边界。

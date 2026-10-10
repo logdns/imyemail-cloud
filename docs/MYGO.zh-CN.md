@@ -15,6 +15,17 @@
 
 ## 安装与安全边界
 
+下载入口：[MyGo 0.3.0 桌面预览版](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0)。只有发布门禁完成后附件才可用；旧版 [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1) 仍为独立下载入口。
+
+| 平台 | 架构 | 附件文件名 |
+| --- | --- | --- |
+| macOS 14+ | Apple Silicon | `imyemail-cloud-mygo-0.3.0-darwin-arm64-adhoc.zip` |
+| macOS 14+ | Intel | `imyemail-cloud-mygo-0.3.0-darwin-amd64-adhoc.zip` |
+| Windows | x64 | `imyemail-cloud-mygo-0.3.0-windows-amd64-unsigned.zip` |
+| Windows | ARM64 | `imyemail-cloud-mygo-0.3.0-windows-arm64-unsigned.zip` |
+| Linux | x86_64 | `imyemail-cloud-mygo-0.3.0-linux-amd64.deb` / `.tar.gz` |
+| Linux | ARM64 | `imyemail-cloud-mygo-0.3.0-linux-arm64.deb` / `.tar.gz` |
+
 - macOS arm64/x86_64：应用 ZIP，ad-hoc 签名，未公证；首次启动遵循系统 Gatekeeper。
 - Windows x64/ARM64：未做 Authenticode 的便携 ZIP，解压后保留同目录的核心程序。
 - Linux x86_64/ARM64：DEB 与 tar.gz，需要 GTK 3 和已解锁的 Secret Service。
@@ -22,5 +33,7 @@
 数据位于系统用户配置目录下独立的 `imyemail-cloud-mygo/`，不自动迁移或修改旧数据库。账号密码使用 macOS Keychain、Windows 系统凭据或 Linux Secret Service；钥匙库不可用时返回错误，不静默转为明文文件。私有 stdin/stdout 传递 JSON，不开放本地 HTTP 端口。请求/响应有大小限制，操作超时会终止核心进程并要求重新启动。
 
 下载时使用对应标签下的 `.sha256` 或 `SHA256SUMS` 核验。系统签名、公证、真实邮箱、真机 GUI、长期升级与数据恢复不等同于 CI 编译或无窗口测试通过。
+
+macOS/Linux 使用 `shasum -a 256 文件名` 或 `sha256sum -c 文件名.sha256`；Windows PowerShell 使用 `Get-FileHash 文件名 -Algorithm SHA256`，与同一 Release 中的完整哈希比较。不要为运行预览版关闭系统安全功能。Homebrew 的 `brew install imyemail-cloud` 仍安装原版，不会切换到 MyGo。
 
 源码、精确依赖与构建说明见 [desktop-mygo/README.md](../desktop-mygo/README.md)。旧版安装入口见 [INSTALL.zh-CN.md](INSTALL.zh-CN.md)。

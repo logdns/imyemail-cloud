@@ -36,8 +36,12 @@ tap 的 cask 必须固定 GitHub Release 版本 URL 和 macOS ZIP 的 SHA-256，
 
 tap 每日读取 GitHub Latest Release，要求恰好存在一个符合命名规则的 macOS ZIP 及其独立 `.sha256`，下载并复算成功后才创建 cask 更新 PR。发布新版本时仍需人工确认该 PR 的 CI、版本、URL、哈希与签名边界；自动检测不能替代公证或真机启动验收。
 
-## 回滚
+## MyGo 桌面预览版
 
 MyGo 桌面版使用独立的 `.github/workflows/mygo-desktop.yml` 与 `mygo-vMAJOR.MINOR.PATCH` 标签。先确认六个平台/架构 CI、限定范围审计与产物复验，再在验证过的提交创建不可移动的 annotated tag，并手动运行 `release=true`。以预览版发布，不替换原 `v0.2.1` 附件或自动改写 Homebrew cask；其能力和签名限制见 [MYGO.zh-CN.md](MYGO.zh-CN.md)。
+
+发布工作流会拒绝已存在的 Release，以及标签目标与工作流源码提交不一致的情况。测试对象必须是解压后的 ZIP/tar.gz，Linux 还要核对 DEB 内置核心与本次构建的 SHA-256 一致。发布后独立下载所有附件，核验 `SHA256SUMS`、架构、资源和内置核心，不使用旧包代替新代码。
+
+## 回滚
 
 不要覆盖既有 tag 或 Release。发现问题时撤下受影响附件、标记说明并发布递增补丁版本；保留源码提交和哈希以便审计。Homebrew 回滚通过恢复上一条已验证 cask 提交或发布递增修复版本完成，不得把同一版本静默改指向不同二进制。

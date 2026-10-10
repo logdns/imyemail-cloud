@@ -34,6 +34,8 @@ Packaged executables support `--version` and `--self-test --data-dir <absolute-e
 
 ## Downloads and installation
 
+Tagged download entry: [MyGo 0.3.0 desktop preview](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.0). Download availability is conditional on the release gates below; the original client remains [v0.2.1](https://github.com/logdns/imyemail-cloud/releases/tag/v0.2.1).
+
 The new workflow `.github/workflows/mygo-desktop.yml` tests and packages six desktop OS/architecture combinations. Only a manually requested, verified, tagged build publishes a separate `mygo-v0.3.0` preview release in the existing `logdns/imyemail-cloud` repository. The original `v0.2.1` remains available; do not replace its assets or silently switch the Homebrew tap.
 
 - macOS: extract the ad-hoc-signed ZIP and copy `imyemail-cloud-mygo.app` to Applications. It is **not Apple-notarized**; normal Gatekeeper approval remains required.
@@ -41,3 +43,5 @@ The new workflow `.github/workflows/mygo-desktop.yml` tests and packages six des
 - Linux: use the matching DEB or extract the archive and review its install script. GTK 3 and a functioning Secret Service are required; native GPU/runtime validation is separate from the headless tests.
 
 Download the matching `.sha256` or `SHA256SUMS` from the **same tagged release** and recompute before installation. No unsigned auto-updater is enabled.
+
+On macOS/Linux, run `shasum -a 256 <downloaded-package>` or `sha256sum -c <downloaded-package>.sha256`. On Windows, run `Get-FileHash <downloaded-package> -Algorithm SHA256` in PowerShell. Compare the full digest, not a filename or size. Hashes establish download consistency; ad-hoc/unsigned packages do not authenticate the publisher independently.

@@ -14,8 +14,10 @@ security set-keychain-settings -lut 7200 "$keychain"
 security unlock-keychain -p "$password" "$keychain"
 security list-keychains -d user -s "$keychain" "$HOME/Library/Keychains/login.keychain-db"
 security import "$directory/release.p12" -k "$keychain" -P "$RELEASE_P12_PASSWORD" -T /usr/bin/codesign
+printf 'Configuring private-key access in ephemeral keychain\n'
 security set-key-partition-list -S apple-tool:,apple: -s -k "$password" "$keychain" >/dev/null
-security add-trusted-cert -r trustRoot -p codeSign -k "$keychain" signing/release-cert.pem
+printf 'Configuring noninteractive admin-domain trust on hosted runner\n'
+sudo -n security add-trusted-cert -d -r trustRoot -p codeSign -k "$keychain" signing/release-cert.pem
 identity=$(openssl x509 -in signing/release-cert.pem -noout -fingerprint -sha1 | cut -d= -f2 | tr -d ':')
 security find-identity -v -p codesigning "$keychain" | grep -F "$identity"
 printf 'IMYEMAIL_CLOUD_MACOS_SIGNING_IDENTITY=%s\nIMYEMAIL_CLOUD_MACOS_SIGNING_KEYCHAIN=%s\n' "$identity" "$keychain" >> "$GITHUB_ENV"

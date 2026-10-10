@@ -1,0 +1,37 @@
+name: Hosted signing preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    runs-on: macos-14
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Prepare ephemeral signing identity without interactive prompts
+        timeout-minutes: 2
+        env:
+          RELEASE_P12_BASE64: ${{ secrets.RELEASE_P12_BASE64 }}
+          RELEASE_P12_PASSWORD: ${{ secrets.RELEASE_P12_PASSWORD }}
+        run: bash scripts/prepare-macos-signing.sh
+      - name: Sign and verify a disposable local fixture
+        run: |
+          set -euo pipefail
+          printf 'int main(void) { return 0; }\n' > "$RUNNER_TEMP/signing-fixture.c"
+          clang "$RUNNER_TEMP/signing-fixture.c" -o "$RUNNER_TEMP/signing-fixture"
+          codesign --force --sign "$IMYEMAIL_CLOUD_MACOS_SIGNING_IDENTITY" \
+            --keychain "$IMYEMAIL_CLOUD_MACOS_SIGNING_KEYCHAIN" --timestamp=none "$RUNNER_TEMP/signing-fixture"
+          codesign --verify --strict "$RUNNER_TEMP/signing-fixture"
+          codesign -d --extract-certificates "$RUNNER_TEMP/signing-leaf" "$RUNNER_TEMP/signing-fixture"
+          fingerprint=$(openssl x509 -inform DER -in "$RUNNER_TEMP/signing-leaf0" -outform DER | shasum -a 256 | awk '{print $1}')
+          test "$fingerprint" = 476ea6e573714e9c46a43471b5938d791e1c3851beb7b3eef8269cf084f48548
+      - name: Remove ephemeral fixture and identity
+        if: always()
+        run: |
+          sudo -n security remove-trusted-cert -d signing/release-cert.pem || true
+          security delete-keychain "$RUNNER_TEMP/imyemail-signing/release.keychain-db" || true
+          rm -f "$RUNNER_TEMP/signing-fixture" "$RUNNER_TEMP/signing-fixture.c"

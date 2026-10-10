@@ -83,8 +83,8 @@ Homepage: https://imy.email
 Installed-Size: $INSTALLED_SIZE
 Depends: libc6 (>= 2.34), libgcc-s1, libgtk-4-1 (>= 4.14), libadwaita-1-0 (>= 1.5), libsecret-1-0, libwebkitgtk-6.0-4
 Recommends: gnome-keyring, desktop-file-utils
-Breaks: imyemail-cloud (<< 0.2.2)
-Replaces: imyemail-cloud (<< 0.2.2)
+Breaks: imyemail-cloud (<< 0.2.3)
+Replaces: imyemail-cloud (<< 0.2.3)
 Description: imyemail-cloud-native client for Linux
  A GTK4 and libadwaita email client using the shared imyemail-cloud mail engine.
  Remote images are blocked by default and may be enabled for HTTPS images.

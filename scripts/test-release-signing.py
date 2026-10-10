@@ -16,6 +16,49 @@ class ReleaseSigningTests(unittest.TestCase):
     def command(self, *arguments, **kwargs):
         return subprocess.run(arguments, check=True, capture_output=True, timeout=30, **kwargs)
 
+    def test_hosted_cleanup_restores_authorization_policy_on_failure(self):
+        with tempfile.TemporaryDirectory(prefix="cleanup-fixture-") as temporary:
+            root = pathlib.Path(temporary)
+            tools = root / "tools"
+            tools.mkdir()
+            (root / "imyemail-signing").mkdir()
+            log = root / "calls"
+            security = tools / "security"
+            security.write_text('''#!/bin/sh
+printf '%s\\n' "$*" >> "$FIXTURE_LOG"
+if [ "$1 $2" = "authorizationdb read" ]; then
+  printf '<plist>original fixture policy</plist>\\n'
+elif [ "$1 $2" = "authorizationdb write" ] && [ "$#" = 3 ]; then
+  cat >> "$FIXTURE_LOG"
+elif [ "$1" = "remove-trusted-cert" ] && [ "${FIXTURE_FAIL:-0}" = 1 ]; then
+  exit 1
+fi
+''')
+            security.chmod(0o755)
+            sudo = tools / "sudo"
+            sudo.write_text('#!/bin/sh\nshift\nexec "$@"\n')
+            sudo.chmod(0o755)
+            environment = {
+                "PATH": str(tools) + os.pathsep + os.environ["PATH"],
+                "HOME": temporary, "RUNNER_TEMP": temporary,
+                "GITHUB_EVENT_NAME": "workflow_dispatch", "GITHUB_REF": "refs/heads/main",
+                "RUNNER_ENVIRONMENT": "github-hosted", "FIXTURE_LOG": str(log),
+            }
+            script = ROOT / "scripts/cleanup-macos-signing.sh"
+            self.command("bash", str(script), env=environment)
+            self.assertIn("original fixture policy", log.read_text())
+            self.assertIn("delete-keychain", log.read_text())
+            log.write_text("")
+            environment["FIXTURE_FAIL"] = "1"
+            result = subprocess.run(["bash", str(script)], env=environment, capture_output=True, timeout=30)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("original fixture policy", log.read_text())
+            environment["RUNNER_ENVIRONMENT"] = "self-hosted"
+            log.write_text("")
+            result = subprocess.run(["bash", str(script)], env=environment, capture_output=True, timeout=30)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(log.read_text(), "")
+
     def test_public_certificate_and_key_match(self):
         certificate = ROOT / "signing/release-cert.pem"
         der = self.command("openssl", "x509", "-in", str(certificate), "-outform", "DER").stdout

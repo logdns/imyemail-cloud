@@ -1,6 +1,6 @@
 # MyGo 桌面重构版
 
-`desktop-mygo/` 基于 [egoist/mygo](https://github.com/egoist/mygo) 原生 Go UI，复用 Rust 核心。当前为 `0.3.1` / `mygo-v0.3.1` 自签预览；原版 `0.2.2` 独立更新。历史 `v0.2.0`、`v0.2.1`、`mygo-v0.3.0` 及本地归档不覆盖。见[统一安装](INSTALL.zh-CN.md)、[验签](SIGNING.md)、[版本保留](VERSIONS.md)。
+`desktop-mygo/` 基于 [egoist/mygo](https://github.com/egoist/mygo) 原生 Go UI，复用 Rust 核心。当前为 `0.3.2` / `mygo-v0.3.2` 自签预览；原版 `0.2.3` 独立更新。历史 `v0.2.0`、`v0.2.1`、`mygo-v0.3.0` 及本地归档不覆盖。见[统一安装](INSTALL.zh-CN.md)、[验签](SIGNING.md)、[版本保留](VERSIONS.md)。
 
 ## 当前能力
 
@@ -19,16 +19,16 @@
 
 ## 安装与安全边界
 
-下载：[MyGo 0.3.1 自签预览](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.1)，六架构/8 包、独立哈希及签名清单；[原生版 0.2.2](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.2) 独立下载。旧版仍可下载。
+下载：[MyGo 0.3.2 自签预览](https://github.com/logdns/imyemail-cloud/releases/tag/mygo-v0.3.2)，六架构/8 包、独立哈希及签名清单；[原生版 0.2.3](https://github.com/logdns/imyemail-cloud/releases/tag/native-v0.2.3) 独立下载。旧版仍可下载。
 
 | 平台 | 架构 | 附件文件名 |
 | --- | --- | --- |
-| macOS 14+ | Apple Silicon | `imyemail-cloud-mygo-0.3.1-darwin-arm64-selfsigned.zip` |
-| macOS 14+ | Intel | `imyemail-cloud-mygo-0.3.1-darwin-amd64-selfsigned.zip` |
-| Windows | x64 | `imyemail-cloud-mygo-0.3.1-windows-amd64-selfsigned.zip` |
-| Windows | ARM64 | `imyemail-cloud-mygo-0.3.1-windows-arm64-selfsigned.zip` |
-| Linux | x86_64 | `imyemail-cloud-mygo-0.3.1-linux-amd64.deb` / `.tar.gz` |
-| Linux | ARM64 | `imyemail-cloud-mygo-0.3.1-linux-arm64.deb` / `.tar.gz` |
+| macOS 14+ | Apple Silicon | `imyemail-cloud-mygo-0.3.2-darwin-arm64-selfsigned.zip` |
+| macOS 14+ | Intel | `imyemail-cloud-mygo-0.3.2-darwin-amd64-selfsigned.zip` |
+| Windows | x64 | `imyemail-cloud-mygo-0.3.2-windows-amd64-selfsigned.zip` |
+| Windows | ARM64 | `imyemail-cloud-mygo-0.3.2-windows-arm64-selfsigned.zip` |
+| Linux | x86_64 | `imyemail-cloud-mygo-0.3.2-linux-amd64.deb` / `.tar.gz` |
+| Linux | ARM64 | `imyemail-cloud-mygo-0.3.2-linux-arm64.deb` / `.tar.gz` |
 
 - macOS arm64/x86_64：固定证书自签 ZIP，未公证；首次启动遵循 Gatekeeper。可单独 `brew install imyemail-cloud-mygo`，首次 tap/trust 见统一安装文档。
 - Windows x64/ARM64：UI/核心有自签 Authenticode，ZIP 本身通过签名清单认证，非默认公信；保留同目录核心。

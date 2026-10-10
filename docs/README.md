@@ -15,6 +15,6 @@
 - [开源重构验证记录](../artifacts/20261002-open-source-refactor/verification.md)：本地门禁、聚焦安全检查和未验收边界
 - [Homebrew tap 发布验证](../artifacts/20261002-homebrew-tap/verification.md)：cask、安装、供应链校验和发布边界
 
-当前原生版 `imyemail-cloud-native`：`0.2.2` / `native-v0.2.2`；MyGo `imyemail-cloud-mygo`：`0.3.1` / `mygo-v0.3.1`。两版分别自签发布，旧 `v0.2.0/v0.2.1/mygo-v0.3.0` 保留。项目主页：[https://imy.email](https://imy.email)，源码：[github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)。
+当前原生版 `imyemail-cloud-native`：`0.2.3` / `native-v0.2.3`；MyGo `imyemail-cloud-mygo`：`0.3.2` / `mygo-v0.3.2`。两版分别自签发布，旧 `v0.2.0/v0.2.1/mygo-v0.3.0` 保留。项目主页：[https://imy.email](https://imy.email)，源码：[github.com/logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)。
 
 公开历史版本在 Git 标签/Release 中保留；原始 Chck 资料另存本地 `chckemail-old/`，被 Git 忽略，不属于公开仓库。日期证据按历史事实保留。

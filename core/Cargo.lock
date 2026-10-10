@@ -318,7 +318,7 @@ dependencies = [
 
 [[package]]
 name = "chck-cli"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-engine",
  "chck-ffi",
@@ -332,7 +332,7 @@ dependencies = [
 
 [[package]]
 name = "chck-engine"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-imyemail",
  "chck-mime",
@@ -353,7 +353,7 @@ dependencies = [
 
 [[package]]
 name = "chck-ffi"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-engine",
  "chck-types",
@@ -364,7 +364,7 @@ dependencies = [
 
 [[package]]
 name = "chck-ffi-c"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-engine",
  "chck-ffi",
@@ -374,7 +374,7 @@ dependencies = [
 
 [[package]]
 name = "chck-imyemail"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-types",
  "rustls",
@@ -386,7 +386,7 @@ dependencies = [
 
 [[package]]
 name = "chck-mime"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-types",
  "mailparse",
@@ -394,7 +394,7 @@ dependencies = [
 
 [[package]]
 name = "chck-proto-imap"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-providers",
  "chck-types",
@@ -408,7 +408,7 @@ dependencies = [
 
 [[package]]
 name = "chck-proto-smtp"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-providers",
  "chck-types",
@@ -421,7 +421,7 @@ dependencies = [
 
 [[package]]
 name = "chck-providers"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "serde",
  "serde_json",
@@ -429,14 +429,14 @@ dependencies = [
 
 [[package]]
 name = "chck-sanitize"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "ammonia",
 ]
 
 [[package]]
 name = "chck-store"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-mime",
  "chck-types",
@@ -448,14 +448,14 @@ dependencies = [
 
 [[package]]
 name = "chck-sync"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "chck-types",
 ]
 
 [[package]]
 name = "chck-types"
-version = "0.2.2"
+version = "0.2.3"
 dependencies = [
  "serde",
  "sha2",

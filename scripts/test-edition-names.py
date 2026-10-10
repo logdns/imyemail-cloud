@@ -58,7 +58,7 @@ class EditionNamesTests(unittest.TestCase):
 
     def test_release_tracks_and_current_documentation(self):
         workflow = self.text(".github/workflows/release-build.yml")
-        self.assertIn("default: native-v0.2.2", workflow)
+        self.assertIn("default: native-v0.2.3", workflow)
         for suffix in ["macos-arm64", "ios-arm64", "android", "linux"]:
             self.assertIn(NATIVE + "-" + suffix, workflow)
         self.assertIn('tag="mygo-v$version"', self.text(".github/workflows/mygo-desktop.yml"))
@@ -67,8 +67,8 @@ class EditionNamesTests(unittest.TestCase):
                 content = self.text(path)
                 self.assertIn(NATIVE, content)
                 self.assertIn(MYGO, content)
-                self.assertNotIn("/tag/v0.2.2", content)
-                self.assertNotIn("/download/v0.2.2/", content)
+                self.assertNotIn("/tag/v0.2.3", content)
+                self.assertNotIn("/download/v0.2.3/", content)
 
     @unittest.skipUnless(platform.system() == "Linux" and shutil.which("dpkg-deb"), "Linux packaging fixture")
     def test_native_deb_replaces_legacy_only_and_preserves_alias(self):
@@ -85,7 +85,7 @@ class EditionNamesTests(unittest.TestCase):
             subprocess.run(["sh", str(ROOT / "linux/scripts/verify-deb.sh"), str(package)], env=environment, check=True, capture_output=True, timeout=30)
             fields = subprocess.run(["dpkg-deb", "-f", str(package)], env=environment, check=True, capture_output=True, text=True, timeout=10).stdout
             self.assertIn("Package: " + NATIVE, fields)
-            self.assertIn("Breaks: imyemail-cloud (<< 0.2.2)", fields)
+            self.assertIn("Breaks: imyemail-cloud (<< 0.2.3)", fields)
             self.assertNotIn("Breaks: " + MYGO, fields)
             self.assertNotIn("Replaces: " + MYGO, fields)
 

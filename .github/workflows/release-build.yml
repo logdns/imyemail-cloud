@@ -6,7 +6,7 @@ on:
       release_tag:
         description: Native release tag in native-vMAJOR.MINOR.PATCH format
         required: true
-        default: native-v0.2.2
+        default: native-v0.2.3
         type: string
       release_date:
         description: Release label in YYYYMMDD format
@@ -72,6 +72,7 @@ jobs:
           rustup target add aarch64-apple-ios
           brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
       - name: Build and test macOS package
+        timeout-minutes: 2
         env:
           RELEASE_P12_BASE64: ${{ secrets.RELEASE_P12_BASE64 }}
           RELEASE_P12_PASSWORD: ${{ secrets.RELEASE_P12_PASSWORD }}
@@ -114,11 +115,11 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - name: Remove ephemeral signing identity
+        timeout-minutes: 1
         if: always()
         shell: bash
         run: |
-          security remove-trusted-cert signing/release-cert.pem || true
-          security delete-keychain "$RUNNER_TEMP/imyemail-signing/release.keychain-db" || true
+          bash scripts/cleanup-macos-signing.sh
 
   android:
     name: Android self-signed APK
@@ -330,4 +331,4 @@ jobs:
             --verify-tag \
             --title "imyemail-cloud-native $RELEASE_TAG (self-signed native clients)" \
             --latest \
-            --notes "imyemail-cloud-native, source $GITHUB_SHA. Native tags now use native-v; old v0.2.0/v0.2.1 and mygo-v0.3.0 remain intact. Every new native package uses imyemail-cloud-native; existing application/data/upgrade identities are preserved. macOS/Windows self-signed code signatures; Android signed APK; Linux signed SHA256SUMS (not an APT repository). iOS remains unsigned and requires valid Apple provisioning. Not publicly trusted, Apple-notarized or store releases. Certificate SHA-256: 476ea6e573714e9c46a43471b5938d791e1c3851beb7b3eef8269cf084f48548. Install/verify/update/rollback: https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/INSTALL.md. Separate MyGo edition: https://github.com/$GITHUB_REPOSITORY/releases/tag/mygo-v0.3.1"
+            --notes "imyemail-cloud-native, source $GITHUB_SHA. Independent native-v release track; historical releases remain intact. Existing application/data/upgrade identities are preserved. macOS/Windows self-signed code signatures; Android signed APK; Linux signed SHA256SUMS, not APT repository signing. iOS is unsigned and requires Apple provisioning. Not publicly trusted, Apple-notarized or store-approved. Certificate SHA-256: 476ea6e573714e9c46a43471b5938d791e1c3851beb7b3eef8269cf084f48548. Install/verify/update/rollback: https://github.com/$GITHUB_REPOSITORY/blob/$RELEASE_TAG/docs/INSTALL.md. Separate Pulse-inspired MyGo: https://github.com/$GITHUB_REPOSITORY/releases/tag/mygo-v0.3.2"

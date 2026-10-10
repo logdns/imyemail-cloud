@@ -11,7 +11,7 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-const version = "0.3.1"
+const version = "0.3.2"
 
 func main() {
 	if err := run(); err != nil {

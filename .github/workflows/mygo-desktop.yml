@@ -164,10 +164,10 @@ jobs:
           path: desktop-mygo/dist/release/*
           if-no-files-found: error
       - name: Remove ephemeral macOS identity
+        timeout-minutes: 1
         if: always() && runner.os == 'macOS' && github.event_name == 'workflow_dispatch' && inputs.release
         run: |
-          security remove-trusted-cert signing/release-cert.pem || true
-          security delete-keychain "$RUNNER_TEMP/imyemail-signing/release.keychain-db" || true
+          bash scripts/cleanup-macos-signing.sh
 
   publish:
     if: github.event_name == 'workflow_dispatch' && inputs.release && github.ref == 'refs/heads/main'

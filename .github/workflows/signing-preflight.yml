@@ -30,6 +30,7 @@ jobs:
           fingerprint=$(openssl x509 -inform DER -in "$RUNNER_TEMP/signing-leaf0" -outform DER | shasum -a 256 | awk '{print $1}')
           test "$fingerprint" = 476ea6e573714e9c46a43471b5938d791e1c3851beb7b3eef8269cf084f48548
       - name: Remove ephemeral fixture and identity
+        timeout-minutes: 1
         if: always()
         run: |
           sudo -n security remove-trusted-cert -d signing/release-cert.pem || true

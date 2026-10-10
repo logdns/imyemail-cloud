@@ -16,7 +16,7 @@ class ReleaseSigningTests(unittest.TestCase):
     def command(self, *arguments, **kwargs):
         return subprocess.run(arguments, check=True, capture_output=True, timeout=30, **kwargs)
 
-    def test_hosted_cleanup_restores_authorization_policy_on_failure(self):
+    def test_hosted_cleanup_pins_certificate_and_rejects_self_hosted(self):
         with tempfile.TemporaryDirectory(prefix="cleanup-fixture-") as temporary:
             root = pathlib.Path(temporary)
             tools = root / "tools"
@@ -26,11 +26,7 @@ class ReleaseSigningTests(unittest.TestCase):
             security = tools / "security"
             security.write_text('''#!/bin/sh
 printf '%s\\n' "$*" >> "$FIXTURE_LOG"
-if [ "$1 $2" = "authorizationdb read" ]; then
-  printf '<plist>original fixture policy</plist>\\n'
-elif [ "$1 $2" = "authorizationdb write" ] && [ "$#" = 3 ]; then
-  cat >> "$FIXTURE_LOG"
-elif [ "$1" = "remove-trusted-cert" ] && [ "${FIXTURE_FAIL:-0}" = 1 ]; then
+if [ "$1" = "delete-certificate" ] && [ "${FIXTURE_FAIL:-0}" = 1 ]; then
   exit 1
 fi
 ''')
@@ -45,14 +41,14 @@ fi
                 "RUNNER_ENVIRONMENT": "github-hosted", "FIXTURE_LOG": str(log),
             }
             script = ROOT / "scripts/cleanup-macos-signing.sh"
-            self.command("bash", str(script), env=environment)
-            self.assertIn("original fixture policy", log.read_text())
+            self.command("bash", str(script), env=environment, cwd=ROOT)
+            self.assertIn("delete-certificate -Z " + FINGERPRINT.upper(), log.read_text())
             self.assertIn("delete-keychain", log.read_text())
             log.write_text("")
             environment["FIXTURE_FAIL"] = "1"
-            result = subprocess.run(["bash", str(script)], env=environment, capture_output=True, timeout=30)
+            result = subprocess.run(["bash", str(script)], env=environment, cwd=ROOT, capture_output=True, timeout=30)
             self.assertNotEqual(result.returncode, 0)
-            self.assertIn("original fixture policy", log.read_text())
+            self.assertNotIn("delete-keychain", log.read_text())
             environment["RUNNER_ENVIRONMENT"] = "self-hosted"
             log.write_text("")
             result = subprocess.run(["bash", str(script)], env=environment, capture_output=True, timeout=30)

@@ -6,7 +6,7 @@ EXPECTED_ARCH=${2:-}
 
 test -f "$PACKAGE"
 test "$(dpkg-deb -f "$PACKAGE" Package)" = imyemail-cloud-native
-dpkg-deb -f "$PACKAGE" Replaces | grep -Fq 'imyemail-cloud (<< 0.2.2)'
+dpkg-deb -f "$PACKAGE" Replaces | grep -Fq 'imyemail-cloud (<< 0.2.3)'
 ACTUAL_ARCH=$(dpkg-deb -f "$PACKAGE" Architecture)
 if [ -n "$EXPECTED_ARCH" ] && [ "$ACTUAL_ARCH" != "$EXPECTED_ARCH" ]; then
   echo "Expected architecture $EXPECTED_ARCH, got $ACTUAL_ARCH" >&2

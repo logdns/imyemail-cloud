@@ -5,17 +5,9 @@ test "${GITHUB_REF:-}" = refs/heads/main
 test "${RUNNER_ENVIRONMENT:-}" = github-hosted
 directory="$RUNNER_TEMP/imyemail-signing"
 security list-keychains -d user -s "$HOME/Library/Keychains/login.keychain-db"
-policy="$directory/cleanup-trust-policy.plist"
-original_policy=$(sudo -n security authorizationdb read com.apple.trust-settings.admin)
-printf '%s\n' "$original_policy" > "$policy"
-restore_policy() {
-  cat "$policy" | sudo -n security authorizationdb write com.apple.trust-settings.admin
-}
-trap restore_policy EXIT
-sudo -n security authorizationdb write com.apple.trust-settings.admin allow
-sudo -n security remove-trusted-cert -d signing/release-cert.pem
-restore_policy
-trap - EXIT
+fingerprint=$(openssl x509 -in signing/release-cert.pem -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':')
+test "$fingerprint" = 476EA6E573714E9C46A43471B5938D791E1C3851BEB7B3EEF8269CF084F48548
+sudo -n security delete-certificate -Z "$fingerprint" /Library/Keychains/System.keychain
 security delete-keychain "$directory/release.keychain-db"
-rm -f "$directory/release.p12" "$policy"
-printf 'Removed temporary trust and private keychain; restored authorization policy\n'
+rm -f "$directory/release.p12"
+printf 'Removed matched system certificate and private keychain; hosted runner teardown clears its trust-settings record\n'

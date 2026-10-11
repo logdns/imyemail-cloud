@@ -30,3 +30,5 @@
 ## 保留与边界
 
 原始日期证据和 `chckemail-old/` 保持；临时校验脚本/venv 不进入 Git，不含真实邮箱、私钥或环境转储。此轮不 commit/push/dispatch，也不重跑此前已通过的整个平台矩阵；后续若要求发布文档，再单独处理授权和远端状态。
+
+后续用户已单独授权文档公开发布，结果见[文档发布记录](../20261011-documentation-publication/verification.md)；本节保留初次整理时的状态。

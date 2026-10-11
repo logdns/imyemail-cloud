@@ -1,5 +1,7 @@
 # 验证记录索引
 
+- [2026-10-11：开发经验与 macOS 文档公开发布](20261011-documentation-publication/verification.md)
+
 - [2026-10-11：macOS 首次打开与两种解决方法](20261011-macos-first-launch/verification.md)
 
 - [2026-10-11：开发经验与本地 skill 整理](20261011-development-lessons/verification.md)

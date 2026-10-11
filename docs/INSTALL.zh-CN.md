@@ -30,6 +30,45 @@ Homebrew 7 首次须信任第三方 tap。更新：`brew update && brew upgrade 
 
 手动安装对应架构 `*-selfsigned.zip`，整体解压，将 `imyemail-cloud-native.app` 或 `imyemail-cloud-mygo.app` 放入 Applications，不覆盖另一版。按 SIGNING.md 检查签名。未经 Apple 公证，Gatekeeper 仍可能拦截；仅确认可信后通过“系统设置 → 隐私与安全性”正常允许，不关闭 Gatekeeper、不全局清除 quarantine，也不保证导入证书后一定能启动。
 
+### macOS 首次打开提醒
+
+- 开发者目前没有 Apple Developer 账号，未使用 Apple Developer ID 签名分发；**当前两版 macOS 包使用自签证书，不是完全没有代码签名**，历史包以对应 Release 说明为准。
+- 应用未经过 Apple 公证（Notarization），Homebrew tap trust 也不代表 Apple 对应用的认可。
+- 从 GitHub 下载后，首次打开可能提示“无法验证开发者”或“Apple 无法检查其是否包含恶意软件”。
+- 某些情况下可能提示“应用已损坏，无法打开”；下载隔离属性 `com.apple.quarantine` 可能是原因之一，但也可能是真实损坏、签名失效或安全风险，不能一律忽略。
+
+**先决条件：**仅处理从本项目官方 GitHub Release 下载、已按 [SIGNING.md](SIGNING.md) 验签并核对包哈希、且你决定信任的应用。校验失败时停止操作并重新下载；如果 macOS 明确报告恶意软件，不使用以下方法绕过。
+
+#### 方法 1：在系统设置中允许打开（推荐）
+
+1. 将对应 `.app` 放入“应用程序”，双击一次；出现拦截提示后关闭提示。
+2. 点击屏幕左上角苹果菜单 → **系统设置 → 隐私与安全性**，向下找到“安全性”区域。
+3. 找到该应用被阻止的提示，点击 **仍要打开（Open Anyway）**，按系统要求验证身份，再在确认框点击“打开”。
+4. 如果没有该按钮、提示并非针对该应用，或系统仍报告恶意软件/签名异常，不更改全局安全设置；重新检查包和签名。不同 macOS 版本的按钮文字/位置可能略有不同。
+
+#### 方法 2：打开终端，移除指定应用的下载隔离属性
+
+若已完成上述校验并确认来源可信，但应用仍因下载隔离被拦截，可选择此方法。**它会移除该应用及其内部文件的 quarantine 标记，降低针对该应用的首次打开保护；不是签名、公证或完整性修复，也不保证一定能启动。**
+
+1. 按 **⌘ Command + 空格** 打开 Spotlight，输入“终端”或 `Terminal`，按回车；也可从“应用程序 → 实用工具 → 终端”打开。
+2. 在终端粘贴与你安装版本对应的命令，按回车。只执行所需版本的那一条，保留路径引号。
+
+原生版：
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-native.app"
+```
+
+MyGo 版：
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-mygo.app"
+```
+
+3. 命令成功通常没有输出；完成后回到“应用程序”重新双击该应用。若出现错误或仍打不开，保留错误信息，重新核对哈希、签名、系统版本和 CPU 架构，不反复绕过安全提示。
+
+通用格式是 `xattr -dr com.apple.quarantine "/Applications/应用名称.app"`，“应用名称”须替换为实际名称。应用不在 `/Applications` 时，只替换为已验证的那一个 `.app` 的完整路径；旧原生版可能名为 `imyemail-cloud.app`，不要误操作另一版。不要对 `/Applications` 整个目录、根目录或通配符执行此命令，不关闭 Gatekeeper/SIP，也不自动添加 `sudo`。
+
 ## Windows
 
 原版选择 x64/ARM64 `*-selfsigned-setup.exe`，核验后安装，需 Windows 10 1809+/11、WebView2。MyGo 选择 `*-windows-amd64-selfsigned.zip` 或 `*-windows-arm64-selfsigned.zip`，整体解压到独立用户目录，运行 `imyemail-cloud-mygo.exe`，保留核心及许可证；这是便携包，不是安装器/MSIX。

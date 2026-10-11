@@ -32,6 +32,39 @@ Update the chosen token with `brew update && brew upgrade <token>`; uninstall wi
 
 Manual installation: choose `*-selfsigned.zip`, extract and copy only the matching app (`imyemail-cloud-native.app` or `imyemail-cloud-mygo.app`) to Applications. Verify its signature using SIGNING.md. Gatekeeper may reject self-signed apps; use normal System Settings > Privacy & Security approval only if you trust the verified publisher. No guarantee of Gatekeeper acceptance; do not disable it or remove quarantine globally.
 
+### macOS first launch
+
+The developer currently has no Apple Developer account. These apps have no Apple Developer ID signature and have not been notarized. **Current macOS packages are certificate-self-signed, not entirely unsigned**; historical packages retain their release-specific signing descriptions. A GitHub download may show “developer cannot be verified”, “Apple cannot check it for malicious software”, or sometimes “app is damaged and can't be opened”. Download quarantine can cause a block, but genuine corruption, invalid signatures or malware can also cause warnings.
+
+First verify the official tagged package hash, signed manifest and pinned publisher as described in [SIGNING.md](SIGNING.md). Stop and re-download if verification fails. Do not use these methods to bypass a malware detection.
+
+#### Method 1: allow in System Settings (recommended)
+
+1. Copy the verified app to Applications, try opening it once, then dismiss the blocked-launch message.
+2. Open Apple menu → **System Settings → Privacy & Security** and scroll to the Security section.
+3. Find the message for this app, click **Open Anyway**, authenticate if requested, and confirm **Open**. Labels/placement may vary by macOS release.
+4. If that option is absent or a malware/signature warning persists, recheck the download; do not disable global security settings.
+
+#### Method 2: use Terminal for this app's quarantine attribute
+
+Only after verification and an intentional decision to trust this app, you may remove its download quarantine if that is still blocking launch. This removes quarantine recursively from the chosen bundle and reduces its first-launch protection; it does not sign/notarize the app, repair corruption or guarantee launch.
+
+Press **Command + Space**, type `Terminal`, then press Return; alternatively open Applications → Utilities → Terminal. Paste only the command matching your installed edition and press Return.
+
+Native:
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-native.app"
+```
+
+MyGo:
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-mygo.app"
+```
+
+Success usually produces no output. Reopen the app from Applications. If an error or warning persists, retain the details and check hashes, signatures, OS requirements and CPU architecture rather than repeating overrides. Use the exact verified app path if installed elsewhere; the legacy native bundle may be named `imyemail-cloud.app`. Never target all of `/Applications`, `/`, or a wildcard; do not disable Gatekeeper/SIP or automatically add `sudo`.
+
 ## Windows
 
 Original: select x64/ARM64 `*-selfsigned-setup.exe` and verify before running; requires Windows 10 1809+/11 and WebView2. MyGo: extract the matching `*-windows-amd64-selfsigned.zip` or `*-windows-arm64-selfsigned.zip` into a separate user-owned directory; run `imyemail-cloud-mygo.exe`, keeping its core and licenses beside it. This ZIP is portable, not an installer/MSIX.

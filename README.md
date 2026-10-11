@@ -63,6 +63,26 @@ Verify the matching release's **signed SHA256SUMS** using the pinned certificate
 
 MyGo has no Android/iOS package. Keep its bundled Rust helper and licenses when extracting. Native is packaged for macOS Apple Silicon only; Intel Mac users can choose MyGo. [Install, verify and upgrade](docs/INSTALL.md).
 
+### macOS blocked first launch: two options
+
+The developer currently has no Apple Developer account. The apps have no Apple Developer ID signature or notarization; **current packages are self-signed, not entirely unsigned**. GitHub downloads may show “developer cannot be verified” or sometimes “app is damaged”. Verify the official package hash, signed manifest and pinned publisher first; do not bypass verification failures or malware warnings.
+
+**1. System Settings (recommended):** try opening the app once, then open Apple menu → System Settings → Privacy & Security → Security. Select **Open Anyway** for this app, authenticate and confirm Open.
+
+**2. Terminal, for download quarantine only:** after successful verification and an intentional decision to trust the app, press Command + Space, search for Terminal, and run only the command for your edition:
+
+Native:
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-native.app"
+```
+
+MyGo:
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-mygo.app"
+```
+
+Reopen the app afterward. This reduces quarantine protection for the chosen bundle; it does not repair corruption, fix a signature or notarize it, and launch is not guaranteed. Never disable Gatekeeper/SIP globally or target all of Applications. [Full steps and troubleshooting](docs/INSTALL.md).
+
 ## Repository layout
 
 | Directory | Contents |

@@ -1,5 +1,9 @@
 # 验证记录索引
 
+- [2026-10-11：macOS 首次打开与两种解决方法](20261011-macos-first-launch/verification.md)
+
+- [2026-10-11：开发经验与本地 skill 整理](20261011-development-lessons/verification.md)
+
 - [2026-10-11：双版本命名、签名、截图与独立发布](20261011-self-signed-tracks/verification.md)
 
 - [2026-10-10：MyGo 原生桌面重构、测试与发布验证](20261010-mygo-desktop/verification.md)

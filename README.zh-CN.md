@@ -40,6 +40,32 @@ brew install imyemail-cloud-mygo
 
 [各平台安装、校验、卸载与升级](docs/INSTALL.zh-CN.md) · [签名说明](docs/SIGNING.md) · [版本、数据兼容与回滚](docs/VERSIONS.md)。旧 Homebrew 用户先关闭 app、备份数据库与 Keychain，禁用 cleanup 卸载旧 `imyemail-cloud`（不用 `--zap`），再装 `imyemail-cloud-native`；旧/新原生共享数据，不同时运行。
 
+### macOS 首次打不开？两种解决方法
+
+开发者目前没有 Apple Developer 账号，应用没有 Apple Developer ID 签名，也未经过 Apple 公证（Notarization）。**当前 macOS 包为自签，并非完全未签名。**从 GitHub 下载首次打开可能提示“无法验证开发者”，有时也可能提示“应用已损坏，无法打开”。
+
+先按[签名说明](docs/SIGNING.md)核对官方包哈希、清单签名与发布者指纹；校验失败或明确提示恶意软件时停止操作，不使用下面的方法绕过。
+
+**方法 1：系统设置允许打开（推荐）**
+
+双击应用触发提示后，进入苹果菜单 → **系统设置 → 隐私与安全性 → 安全性**，找到该应用的拦截提示，点击 **仍要打开**，验证身份并确认“打开”。
+
+**方法 2：终端移除指定 app 的下载隔离属性**
+
+仅在验签通过、确认可信且仍因下载隔离被拦截时使用。按 **⌘ Command + 空格**，搜索“终端”并回车，粘贴与你安装版本对应的命令，按回车：
+
+原生版：
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-native.app"
+```
+
+MyGo 版：
+```bash
+xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-mygo.app"
+```
+
+只执行所需版本的那一条，完成后重新双击应用。此操作降低该 app 的首次打开隔离保护，不能修复真实损坏或签名异常，不代表公证，也不保证能启动；不要全局关闭 Gatekeeper/SIP 或对整个“应用程序”目录清除属性。[详细步骤及错误处理](docs/INSTALL.zh-CN.md)。
+
 ## 独立维护与旧版
 
 公开仓库保持 [logdns/imyemail-cloud](https://github.com/logdns/imyemail-cloud)，产品帮助链接为 [https://imy.email](https://imy.email)。原生版使用 `native-v*`，MyGo 使用 `mygo-v*`；GitHub Latest 属于原生版。无收费、软件激活、设备名额或 Web 程序。

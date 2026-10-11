@@ -39,7 +39,9 @@ codesign -d --extract-certificates=/tmp/imyemail-leaf /Applications/imyemail-clo
 openssl x509 -inform DER -in /tmp/imyemail-leaf0 -noout -fingerprint -sha256
 ```
 
-Use the original app name for that edition. Leaf fingerprint must match. Chain trust/Gatekeeper can still reject signed bytes: use normal OS approval, never disable Gatekeeper/SIP/quarantine protection. Not notarized; no certificate is automatically trusted on your host.
+Use the actual app name for that edition. Leaf fingerprint must match. The developer currently has no Apple Developer account; macOS releases have no Apple Developer ID signature or notarization, although current packages are certificate-self-signed. Chain trust/Gatekeeper can still reject valid signed bytes; no certificate is automatically trusted on your host.
+
+For blocked first launch, prefer System Settings → Privacy & Security → Open Anyway. The [English installation guide](INSTALL.md) and [中文两种解决方法](INSTALL.zh-CN.md) also document an optional, explicitly scoped `xattr -dr com.apple.quarantine` command for the **single verified app bundle**. It weakens that app's quarantine protection, not a signing/notarization fix; never disable Gatekeeper/SIP or remove quarantine globally. Hash/signature failure, genuine damage and malware warnings must not be bypassed with that command.
 
 Hosted signing uses a disposable private-key keychain and admin-domain trust to avoid GUI prompts. Cleanup deletes the fingerprint-matched system certificate, private keychain and temporary P12; runner teardown clears its orphaned trust-settings record. User-domain trust removal is not used because it can wait indefinitely for interactive authorization. These scripts reject self-hosted runners and are not user installation commands. The bounded preflight signs/verifies a dummy binary, compares the extracted certificate fingerprint and checks cleanup without publishing it.
 

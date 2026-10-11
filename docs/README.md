@@ -7,6 +7,8 @@
 - [双版本发布验证](../artifacts/20261011-self-signed-tracks/verification.md)：命名兼容、签名、测试、下载和 Homebrew 同步
 - [ARCHITECTURE.md](ARCHITECTURE.md)：仓库结构、运行边界和数据流
 - [DEVELOPMENT.md](DEVELOPMENT.md)：环境、测试和开发规则
+- [DEVELOPMENT-LESSONS.md](DEVELOPMENT-LESSONS.md)：双版本开发经验、签名/隔离/CI/tap 防错与后续验收
+- [开发文档/skill 整理验证](../artifacts/20261011-development-lessons/verification.md)：结构、引用和场景复核，不涉及新的软件发布
 - [RELEASE.md](RELEASE.md)：版本、构建、GitHub Release 和签名边界
 - [SECURITY.md](SECURITY.md)：客户端安全模型和检查清单
 - [MYGO.zh-CN.md](MYGO.zh-CN.md)：Go 原生桌面重构版、六架构下载、功能边界与独立预览发布

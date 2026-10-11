@@ -14,6 +14,10 @@ brew install imyemail-cloud-native
 
 Homebrew 7 对第三方 tap 要求一次显式信任。`brew upgrade imyemail-cloud-native` 更新原生版；[公开 tap](https://github.com/logdns/homebrew-imyemail-cloud) 不切换到 MyGo。发布包固定证书自签、未 Apple 公证，首次启动受 Gatekeeper 检查；本地默认仍是 ad-hoc。
 
+### macOS 首次打开被拦截
+
+开发者目前没有 Apple Developer 账号，未使用 Developer ID 签名或 Apple 公证；当前包为自签，不是完全未签名。先验签、核对官方包哈希，再按[两种解决方法](../docs/INSTALL.zh-CN.md)处理：优先 **系统设置 → 隐私与安全性 → 仍要打开**；若已确认可信且仅下载隔离导致拦截，可打开终端执行 `xattr -dr com.apple.quarantine "/Applications/imyemail-cloud-native.app"`，然后重开应用。该命令降低指定 app 的隔离保护，不能修复真实损坏/签名异常，也不能用于绕过恶意软件告警；不关闭全局 Gatekeeper/SIP。
+
 ## 本地验证
 
 ```bash

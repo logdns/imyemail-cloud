@@ -8,7 +8,9 @@
 
 ## 发布前检查
 
-1. 工作树只包含预期源码和文档，不包含 `chckemail-old/`、凭据、数据库、签名材料或生成包。
+签名、CI 并发、下载及 tap 常见失败的原因和边界见 [开发与发布经验](DEVELOPMENT-LESSONS.md)。先做廉价 fixture/签名预检，再做对应完整矩阵；在发布 concurrency group 启用 `cancel-in-progress` 时，不推送会取消运行的后续提交。
+
+1. 工作树只包含预期源码和文档，不包含 `chckemail-old/`、凭据、数据库、签名私钥/P12 或生成包；固定公开证书/公钥属于可审查的发布验证输入。
 2. 运行 [DEVELOPMENT.md](DEVELOPMENT.md) 中适用于当前主机的门禁，并确认 GitHub CI 全部通过。
 3. 搜索旧品牌、收费、激活和网站代码残留；邮箱“应用密码/授权码”不属于软件许可证。
 4. 确认所有客户端帮助/关于链接指向 `https://imy.email`，源码链接指向公开 GitHub 仓库。
@@ -38,6 +40,8 @@
 
 tap 每日分别读取 `native-v*` 与 `mygo-v*` Release，按各自版本更新；MyGo 明确包含预发布，不依赖 Latest。先固定证书指纹、验签清单并下载复算后才创建更新 PR。发布新版本时仍需人工确认该 PR 的 CI、版本、URL、哈希与签名边界；自动检测不能替代公证或真机启动验收。
 
+修改 cask 同时更新 `scripts/sync-editions.py`，运行 tap 的选择/验签/篡改/双语版本 fixture、style/audit 和安装矩阵。bot 创建 PR 后显式 dispatch 分支检查，不能假设 token 触发普通 PR CI。不在维护者 Homebrew 做卸载/autoremove 验收；临时 runner 禁用 cleanup，并证明卸载一版保留另一版。
+
 ## MyGo 桌面预览版
 
 MyGo 使用 `.github/workflows/mygo-desktop.yml` 与 `mygo-vMAJOR.MINOR.PATCH`。六架构 CI、限定范围审查、产物复验后创建不可移动 annotated tag，main 手动 `release=true` 证书自签/发布；不替换旧版附件或原 cask，另用 MyGo token。能力见 [MYGO.zh-CN.md](MYGO.zh-CN.md)。
@@ -46,4 +50,6 @@ MyGo 使用 `.github/workflows/mygo-desktop.yml` 与 `mygo-vMAJOR.MINOR.PATCH`�
 
 ## 回滚
 
-不要覆盖既有 tag 或 Release。发现问题时撤下受影响附件、标记说明并发布递增补丁版本；保留源码提交和哈希以便审计。Homebrew 回滚通过恢复上一条已验证 cask 提交或发布递增修复版本完成，不得把同一版本静默改指向不同二进制。
+失败候选 tag 不等于可下载 Release：保留标签/源码/失败原因，用递增版本修复，不移动 tag。纯文档证据收口可按维护策略 `[skip ci]`，但不适用于代码/依赖/workflow 或签名修改；明确最终文档提交未新增软件 CI。独立下载验签和源码 CI 对应到实际 SHA，而不是“最新运行”字样。
+
+不要覆盖既有 tag 或 Release。默认保留历史附件、源码和哈希，标记已知问题并发布递增补丁；尤其用户要求保留旧包时，不自行撤下。只有明确授权的安全处置才撤下指定附件，另记录原因、资产清单和恢复边界，不移动标签。Homebrew 回滚通过恢复上一条已验证 cask 提交或发布递增修复版本完成，不得把同一版本静默改指向不同二进制。
